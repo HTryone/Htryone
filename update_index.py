@@ -1,8 +1,8 @@
 """
 网页索引生成器
-功能：扫描指定目录的 HTML 文件，生成带树状图和可点击链接的 _Index.md
+功能：扫描指定目录的 HTML/PDF 文件，生成带树状图和可点击链接的 index.md
 
-支持格式：.html, .htm
+支持格式：.html, .htm, .pdf
 """
 import os
 from pathlib import Path
@@ -15,12 +15,13 @@ OUTPUT_FILE = "index.md"  # 生成的索引文件名
 # 不想被索引的文件夹名称
 IGNORE_DIRS = {".git", ".workbuddy", ".obsidian", "assets", "images", "附件", "__pycache__", "templates", "build"}
 # 要扫描的文件扩展名
-SCAN_EXTENSIONS = {".html", ".htm"}
+SCAN_EXTENSIONS = {".html", ".htm", ".pdf"}
 # ============================================================
 
 # 图标映射
 FILE_ICONS = {
     ".html": "🌐", ".htm": "🌐",
+    ".pdf": "📕",
 }
 
 def get_file_icon(filename):
@@ -147,7 +148,7 @@ def generate_md_index(base_dir):
 
     # 生成 ASCII 树状图
     tree_dict = convert_to_ascii_tree(folder_tree)
-    tree_lines = ["📂 根目录/"]
+    tree_lines = ["📂 根目录index/"]
     tree_lines.extend(render_tree_ascii(tree_dict))
     tree_chart = "\n".join(tree_lines)
 

@@ -126,7 +126,7 @@ def render_folder_list(tree, root_base, display_path="", depth=0):
         else:
             # 文件
             f = content
-            link_path = f.relative_to(root_base).as_posix()
+            link_path = "./" + f.relative_to(root_base).as_posix()
             display_name = f.name
             icon = get_file_icon(f.name)
 

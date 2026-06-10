@@ -54,7 +54,7 @@ def generate_index(base_dir):
         "",
         "## 📑 文件列表",
         "",
-    ] + [f"- {FILE_ICONS.get(f.suffix.lower(), '📄')} [{f.name}]({f.name})" for f in files]
+    ] + [f"- {FILE_ICONS.get(f.suffix.lower(), '📄')} [{f.name}](./{f.name})" for f in files]
     lines.append("")
 
     # 写入文件

@@ -1,8 +1,8 @@
 """
-Typora 笔记索引生成器
-功能：扫描指定扩展名文件，生成带树状图和可点击链接的 _Index.md
+网页索引生成器
+功能：扫描指定目录的 HTML 文件，生成带树状图和可点击链接的 _Index.md
 
-支持格式：.md, .doc, .docx, .ppt, .pptx, .html, .htm, .xls, .xlsx, .csv, .pdf
+支持格式：.html, .htm
 """
 import os
 from pathlib import Path
@@ -15,17 +15,12 @@ OUTPUT_FILE = "_Index.md"  # 生成的索引文件名
 # 不想被索引的文件夹名称
 IGNORE_DIRS = {".git", ".workbuddy", ".obsidian", "assets", "images", "附件", "__pycache__", "templates", "build"}
 # 要扫描的文件扩展名
-SCAN_EXTENSIONS = {".md", ".doc", ".docx", ".ppt", ".pptx", ".html", ".htm", ".xls", ".xlsx", ".csv", ".pdf"}
+SCAN_EXTENSIONS = {".html", ".htm"}
 # ============================================================
 
 # 图标映射
 FILE_ICONS = {
-    ".md": "📝",
-    ".doc": "📘", ".docx": "📘",
-    ".ppt": "📊", ".pptx": "📊",
     ".html": "🌐", ".htm": "🌐",
-    ".xls": "📈", ".xlsx": "📈", ".csv": "📈",
-    ".pdf": "📕",
 }
 
 def get_file_icon(filename):

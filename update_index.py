@@ -11,7 +11,7 @@ from collections import defaultdict
 
 # ==================== 配置区（可按需修改） ====================
 NOTES_DIR = "."  # 笔记根目录（默认为脚本所在目录）
-OUTPUT_FILE = "_Index.md"  # 生成的索引文件名
+OUTPUT_FILE = "Index.md"  # 生成的索引文件名
 # 不想被索引的文件夹名称
 IGNORE_DIRS = {".git", ".workbuddy", ".obsidian", "assets", "images", "附件", "__pycache__", "templates", "build"}
 # 要扫描的文件扩展名

@@ -10,10 +10,14 @@ from datetime import datetime
 from collections import defaultdict
 
 # ==================== 配置区（可按需修改） ====================
-NOTES_DIR = "."  # 笔记根目录（默认为脚本所在目录）
+NOTES_DIR = "."  # 笔记根目录（在目标目录执行即可）
 OUTPUT_FILE = "index.md"  # 生成的索引文件名
 # 不想被索引的文件夹名称
 IGNORE_DIRS = {".git", ".workbuddy", ".obsidian", "assets", "images", "附件", "__pycache__", "templates", "build"}
+# 不想被索引的文件名（在根目录或子目录都会被忽略）
+IGNORE_FILES = {"index.html", "index.md"}
+# 优先排在前面的文件名关键词（包含这些词的文件排前面）
+PINNED_KEYWORDS = ["目录", "index", "Index", "README"]
 # 要扫描的文件扩展名
 SCAN_EXTENSIONS = {".html", ".htm", ".pdf"}
 # ============================================================
@@ -58,7 +62,15 @@ def build_folder_tree(files, base_path):
 def render_tree_ascii(tree, prefix="", is_last=True):
     """递归渲染树状字典为 ASCII 文本（用于树状图）"""
     lines = []
-    items = sorted(tree.items(), key=lambda x: (x[1] is None, x[0]))
+    def tree_sort_key(item):
+        name, content = item
+        # 文件(content=None)排后面，目录(content=dict)排前面
+        is_file = content is None
+        # 文件名包含关键词的优先排在同类型前面
+        is_pinned = 1 if any(kw in name for kw in PINNED_KEYWORDS) else 2
+        return (is_file, is_pinned, name)
+
+    items = sorted(tree.items(), key=tree_sort_key)
 
     for i, (name, content) in enumerate(items):
         is_last_item = (i == len(items) - 1)
@@ -68,7 +80,7 @@ def render_tree_ascii(tree, prefix="", is_last=True):
             icon = get_file_icon(name)
             lines.append(f"{prefix}{connector}{icon} {name}")
         else:
-            lines.append(f"{prefix}{connector}📁 {name}/")
+            lines.append(f"{prefix}{connector}📁 {name}")
             new_prefix = prefix + ("    " if is_last_item else "│   ")
             lines.extend(render_tree_ascii(content, new_prefix, is_last_item))
 
@@ -83,7 +95,15 @@ def render_folder_list(tree, root_base, display_path="", depth=0):
     - display_path: 用于显示的拼接路径字符串
     """
     lines = []
-    items = sorted(tree.items(), key=lambda x: (not isinstance(x[1], dict), x[0]))
+    def sort_key(item):
+        name, content = item
+        # 目录排前面，文件排后面
+        is_file = isinstance(content, Path)
+        # 文件名包含关键词的优先排在同类型前面
+        is_pinned = 1 if any(kw in name for kw in PINNED_KEYWORDS) else 2
+        return (is_file, is_pinned, name)
+
+    items = sorted(tree.items(), key=sort_key)
 
     for name, content in items:
         if isinstance(content, dict):
@@ -93,12 +113,12 @@ def render_folder_list(tree, root_base, display_path="", depth=0):
 
             if depth == 0:
                 # 主文件夹用 H2，无缩进
-                lines.append(f"## 📁 {full_display}/ （{file_count} 篇）")
+                lines.append(f"## 📁 {full_display}（{file_count} 篇）")
                 lines.append("")
             else:
                 # 其他层级用缩进列表
                 indent = "  " * depth
-                lines.append(f"{indent}- 📁 **{full_display}/** （{file_count} 篇）")
+                lines.append(f"{indent}- 📁 **{full_display}**（{file_count} 篇）")
 
             # 递归子内容
             sub_display = f"{full_display}/"
@@ -133,7 +153,7 @@ def generate_md_index(base_dir):
             continue
         if any(ignored in p.parts for ignored in IGNORE_DIRS):
             continue
-        if p.name == OUTPUT_FILE:
+        if p.name in IGNORE_FILES:
             continue
         if p.suffix.lower() not in SCAN_EXTENSIONS:
             continue
@@ -148,7 +168,7 @@ def generate_md_index(base_dir):
 
     # 生成 ASCII 树状图
     tree_dict = convert_to_ascii_tree(folder_tree)
-    tree_lines = ["📂 根目录index/"]
+    tree_lines = ["📂 根目录index"]
     tree_lines.extend(render_tree_ascii(tree_dict))
     tree_chart = "\n".join(tree_lines)
 

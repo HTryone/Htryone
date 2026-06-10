@@ -86,13 +86,13 @@ def render_tree_ascii(tree, prefix="", is_last=True):
 
     return lines
 
-def render_folder_list(tree, root_base, display_path="", depth=0):
+def render_folder_list(tree, root_base, depth=0):
     """
     渲染文件夹列表
     - 主文件夹 (depth=0): H2 标题，无缩进
     - 其他（子文件夹、文件）: 缩进列表
     - root_base: 用于计算相对链接的原始根目录（Path 对象）
-    - display_path: 用于显示的拼接路径字符串
+    - 所有层级只显示当前文件夹/文件名，不累积路径
     """
     lines = []
     def sort_key(item):
@@ -107,22 +107,20 @@ def render_folder_list(tree, root_base, display_path="", depth=0):
 
     for name, content in items:
         if isinstance(content, dict):
-            # 目录
+            # 目录：只显示当前文件夹名，不累积路径
             file_count = count_files_in_tree(content)
-            full_display = f"{display_path}{name}" if display_path else name
 
             if depth == 0:
                 # 主文件夹用 H2，无缩进
-                lines.append(f"## 📁 {full_display}（{file_count} 篇）")
+                lines.append(f"## 📁 {name}（{file_count} 篇）")
                 lines.append("")
             else:
-                # 其他层级用缩进列表
+                # 其他层级用缩进列表，只显示当前文件夹名
                 indent = "  " * depth
-                lines.append(f"{indent}- 📁 **{full_display}**（{file_count} 篇）")
+                lines.append(f"{indent}- 📁 **{name}/**（{file_count} 篇）")
 
-            # 递归子内容
-            sub_display = f"{full_display}/"
-            lines.extend(render_folder_list(content, root_base, sub_display, depth + 1))
+            # 递归子内容，不传递路径前缀
+            lines.extend(render_folder_list(content, root_base, depth + 1))
         else:
             # 文件
             f = content

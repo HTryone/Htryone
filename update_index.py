@@ -18,6 +18,8 @@ IGNORE_DIRS = {".git", ".workbuddy", ".obsidian", "assets", "images", "附件", 
 IGNORE_FILES = {"index.html", "index.md"}
 # 优先排在前面的文件名关键词（包含这些词的文件排前面）
 PINNED_KEYWORDS = ["目录", "index", "Index", "README"]
+# 固定在最后面的文件名关键词（包含这些词的文件排最后）
+BOTTOM_KEYWORDS = ["后记", "personal"]
 # 要扫描的文件扩展名
 SCAN_EXTENSIONS = {".html", ".htm", ".pdf"}
 # ============================================================
@@ -68,7 +70,9 @@ def render_tree_ascii(tree, prefix="", is_last=True):
         is_file = content is None
         # 文件名包含关键词的优先排在同类型前面
         is_pinned = 1 if any(kw in name for kw in PINNED_KEYWORDS) else 2
-        return (is_file, is_pinned, name)
+        # 文件名包含底部关键词的排到最后
+        is_bottom = 1 if any(kw in name for kw in BOTTOM_KEYWORDS) else 0
+        return (is_bottom, is_file, is_pinned, name)
 
     items = sorted(tree.items(), key=tree_sort_key)
 
@@ -101,7 +105,9 @@ def render_folder_list(tree, root_base, depth=0):
         is_file = isinstance(content, Path)
         # 文件名包含关键词的优先排在同类型前面
         is_pinned = 1 if any(kw in name for kw in PINNED_KEYWORDS) else 2
-        return (is_file, is_pinned, name)
+        # 文件名包含底部关键词的排到最后
+        is_bottom = 1 if any(kw in name for kw in BOTTOM_KEYWORDS) else 0
+        return (is_bottom, is_file, is_pinned, name)
 
     items = sorted(tree.items(), key=sort_key)
 

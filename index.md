@@ -1,6 +1,6 @@
 # 📚 我的知识库
 
-> 📅 索引更新：2026-06-12 22:21:08 | 📄 共 **11** 篇笔记
+> 📅 索引更新：2026-06-13 04:08:20 | 📄 共 **12** 篇笔记
 
 ---
 
@@ -9,9 +9,11 @@
 ```
 📂 根目录index
 ├── 📁 scripts
-│   └── 📁 demo
-│       ├── 🌐 dark-mode-demo.html
-│       └── 🌐 smart-dark-mode-demo.html
+│   ├── 📁 demo
+│   │   ├── 🌐 dark-mode-demo.html
+│   │   └── 🌐 smart-dark-mode-demo.html
+│   └── 📁 scriptsmd
+│       └── 🌐 深色模式自动注入-技术实现文档.html
 ├── 📁 科技数码相关
 │   ├── 📁 DOCS
 │   │   ├── 🌐 目录.html
@@ -33,11 +35,13 @@
 
 ## 📑 笔记目录（点击直接打开）
 
-## 📁 scripts（2 篇）
+## 📁 scripts（3 篇）
 
   - 📁 **demo/**（2 篇）
     - 🌐 [dark-mode-demo.html](./scripts/demo/dark-mode-demo.html)
     - 🌐 [smart-dark-mode-demo.html](./scripts/demo/smart-dark-mode-demo.html)
+  - 📁 **scriptsmd/**（1 篇）
+    - 🌐 [深色模式自动注入-技术实现文档.html](./scripts/scriptsmd/深色模式自动注入-技术实现文档.html)
 ## 📁 科技数码相关（7 篇）
 
   - 📁 **DOCS/**（3 篇）

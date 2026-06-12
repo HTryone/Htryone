@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>智能深色模式对比演示</title>
+    <style>
+        /* 模拟一个风格化的页面 */
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            color: #2c3e50;
+            line-height: 1.8;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #1a5276;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2874a6;
+            margin-top: 30px;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #d5dbdb;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .highlight {
+            background: #fef9e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px 20px;
+            margin: 15px 0;
+        }
+        .success {
+            background: #eafaf1;
+            border-left: 4px solid #27ae60;
+            padding: 15px 20px;
+            margin: 15px 0;
+        }
+        code {
+            background: #f4f6f7;
+            color: #c0392b;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: "Consolas", monospace;
+        }
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            background: #ffffff;
+            color: #2c3e50;
+            padding: 12px;
+            border-bottom: 1px solid #d5dbdb;
+        }
+        tr:nth-child(even) td {
+            background: #f8f9f9;
+        }
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin: 5px;
+        }
+        .btn-secondary {
+            background: #e74c3c;
+        }
+        a {
+            color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🎨 智能深色模式演示</h1>
+<p>这个页面模拟了一个<strong>风格化的网站</strong>（蓝色主题），用来对比两种深色模式方案。</p>
+
+<div style="margin: 20px 0; padding: 15px; background: #fdf2e9; border-radius: 8px;">
+    <strong>操作说明：</strong>点击页面右上角的按钮切换深色/浅色模式。<br>
+    深色模式下，所有颜色（蓝色、绿色、黄色、红色等）都会<strong>根据原色自动计算</strong>出对应的深色版本，而不是固定的黑灰配色。
+</div>
+
+<h2>📦 内容卡片</h2>
+<div class="card">
+    <h3 style="color: #1a5276;">普通卡片</h3>
+    <p>这是一个白色背景的卡片，有浅灰色边框。在深色模式下，它会变成深灰蓝背景。</p>
+    <p>里面的 <code>inline code</code> 是红色，会变成浅红色。</p>
+</div>
+
+<div class="highlight">
+    <strong>💡 提示：</strong>这是黄色高亮块，深色模式下会变成深黄色/暗金色。
+</div>
+
+<div class="success">
+    <strong>✅ 成功：</strong>这是绿色高亮块，深色模式下会变成深绿色。
+</div>
+
+<h2>📋 表格示例</h2>
+<table>
+    <tr>
+        <th>方案</th>
+        <th>优点</th>
+        <th>缺点</th>
+    </tr>
+    <tr>
+        <td>固定配色</td>
+        <td>稳定可控</td>
+        <td>忽略原页面风格</td>
+    </tr>
+    <tr>
+        <td><strong>动态计算</strong></td>
+        <td>适配任何配色</td>
+        <td>首次生成略耗时</td>
+    </tr>
+</table>
+
+<h2>💻 代码块</h2>
+<pre><code>// 动态计算深色模式颜色
+function convertToDark(color) {
+    const hsl = rgbToHsl(color);
+    // 背景：亮度翻转并压缩到暗色域
+    hsl.l = 100 - hsl.l;  // 翻转
+    hsl.l *= 0.25;        // 压缩到深色
+    return hslToRgb(hsl);
+}</code></pre>
+
+<h2>🔗 链接与按钮</h2>
+<p>这是一个 <a href="#">蓝色链接</a>，深色模式下保持蓝色调但变亮。</p>
+<p>
+    <a href="#" class="btn">蓝色按钮</a>
+    <a href="#" class="btn btn-secondary">红色按钮</a>
+</p>
+
+<h2>📊 核心算法原理</h2>
+<div class="card">
+    <p><strong>1. 读取原色：</strong>用 <code>getComputedStyle</code> 读取每个元素当前的背景色、文字色、边框色。</p>
+    <p><strong>2. 色彩空间转换：</strong>把 RGB 转成 HSL（色相/饱和度/亮度）。</p>
+    <p><strong>3. 智能映射：</strong></p>
+    <ul>
+        <li><strong>背景色：</strong>亮度翻转（浅色→深色），压缩到 5%-25% 暗色域</li>
+        <li><strong>文字色：</strong>深色文字→浅色，浅色文字保持可读</li>
+        <li><strong>彩色元素：</strong>保持色相不变，只调整亮度和饱和度</li>
+    </ul>
+    <p><strong>4. 写回样式：</strong>生成 CSS 规则，通过属性选择器匹配原色。</p>
+</div>
+
+<script src="smart-dark-mode.js"></script>
+
+</body>
+</html>

@@ -17,9 +17,10 @@ import os
 import re
 
 # 配置
-WORKSPACE = os.path.dirname(os.path.abspath(__file__))
-SCRIPT_FILE = "dark-mode-toggle.js"
-MARKER = "dark-mode-toggle.js"  # 用于判断是否已添加
+# apply-dark-mode.py 在 scripts/ 目录下，工作区是它的父目录
+WORKSPACE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SCRIPT_FILE = "scripts/dark-mode-toggle.js"
+MARKER = "scripts/dark-mode-toggle.js"  # 用于判断是否已添加
 EXCLUDE_FILES = {"dark-mode-demo.html", "smart-dark-mode-demo.html"}  # 排除的文件
 
 
@@ -73,10 +74,12 @@ def insert_script(content, script_src):
 
 def remove_old_script(content):
     """
-    移除旧的 dark-mode.js 脚本引用
+    移除旧的深色模式脚本引用（包括旧路径的 dark-mode.js 和 dark-mode-toggle.js）
     """
-    # 匹配各种形式的旧引用
+    # 匹配旧的 dark-mode.js 引用（根目录下）
     content = re.sub(r'\s*<script\s+src="[^"]*dark-mode\.js"[^>]*></script>\s*', '\n', content)
+    # 匹配旧的 dark-mode-toggle.js 引用（根目录下）
+    content = re.sub(r'\s*<script\s+src="[^"]*dark-mode-toggle\.js"[^>]*></script>\s*', '\n', content)
     return content
 
 

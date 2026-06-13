@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的知识库</title>
+<style>
+/* ===== Reset ===== */
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: #f5f3f0;
+  color: #3a3a3a;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ===== Layout ===== */
+.layout {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* ===== Header ===== */
+.header {
+  background: #fff;
+  border-bottom: 1px solid #e8e4df;
+  padding: 18px 32px 14px;
+}
+.header h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+.header p {
+  font-size: 0.8rem;
+  color: #999;
+  margin-top: 2px;
+}
+
+/* ===== Sidebar（浅色） ===== */
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: #fafaf8;
+  border-right: 1px solid #e8e4df;
+  padding: 0;
+  overflow-y: auto;
+  max-height: calc(100vh - 70px);
+  position: sticky;
+  top: 0;
+}
+.sidebar-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 14px 18px 6px;
+}
+.sidebar-search {
+  padding: 8px 14px 12px;
+}
+.sidebar-search input {
+  width: 100%;
+  padding: 7px 12px;
+  border: 1px solid #ddd8d0;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  outline: none;
+  background: #fff;
+  color: #3a3a3a;
+}
+.sidebar-search input::placeholder { color: #bbb; }
+.sidebar-search input:focus { border-color: #aaa; }
+
+/* 树状导航 */
+.nav-tree { padding: 0 0 16px; }
+.tree-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 14px 5px 18px;
+  font-size: 0.85rem;
+  color: #555;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tree-item:hover { background: rgba(0,0,0,0.04); }
+.tree-item.active {
+  background: rgba(100,100,200,0.08);
+  color: #333;
+  font-weight: 600;
+}
+.tree-arrow {
+  display: inline-block;
+  width: 18px;
+  text-align: center;
+  font-size: 0.65rem;
+  color: #bbb;
+  flex-shrink: 0;
+  transition: transform 0.15s;
+  cursor: pointer;
+}
+.tree-arrow.open { transform: rotate(90deg); }
+.tree-arrow.empty { visibility: hidden; }
+.tree-icon { margin-right: 6px; flex-shrink: 0; }
+.tree-children { display: none; }
+.tree-children.open { display: block; }
+.tree-children .tree-item { padding-left: 38px; }
+.tree-children .tree-children .tree-item { padding-left: 54px; }
+.tree-count {
+  font-size: 0.72rem;
+  color: #bbb;
+  margin-left: 4px;
+}
+
+/* ===== Main ===== */
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 24px 28px 32px;
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.stats { font-size: 0.82rem; color: #999; }
+.stats strong { color: #555; }
+.search-box {
+  padding: 6px 12px;
+  border: 1px solid #ddd8d0;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  width: 200px;
+  outline: none;
+  background: #fff;
+}
+.search-box:focus { border-color: #aaa; }
+
+/* 文件分区标题 */
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 20px 0 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e8e4df;
+}
+.section-title:first-child { margin-top: 0; }
+
+/* 文件列表 */
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.file-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  background: #fff;
+  border: 1px solid #e8e4df;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #3a3a3a;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.file-card:hover {
+  border-color: #ccc4bc;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.file-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+}
+.file-info { flex: 1; min-width: 0; }
+.file-name {
+  font-size: 0.87rem;
+  font-weight: 500;
+  color: #2a2a2a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.file-meta {
+  font-size: 0.73rem;
+  color: #aaa;
+  margin-top: 1px;
+}
+
+/* ===== Footer ===== */
+.footer {
+  text-align: center;
+  padding: 24px 16px;
+  font-size: 0.76rem;
+  color: #ccc;
+  border-top: 1px solid #e8e4df;
+  margin-top: 24px;
+}
+
+/* ===== Dark Mode ===== */
+[data-unified-mode="fixed"] body,
+[data-unified-mode="smart"] body {
+  background: #0a0a0f !important;
+  color: #b8bfc6 !important;
+}
+[data-unified-mode="fixed"] .header,
+[data-unified-mode="smart"] .header {
+  background: #12121a !important;
+  border-bottom-color: #2a2a3a !important;
+}
+[data-unified-mode="fixed"] .header h1,
+[data-unified-mode="smart"] .header h1 { color: #dedede !important; }
+[data-unified-mode="fixed"] .header p,
+[data-unified-mode="smart"] .header p { color: #666 !important; }
+[data-unified-mode="fixed"] .sidebar,
+[data-unified-mode="smart"] .sidebar {
+  background: #12121a !important;
+  border-right-color: #2a2a3a !important;
+}
+[data-unified-mode="fixed"] .tree-item,
+[data-unified-mode="smart"] .tree-item { color: #888 !important; }
+[data-unified-mode="fixed"] .tree-item:hover,
+[data-unified-mode="smart"] .tree-item:hover { background: rgba(255,255,255,0.04) !important; }
+[data-unified-mode="fixed"] .tree-item.active,
+[data-unified-mode="smart"] .tree-item.active { background: rgba(100,120,150,0.12) !important; color: #b8bfc6 !important; }
+[data-unified-mode="fixed"] .tree-arrow,
+[data-unified-mode="smart"] .tree-arrow { color: #555 !important; }
+[data-unified-mode="fixed"] .tree-count,
+[data-unified-mode="smart"] .tree-count { color: #555 !important; }
+[data-unified-mode="fixed"] .sidebar-title,
+[data-unified-mode="smart"] .sidebar-title { color: #555 !important; }
+[data-unified-mode="fixed"] .file-card,
+[data-unified-mode="smart"] .file-card {
+  background: #1a1a28 !important;
+  border-color: #2a2a3a !important;
+  color: #b8bfc6 !important;
+}
+[data-unified-mode="fixed"] .file-card:hover,
+[data-unified-mode="smart"] .file-card:hover {
+  border-color: #444 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+}
+[data-unified-mode="fixed"] .file-name,
+[data-unified-mode="smart"] .file-name { color: #dedede !important; }
+[data-unified-mode="fixed"] .file-meta,
+[data-unified-mode="smart"] .file-meta { color: #555 !important; }
+[data-unified-mode="fixed"] .stats,
+[data-unified-mode="smart"] .stats { color: #666 !important; }
+[data-unified-mode="fixed"] .search-box,
+[data-unified-mode="smart"] .search-box {
+  background: #1a1a28 !important;
+  border-color: #2a2a3a !important;
+  color: #b8bfc6 !important;
+}
+[data-unified-mode="fixed"] .section-title,
+[data-unified-mode="smart"] .section-title { color: #555 !important; border-bottom-color: #2a2a3a !important; }
+[data-unified-mode="fixed"] .footer,
+[data-unified-mode="smart"] .footer { color: #444 !important; border-top-color: #2a2a3a !important; }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .header { padding: 14px 16px 10px; }
+  .header h1 { font-size: 1.1rem; }
+  .layout { flex-direction: column; }
+  .sidebar {
+    width: 100%;
+    max-height: none;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid #e8e4df;
+    padding: 8px 0;
+  }
+  .main { padding: 16px; }
+  .file-list { gap: 6px; }
+  .search-box { width: 100%; }
+  .toolbar { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>📚 我的知识库</h1>
+  <p>索引更新：2026-06-14 06:32:30　共 <strong>13</strong> 篇</p>
+</div>
+
+<!-- Layout -->
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-title">文件夹</div>
+    <div class="sidebar-search">
+      <input type="text" placeholder="搜索文件…" id="searchInput" oninput="filterFiles()">
+    </div>
+    <nav class="nav-tree" id="folderTree">
+      <div class="tree-item active" data-folder="all" onclick="filterByFolder('all')">
+  <span class="tree-arrow empty">&#9654;</span>
+  <span class="tree-icon">📂</span>
+  <span>全部文件</span>
+  <span class="tree-count">(13)</span>
+</div>
+<div class="tree-item" data-folder="scripts" data-tree-id="1" onclick="filterByFolder('scripts')" title="scripts">
+  <span class="tree-arrow open" id="tree-arrow-1" onclick="event.stopPropagation(); toggleTree('1')">&#9654;</span>
+  <span class="tree-icon">📂</span>
+  <span>scripts</span>
+  <span class="tree-count">(3)</span>
+</div>
+<div class="tree-children" id="tree-children-1">
+<div class="tree-item" data-folder="demo" data-tree-id="2" onclick="void(0)" title="demo">
+  <span class="tree-arrow empty" id="tree-arrow-2" onclick="event.stopPropagation(); toggleTree('2')">&#9654;</span>
+  <span class="tree-icon">📄</span>
+  <span>demo</span>
+  <span class="tree-count">(2)</span>
+</div>
+<div class="tree-item" data-folder="scriptsmd" data-tree-id="3" onclick="void(0)" title="scriptsmd">
+  <span class="tree-arrow empty" id="tree-arrow-3" onclick="event.stopPropagation(); toggleTree('3')">&#9654;</span>
+  <span class="tree-icon">📄</span>
+  <span>scriptsmd</span>
+  <span class="tree-count">(1)</span>
+</div>
+</div>
+
+<div class="tree-item" data-folder="科技数码相关" data-tree-id="4" onclick="filterByFolder('科技数码相关')" title="科技数码相关">
+  <span class="tree-arrow open" id="tree-arrow-4" onclick="event.stopPropagation(); toggleTree('4')">&#9654;</span>
+  <span class="tree-icon">📂</span>
+  <span>科技数码相关</span>
+  <span class="tree-count">(7)</span>
+</div>
+<div class="tree-children" id="tree-children-4">
+<div class="tree-item" data-folder="DOCS" data-tree-id="5" onclick="void(0)" title="DOCS">
+  <span class="tree-arrow empty" id="tree-arrow-5" onclick="event.stopPropagation(); toggleTree('5')">&#9654;</span>
+  <span class="tree-icon">📄</span>
+  <span>DOCS</span>
+  <span class="tree-count">(3)</span>
+</div>
+<div class="tree-item" data-folder="GKD 广告关闭基于AI规则编写" data-tree-id="6" onclick="void(0)" title="GKD 广告关闭基于AI规则编写">
+  <span class="tree-arrow empty" id="tree-arrow-6" onclick="event.stopPropagation(); toggleTree('6')">&#9654;</span>
+  <span class="tree-icon">📄</span>
+  <span>GKD 广告关闭基于AI规则编写</span>
+  <span class="tree-count">(1)</span>
+</div>
+<div class="tree-item" data-folder="浏览器指南" data-tree-id="7" onclick="void(0)" title="浏览器指南">
+  <span class="tree-arrow empty" id="tree-arrow-7" onclick="event.stopPropagation(); toggleTree('7')">&#9654;</span>
+  <span class="tree-icon">📄</span>
+  <span>浏览器指南</span>
+  <span class="tree-count">(1)</span>
+</div>
+<div class="tree-item" data-folder="节点搭建" data-tree-id="8" onclick="void(0)" title="节点搭建">
+  <span class="tree-arrow empty" id="tree-arrow-8" onclick="event.stopPropagation(); toggleTree('8')">&#9654;</span>
+  <span class="tree-icon">📄</span>
+  <span>节点搭建</span>
+  <span class="tree-count">(1)</span>
+</div>
+</div>
+
+<div class="tree-item" data-folder="personal" data-tree-id="9" onclick="filterByFolder('personal')" title="personal">
+  <span class="tree-arrow empty" id="tree-arrow-9" onclick="event.stopPropagation(); toggleTree('9')">&#9654;</span>
+  <span class="tree-icon">📂</span>
+  <span>personal</span>
+  <span class="tree-count">(3)</span>
+</div>
+
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="toolbar">
+      <div class="stats">
+        共 <strong>13</strong> 篇　文件夹 <strong>3</strong> 个
+      </div>
+    </div>
+
+    <div class="file-section" data-folder="scripts">
+  <div class="section-title">scripts（3 篇）</div>
+  <div class="file-grid">
+    <a class="file-card" data-name="dark-mode-demo" href="./scripts/demo/dark-mode-demo.html" target="_blank">
+      <span class="file-icon">&#127760;</span>
+      <div class="file-info">
+        <div class="file-name">dark mode demo</div>
+        <div class="file-meta">HTML</div>
+      </div>
+    </a>
+    <a class="file-card" data-name="smart-dark-mode-demo" href="./scripts/demo/smart-dark-mode-demo.html" target="_blank">
+      <span class="file-icon">&#127760;</span>
+      <div class="file-info">
+        <div class="file-name">smart dark mode demo</div>
+        <div class="file-meta">HTML</div>
+      </div>
+    </a>
+    <a class="file-card" data-name="深色模式自动注入-技术实现文档" href="./scripts/scriptsmd/深色模式自动注入-技术实现文档.html" target="_blank">
+      <span class="file-icon">&#127760;</span>
+      <div class="file-info">
+        <div class="file-name">深色模式自动注入 技术实现文档</div>
+        <div class="file-meta">HTML</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="file-section" data-folder="科技数码相关">
+  <div class="section-title">科技数码相关（7 篇）</div>
+  <div class="file-grid">
+    <a class="file-card" data-name="目录" href="./科技数码相关/DOCS/目录.html" target="_blank">
+      <span class="file-icon">&#127760;</span>
+      <div class="file-info">
+        <div class="file-name">目录</div>
+        <div class="file-meta">HTML</div>
+      </div>
+    </a>
+    <a class="file-card" data-name="gkd 广告关闭规则编写完整指南" href="./科技数码相关/GKD 广告关闭基于AI规则编写/GKD 广告关闭规则编写完整指南.html" target="_blank">
+      <span class="file-icon">&#127760;</span>
+      <div class="file-info">
+        <div class="file-name">GKD 广告关闭规则编写完整指南</div>
+        <div class="file-meta">HTML</div>
+      </div>
+    </a>
+    <a class="file-card" data-name="openlist安卓win部署及应用" href="./科技数码相关/DOCS/Openlist安卓win部署及应用.pdf" target="_blank">
+      <span class="file-icon">&#128217;</span>
+      <div class="file-info">
+        <div class="file-name">Openlist安卓win部署及应用</div>
+        <div class="file-meta">PDF</div>
+      </div>
+    </a>
+    <a class="file-card" data-name="基于vps搭建个人节点" href="./科技数码相关/节点搭建/基于vps搭建个人节点.html" target="_blank">
+      <span class="file-icon">&#127760;</span>
+      <div class="file-info">
+        <div class="file-name">基于vps搭建个人节点</div>
+        <div class="file-meta">HTML</div>
+      </div>
+    </a>
+    <a class="file-card" data-name="存储不足及优化" href="./科技数码相关/DOCS/存储不足及优化.pdf" target="_blank">
+      <span class="file-icon">&#128217;</span>
+      <div class="file-info">
+        <div class="file-name">存储不足及优化</div>
+        <div class="file-meta">PDF</div>
+      </div>
+    </a>
+    <a class="file-card" data-name="极限压缩终极指南：格式、算法与实战全解" href="./科技数码相关/极限压缩终极指南：格式、算法与实战全解.html" target="_blank">
+      <span class="file-icon">&#127760;</span>
+      <div class="file-info">
+        <div class="file-name">极限压缩终极指南：格式、算法与实战全解</div>
+        <div class="file-meta">HTML</div>
+      </div>
+    </a>
+    <a class="file-card" data-name="🚀 给纯小白的浏览器完整指南（从零到顺手）" href="./科技数码相关/浏览器指南/🚀 给纯小白的浏览器完整指南（从零到顺手）.html" target="_blank">
+      <span class="file-icon">&#127760;</span>
+      <div class="file-info">
+        <div class="file-name">🚀 给纯小白的浏览器完整指南（从零到顺手）</div>
+        <div class="file-meta">HTML</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="file-section" data-folder="personal">
+  <div class="section-title">personal（3 篇）</div>
+  <div class="file-grid">
+    <a class="file-card" data-name="git 命令大全" href="./personal/Git 命令大全.html" target="_blank">
+      <span class="file-icon">&#127760;</span>
+      <div class="file-info">
+        <div class="file-name">Git 命令大全</div>
+        <div class="file-meta">HTML</div>
+      </div>
+    </a>
+    <a class="file-card" data-name="su" href="./personal/su.html" target="_blank">
+      <span class="file-icon">&#127760;</span>
+      <div class="file-info">
+        <div class="file-name">su</div>
+        <div class="file-meta">HTML</div>
+      </div>
+    </a>
+    <a class="file-card" data-name="后记" href="./personal/后记.html" target="_blank">
+      <span class="file-icon">&#127760;</span>
+      <div class="file-info">
+        <div class="file-name">后记</div>
+        <div class="file-meta">HTML</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+  </main>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  Powered by generate_index_html.py · 2026-06-14 06:32:30
+</div>
+
+<!-- Scripts -->
+<script src="scripts/dark-mode-toggle.js"></script>
+<script>
+/* 折叠/展开树节点 */
+function toggleTree(id) {
+  const children = document.getElementById('tree-children-' + id);
+  const arrow = document.getElementById('tree-arrow-' + id);
+  if (!children) return;
+  const isOpen = children.classList.toggle('open');
+  arrow && arrow.classList.toggle('open', isOpen);
+  try { localStorage.setItem('tree-' + id, isOpen ? '1' : '0'); } catch(e){}
+}
+
+/* 恢复折叠状态 */
+function restoreTreeState() {
+  document.querySelectorAll('[data-tree-id]').forEach(el => {
+    const id = el.dataset.treeId;
+    let open = true;
+    try { open = localStorage.getItem('tree-' + id) !== '0'; } catch(e){}
+    const children = document.getElementById('tree-children-' + id);
+    const arrow = document.getElementById('tree-arrow-' + id);
+    if (children) children.classList.toggle('open', open);
+    if (arrow) arrow.classList.toggle('open', open);
+  });
+}
+
+/* 点击文件夹过滤 */
+function filterByFolder(name) {
+  document.querySelectorAll('.tree-item').forEach(t =>
+    t.classList.toggle('active', t.dataset.folder === name)
+  );
+  document.querySelectorAll('.file-section').forEach(s => {
+    s.style.display = (name === 'all' || s.dataset.folder === name) ? '' : 'none';
+  });
+}
+
+/* 搜索过滤 */
+function filterFiles() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.file-card').forEach(c => {
+    c.style.display = c.dataset.name.includes(q) ? '' : 'none';
+  });
+}
+
+restoreTreeState();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的知识库</title>
+<style>
+/* ===== Reset ===== */
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: #f5f3f0;
+  color: #3a3a3a;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ===== Layout ===== */
+.layout {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* ===== Header ===== */
+.header {
+  background: #fff;
+  border-bottom: 1px solid #e8e4df;
+  padding: 18px 32px 14px;
+}
+.header h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+.header p {
+  font-size: 0.8rem;
+  color: #999;
+  margin-top: 2px;
+}
+
+/* ===== Sidebar（浅色） ===== */
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: #fafaf8;
+  border-right: 1px solid #e8e4df;
+  padding: 0;
+  overflow-y: auto;
+  max-height: calc(100vh - 70px);
+  position: sticky;
+  top: 0;
+}
+.sidebar-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 14px 18px 6px;
+}
+.sidebar-search {
+  padding: 8px 14px 12px;
+}
+.sidebar-search input {
+  width: 100%;
+  padding: 7px 12px;
+  border: 1px solid #ddd8d0;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  outline: none;
+  background: #fff;
+  color: #3a3a3a;
+}
+.sidebar-search input::placeholder { color: #bbb; }
+.sidebar-search input:focus { border-color: #aaa; }
+
+/* 树状导航 */
+.nav-tree { padding: 0 0 16px; }
+.tree-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 14px 5px 18px;
+  font-size: 0.85rem;
+  color: #555;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tree-item:hover { background: rgba(0,0,0,0.04); }
+.tree-item.active {
+  background: rgba(100,100,200,0.08);
+  color: #333;
+  font-weight: 600;
+}
+.tree-arrow {
+  display: inline-block;
+  width: 18px;
+  text-align: center;
+  font-size: 0.65rem;
+  color: #bbb;
+  flex-shrink: 0;
+  transition: transform 0.15s;
+  cursor: pointer;
+}
+.tree-arrow.open { transform: rotate(90deg); }
+.tree-arrow.empty { visibility: hidden; }
+.tree-icon { margin-right: 6px; flex-shrink: 0; }
+.tree-children { display: none; }
+.tree-children.open { display: block; }
+.tree-children .tree-item { padding-left: 38px; }
+.tree-children .tree-children .tree-item { padding-left: 54px; }
+.tree-count {
+  font-size: 0.72rem;
+  color: #bbb;
+  margin-left: 4px;
+}
+
+/* ===== Main ===== */
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 24px 28px 32px;
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.stats { font-size: 0.82rem; color: #999; }
+.stats strong { color: #555; }
+.search-box {
+  padding: 6px 12px;
+  border: 1px solid #ddd8d0;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  width: 200px;
+  outline: none;
+  background: #fff;
+}
+.search-box:focus { border-color: #aaa; }
+
+/* 文件分区标题 */
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 20px 0 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e8e4df;
+}
+.section-title:first-child { margin-top: 0; }
+
+/* 文件列表 */
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.file-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  background: #fff;
+  border: 1px solid #e8e4df;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #3a3a3a;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.file-card:hover {
+  border-color: #ccc4bc;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.file-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+}
+.file-info { flex: 1; min-width: 0; }
+.file-name {
+  font-size: 0.87rem;
+  font-weight: 500;
+  color: #2a2a2a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.file-meta {
+  font-size: 0.73rem;
+  color: #aaa;
+  margin-top: 1px;
+}
+
+/* ===== Footer ===== */
+.footer {
+  text-align: center;
+  padding: 24px 16px;
+  font-size: 0.76rem;
+  color: #ccc;
+  border-top: 1px solid #e8e4df;
+  margin-top: 24px;
+}
+
+/* ===== Dark Mode ===== */
+[data-unified-mode="fixed"] body,
+[data-unified-mode="smart"] body {
+  background: #0a0a0f !important;
+  color: #b8bfc6 !important;
+}
+[data-unified-mode="fixed"] .header,
+[data-unified-mode="smart"] .header {
+  background: #12121a !important;
+  border-bottom-color: #2a2a3a !important;
+}
+[data-unified-mode="fixed"] .header h1,
+[data-unified-mode="smart"] .header h1 { color: #dedede !important; }
+[data-unified-mode="fixed"] .header p,
+[data-unified-mode="smart"] .header p { color: #666 !important; }
+[data-unified-mode="fixed"] .sidebar,
+[data-unified-mode="smart"] .sidebar {
+  background: #12121a !important;
+  border-right-color: #2a2a3a !important;
+}
+[data-unified-mode="fixed"] .tree-item,
+[data-unified-mode="smart"] .tree-item { color: #888 !important; }
+[data-unified-mode="fixed"] .tree-item:hover,
+[data-unified-mode="smart"] .tree-item:hover { background: rgba(255,255,255,0.04) !important; }
+[data-unified-mode="fixed"] .tree-item.active,
+[data-unified-mode="smart"] .tree-item.active { background: rgba(100,120,150,0.12) !important; color: #b8bfc6 !important; }
+[data-unified-mode="fixed"] .tree-arrow,
+[data-unified-mode="smart"] .tree-arrow { color: #555 !important; }
+[data-unified-mode="fixed"] .tree-count,
+[data-unified-mode="smart"] .tree-count { color: #555 !important; }
+[data-unified-mode="fixed"] .sidebar-title,
+[data-unified-mode="smart"] .sidebar-title { color: #555 !important; }
+[data-unified-mode="fixed"] .file-card,
+[data-unified-mode="smart"] .file-card {
+  background: #1a1a28 !important;
+  border-color: #2a2a3a !important;
+  color: #b8bfc6 !important;
+}
+[data-unified-mode="fixed"] .file-card:hover,
+[data-unified-mode="smart"] .file-card:hover {
+  border-color: #444 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+}
+[data-unified-mode="fixed"] .file-name,
+[data-unified-mode="smart"] .file-name { color: #dedede !important; }
+[data-unified-mode="fixed"] .file-meta,
+[data-unified-mode="smart"] .file-meta { color: #555 !important; }
+[data-unified-mode="fixed"] .stats,
+[data-unified-mode="smart"] .stats { color: #666 !important; }
+[data-unified-mode="fixed"] .search-box,
+[data-unified-mode="smart"] .search-box {
+  background: #1a1a28 !important;
+  border-color: #2a2a3a !important;
+  color: #b8bfc6 !important;
+}
+[data-unified-mode="fixed"] .section-title,
+[data-unified-mode="smart"] .section-title { color: #555 !important; border-bottom-color: #2a2a3a !important; }
+[data-unified-mode="fixed"] .footer,
+[data-unified-mode="smart"] .footer { color: #444 !important; border-top-color: #2a2a3a !important; }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .header { padding: 14px 16px 10px; }
+  .header h1 { font-size: 1.1rem; }
+  .layout { flex-direction: column; }
+  .sidebar {
+    width: 100%;
+    max-height: none;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid #e8e4df;
+    padding: 8px 0;
+  }
+  .main { padding: 16px; }
+  .file-list { gap: 6px; }
+  .search-box { width: 100%; }
+  .toolbar { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>📚 我的知识库</h1>
+  <p>索引更新：{{UPDATE_TIME}}　共 <strong>{{TOTAL}}</strong> 篇</p>
+</div>
+
+<!-- Layout -->
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-title">文件夹</div>
+    <div class="sidebar-search">
+      <input type="text" placeholder="搜索文件…" id="searchInput" oninput="filterFiles()">
+    </div>
+    <nav class="nav-tree" id="folderTree">
+      {{TREE_HTML}}
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="toolbar">
+      <div class="stats">
+        共 <strong>{{TOTAL}}</strong> 篇　文件夹 <strong>{{FOLDER_COUNT}}</strong> 个
+      </div>
+    </div>
+
+    {{FILE_SECTIONS}}
+  </main>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  Powered by generate_index_html.py · {{UPDATE_TIME}}
+</div>
+
+<!-- Scripts -->
+<script src="scripts/dark-mode-toggle.js"></script>
+<script>
+/* 折叠/展开树节点 */
+function toggleTree(id) {
+  const children = document.getElementById('tree-children-' + id);
+  const arrow = document.getElementById('tree-arrow-' + id);
+  if (!children) return;
+  const isOpen = children.classList.toggle('open');
+  arrow && arrow.classList.toggle('open', isOpen);
+  try { localStorage.setItem('tree-' + id, isOpen ? '1' : '0'); } catch(e){}
+}
+
+/* 恢复折叠状态 */
+function restoreTreeState() {
+  document.querySelectorAll('[data-tree-id]').forEach(el => {
+    const id = el.dataset.treeId;
+    let open = true;
+    try { open = localStorage.getItem('tree-' + id) !== '0'; } catch(e){}
+    const children = document.getElementById('tree-children-' + id);
+    const arrow = document.getElementById('tree-arrow-' + id);
+    if (children) children.classList.toggle('open', open);
+    if (arrow) arrow.classList.toggle('open', open);
+  });
+}
+
+/* 点击文件夹过滤 */
+function filterByFolder(name) {
+  document.querySelectorAll('.tree-item').forEach(t =>
+    t.classList.toggle('active', t.dataset.folder === name)
+  );
+  document.querySelectorAll('.file-section').forEach(s => {
+    s.style.display = (name === 'all' || s.dataset.folder === name) ? '' : 'none';
+  });
+}
+
+/* 搜索过滤 */
+function filterFiles() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.file-card').forEach(c => {
+    c.style.display = c.dataset.name.includes(q) ? '' : 'none';
+  });
+}
+
+restoreTreeState();
+</script>
+
+</body>
+</html>

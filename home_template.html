@@ -38,7 +38,7 @@ body {
 }
 .header p {
   font-size: 0.8rem;
-  color: #999;
+  color: #666;
   margin-top: 2px;
 }
 
@@ -136,15 +136,18 @@ body {
 
 /* 文件分区标题 */
 .section-title {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: #aaa;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1a1a1a;
   letter-spacing: 0.04em;
-  margin: 22px 0 8px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #e8e4df;
+  margin: 0 0 10px;
+  padding-bottom: 2px;
+  border-bottom: 2px solid #d6d0c8;
 }
 .section-title:first-child { margin-top: 0; }
+
+/* 文件分区 */
+.file-section { margin-bottom: 24px; }
 
 /* 文件列表：手机单列，电脑三栏 */
 .file-list {
@@ -241,7 +244,11 @@ body {
 [data-unified-mode="fixed"] .search-box,
 [data-unified-mode="smart"] .search-box { background: #1a1a28 !important; border-color: #2a2a3a !important; color: #b8bfc6 !important; }
 [data-unified-mode="fixed"] .section-title,
-[data-unified-mode="smart"] .section-title { color: #555 !important; border-bottom-color: #2a2a3a !important; }
+[data-unified-mode="smart"] .section-title { color: #b8bfc6 !important; border-bottom-color: #2a2a3a !important; }
+[data-unified-mode="fixed"] .search-box:focus,
+[data-unified-mode="smart"] .search-box:focus { border-color: #555 !important; }
+[data-unified-mode="fixed"] .sidebar-search input::placeholder,
+[data-unified-mode="smart"] .sidebar-search input::placeholder { color: #555 !important; }
 [data-unified-mode="fixed"] .footer,
 [data-unified-mode="smart"] .footer { color: #444 !important; border-top-color: #2a2a3a !important; }
 
@@ -259,6 +266,8 @@ body {
     border-bottom: 1px solid #e8e4df;
     padding: 8px 0;
   }
+  [data-unified-mode="fixed"] .sidebar,
+  [data-unified-mode="smart"] .sidebar { border-bottom-color: #2a2a3a !important; }
   .main { padding: 16px; }
   .search-box { width: 100%; }
   .toolbar { flex-direction: column; align-items: flex-start; }
@@ -267,11 +276,11 @@ body {
 </head>
 <body>
 
-<!-- Header -->
-<div class="header">
-  <h1>📚 我的知识库</h1>
-  <p id="headerInfo">加载中…</p>
-</div>
+  <!-- Header -->
+  <div class="header">
+    <h1 id="headerTitle">📚 我的知识库</h1>
+    <p id="headerInfo">加载中…</p>
+  </div>
 
 <!-- Layout -->
 <div class="layout">
@@ -288,7 +297,6 @@ body {
   <!-- Main -->
   <main class="main">
     <div class="toolbar">
-      <div class="stats" id="statsInfo"></div>
     </div>
     <div id="fileSections"></div>
   </main>
@@ -362,9 +370,7 @@ function renderFiles() {
 function renderInfo() {
   const d = SITE_DATA;
   document.getElementById("headerInfo").innerHTML =
-    `索引更新：${d.updateTime}　共 <strong>${d.total}</strong> 篇`;
-  document.getElementById("statsInfo").innerHTML =
-    `共 <strong>${d.total}</strong> 篇　文件夹 <strong>${d.folders.length}</strong> 个`;
+    `索引更新：${d.updateTime}　共 <strong>${d.total}</strong> 篇　文件夹 <strong>${d.folders.length}</strong> 个`;
   document.getElementById("footerInfo").textContent =
     `Powered by generate_index_html.py · ${d.updateTime}`;
 }

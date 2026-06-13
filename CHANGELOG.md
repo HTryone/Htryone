@@ -2,11 +2,15 @@
 
 ## 2026-06-13
 
+- 新增：Git 命令大全（HTML + MD）
 - 新增：深色模式自动监控脚本 watch-dark-mode.py（watchdog 事件驱动）
 - 新增：Windows 双击启动脚本 start-watch.bat
 - 新增：深色模式自动注入技术实现文档（完整技术方案和踩坑记录）
 - 优化：apply-dark-mode.py 使用唯一注入标记判断，避免误判代码示例
 - 优化：为所有 HTML 文件注入深色模式脚本支持
+- 优化：Git 命令大全精简冗余章节，补充 git init、reset--hard 最省事用法
+- 优化：Git 命令大全 HTML 表格边框改用 CSS 变量，删除 td:hover box-shadow
+- 修复：smart-dark-mode.js 智能深色模式下表格/目录 hover 白色背景刺眼问题
 - 修复：清理旧标记 @#@，统一使用 __DARK_MODE_INJECTED__ 标记
 - 修复：监控脚本判断逻辑，避免死循环
 

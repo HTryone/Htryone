@@ -156,7 +156,16 @@ window.SmartDarkMode = (function() {
             smartStyleEl.textContent = `
                 [data-unified-mode="smart"] { background-color: #0a0a0f !important; }
                 [data-unified-mode="smart"] body { background-color: #0a0a0f !important; }
-                [data-unified-mode="smart"] * { background-image: none !important; }
+                [data-unified-mode="smart"] * { background-image: none !important; box-shadow: none !important; }
+                [data-unified-mode="smart"] #write table tbody tr:hover td,
+                [data-unified-mode="smart"] #write table tbody tr:hover th {
+                    background-color: rgba(255, 255, 255, 0.05) !important;
+                }
+                [data-unified-mode="smart"] .typora-export-sidebar .outline-item:hover,
+                [data-unified-mode="smart"] .outline-item:hover {
+                    background-color: rgba(255, 255, 255, 0.08) !important;
+                    color: rgba(255, 255, 255, 0.8) !important;
+                }
                 ${css}
             `;
             document.head.appendChild(smartStyleEl);

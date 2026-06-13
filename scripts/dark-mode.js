@@ -31,17 +31,17 @@
 
         /* 选中文字 */
         [data-unified-mode="fixed"] ::selection {
-            background-color: rgba(255,255,255,0.08) !important;
+            background-color: rgba(180,180,180,0.10) !important;
             color: inherit !important;
         }
         [data-unified-mode="fixed"] ::-moz-selection {
-            background-color: rgba(255,255,255,0.08) !important;
+            background-color: rgba(180,180,180,0.10) !important;
             color: inherit !important;
         }
 
         /* 全局关阴影 + 超链接 hover */
         [data-unified-mode="fixed"] * { box-shadow: none !important; }
-        [data-unified-mode="fixed"] #write a:hover { background-color: rgba(255,255,255,0.08) !important; }
+        [data-unified-mode="fixed"] #write a:hover { background-color: rgba(180,180,180,0.10) !important; }
 
         /* 内容区域 */
         [data-unified-mode="fixed"] #write {

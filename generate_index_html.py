@@ -1,6 +1,6 @@
 """
 网页索引 HTML 生成器（博客风格）
-功能：扫描目录的 HTML/PDF 文件，输出 JSON 数据到模板，生成 home.html
+功能：扫描目录的 HTML/PDF 文件，输出 JSON 数据到模板，生成 index.html
 模板：home_template.html（负责所有样式和渲染逻辑）
 
 用法：python generate_index_html.py
@@ -12,14 +12,14 @@ import json
 
 # ==================== 配置区（可按需修改） ====================
 NOTES_DIR = "."              # 笔记根目录（在目标目录执行即可）
-OUTPUT_FILE = "home.html"    # 生成的索引文件名
+OUTPUT_FILE = "index.html"    # 生成的索引文件名
 TEMPLATE_FILE = "home_template.html"  # 模板文件名
 
 # 不想被索引的文件夹名称
 IGNORE_DIRS = {".git", ".workbuddy", ".obsidian", "assets", "images", "附件",
                 "__pycache__", "templates", "build", "node_modules"}
 # 不想被索引的文件名
-IGNORE_FILES = {"index.html", "home.html", "home_template.html"}
+IGNORE_FILES = {"home.html", "home_template.html"}  # 自身输出和模板不退化
 # 要扫描的文件扩展名
 SCAN_EXTENSIONS = {".html", ".htm", ".pdf"}
 # =====================================================================

@@ -121,6 +121,33 @@ body {
   color: #bbb;
   margin-left: 4px;
 }
+/* 文件叶子节点（展开文件夹后显示的文件） */
+.tree-leaf {
+  display: flex;
+  align-items: center;
+  padding: 4px 14px 4px 18px;
+  font-size: 0.82rem;
+  color: #777;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.tree-leaf:hover {
+  background: rgba(0,0,0,0.04);
+  color: #333;
+}
+.tree-leaf .tree-icon { font-size: 0.82rem; flex-shrink: 0; margin-right: 6px; }
+.tree-leaf .tree-name { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.tree-type {
+  font-size: 0.68rem;
+  color: #ccc;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+.tree-children .tree-leaf { padding-left: 42px; }
+.tree-children .tree-children .tree-leaf { padding-left: 58px; }
 
 /* ===== Main ===== */
 .main {
@@ -245,6 +272,12 @@ body {
 [data-unified-mode="smart"] .tree-arrow { color: #555 !important; }
 [data-unified-mode="fixed"] .tree-count,
 [data-unified-mode="smart"] .tree-count { color: #555 !important; }
+[data-unified-mode="fixed"] .tree-leaf,
+[data-unified-mode="smart"] .tree-leaf { color: #888 !important; }
+[data-unified-mode="fixed"] .tree-leaf:hover,
+[data-unified-mode="smart"] .tree-leaf:hover { background: rgba(255,255,255,0.04) !important; color: #b8bfc6 !important; }
+[data-unified-mode="fixed"] .tree-type,
+[data-unified-mode="smart"] .tree-type { color: #444 !important; }
 [data-unified-mode="fixed"] .sidebar-title,
 [data-unified-mode="smart"] .sidebar-title { color: #555 !important; }
 [data-unified-mode="fixed"] .file-card,

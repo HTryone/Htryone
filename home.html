@@ -121,6 +121,33 @@ body {
   color: #bbb;
   margin-left: 4px;
 }
+/* 文件叶子节点（展开文件夹后显示的文件） */
+.tree-leaf {
+  display: flex;
+  align-items: center;
+  padding: 4px 14px 4px 18px;
+  font-size: 0.82rem;
+  color: #777;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.tree-leaf:hover {
+  background: rgba(0,0,0,0.04);
+  color: #333;
+}
+.tree-leaf .tree-icon { font-size: 0.82rem; flex-shrink: 0; margin-right: 6px; }
+.tree-leaf .tree-name { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.tree-type {
+  font-size: 0.68rem;
+  color: #ccc;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+.tree-children .tree-leaf { padding-left: 42px; }
+.tree-children .tree-children .tree-leaf { padding-left: 58px; }
 
 /* ===== Main ===== */
 .main {
@@ -245,6 +272,12 @@ body {
 [data-unified-mode="smart"] .tree-arrow { color: #555 !important; }
 [data-unified-mode="fixed"] .tree-count,
 [data-unified-mode="smart"] .tree-count { color: #555 !important; }
+[data-unified-mode="fixed"] .tree-leaf,
+[data-unified-mode="smart"] .tree-leaf { color: #888 !important; }
+[data-unified-mode="fixed"] .tree-leaf:hover,
+[data-unified-mode="smart"] .tree-leaf:hover { background: rgba(255,255,255,0.04) !important; color: #b8bfc6 !important; }
+[data-unified-mode="fixed"] .tree-type,
+[data-unified-mode="smart"] .tree-type { color: #444 !important; }
 [data-unified-mode="fixed"] .sidebar-title,
 [data-unified-mode="smart"] .sidebar-title { color: #555 !important; }
 [data-unified-mode="fixed"] .file-card,
@@ -300,7 +333,7 @@ body {
 <!-- Header -->
 <div class="header">
   <h1>📚 我的知识库</h1>
-  <p>索引更新：2026-06-14 06:32:30　共 <strong>13</strong> 篇</p>
+  <p>索引更新：2026-06-14 06:52:57　共 <strong>13</strong> 篇</p>
 </div>
 
 <!-- Layout -->
@@ -316,67 +349,25 @@ body {
       <div class="tree-item active" data-folder="all" onclick="filterByFolder('all')">
   <span class="tree-arrow empty">&#9654;</span>
   <span class="tree-icon">📂</span>
-  <span>全部文件</span>
+  <span class="tree-name">全部文件</span>
   <span class="tree-count">(13)</span>
 </div>
-<div class="tree-item" data-folder="scripts" data-tree-id="1" onclick="filterByFolder('scripts')" title="scripts">
-  <span class="tree-arrow open" id="tree-arrow-1" onclick="event.stopPropagation(); toggleTree('1')">&#9654;</span>
-  <span class="tree-icon">📂</span>
-  <span>scripts</span>
+<div class="tree-item" data-folder="scripts" onclick="filterByFolder('scripts')" title="scripts">
+  <span class="tree-arrow empty">&#9654;</span>
+  <span class="tree-icon">📁</span>
+  <span class="tree-name">scripts</span>
   <span class="tree-count">(3)</span>
 </div>
-<div class="tree-children" id="tree-children-1">
-<div class="tree-item" data-folder="demo" data-tree-id="2" onclick="void(0)" title="demo">
-  <span class="tree-arrow empty" id="tree-arrow-2" onclick="event.stopPropagation(); toggleTree('2')">&#9654;</span>
-  <span class="tree-icon">📄</span>
-  <span>demo</span>
-  <span class="tree-count">(2)</span>
-</div>
-<div class="tree-item" data-folder="scriptsmd" data-tree-id="3" onclick="void(0)" title="scriptsmd">
-  <span class="tree-arrow empty" id="tree-arrow-3" onclick="event.stopPropagation(); toggleTree('3')">&#9654;</span>
-  <span class="tree-icon">📄</span>
-  <span>scriptsmd</span>
-  <span class="tree-count">(1)</span>
-</div>
-</div>
-
-<div class="tree-item" data-folder="科技数码相关" data-tree-id="4" onclick="filterByFolder('科技数码相关')" title="科技数码相关">
-  <span class="tree-arrow open" id="tree-arrow-4" onclick="event.stopPropagation(); toggleTree('4')">&#9654;</span>
-  <span class="tree-icon">📂</span>
-  <span>科技数码相关</span>
+<div class="tree-item" data-folder="科技数码相关" onclick="filterByFolder('科技数码相关')" title="科技数码相关">
+  <span class="tree-arrow empty">&#9654;</span>
+  <span class="tree-icon">📁</span>
+  <span class="tree-name">科技数码相关</span>
   <span class="tree-count">(7)</span>
 </div>
-<div class="tree-children" id="tree-children-4">
-<div class="tree-item" data-folder="DOCS" data-tree-id="5" onclick="void(0)" title="DOCS">
-  <span class="tree-arrow empty" id="tree-arrow-5" onclick="event.stopPropagation(); toggleTree('5')">&#9654;</span>
-  <span class="tree-icon">📄</span>
-  <span>DOCS</span>
-  <span class="tree-count">(3)</span>
-</div>
-<div class="tree-item" data-folder="GKD 广告关闭基于AI规则编写" data-tree-id="6" onclick="void(0)" title="GKD 广告关闭基于AI规则编写">
-  <span class="tree-arrow empty" id="tree-arrow-6" onclick="event.stopPropagation(); toggleTree('6')">&#9654;</span>
-  <span class="tree-icon">📄</span>
-  <span>GKD 广告关闭基于AI规则编写</span>
-  <span class="tree-count">(1)</span>
-</div>
-<div class="tree-item" data-folder="浏览器指南" data-tree-id="7" onclick="void(0)" title="浏览器指南">
-  <span class="tree-arrow empty" id="tree-arrow-7" onclick="event.stopPropagation(); toggleTree('7')">&#9654;</span>
-  <span class="tree-icon">📄</span>
-  <span>浏览器指南</span>
-  <span class="tree-count">(1)</span>
-</div>
-<div class="tree-item" data-folder="节点搭建" data-tree-id="8" onclick="void(0)" title="节点搭建">
-  <span class="tree-arrow empty" id="tree-arrow-8" onclick="event.stopPropagation(); toggleTree('8')">&#9654;</span>
-  <span class="tree-icon">📄</span>
-  <span>节点搭建</span>
-  <span class="tree-count">(1)</span>
-</div>
-</div>
-
-<div class="tree-item" data-folder="personal" data-tree-id="9" onclick="filterByFolder('personal')" title="personal">
-  <span class="tree-arrow empty" id="tree-arrow-9" onclick="event.stopPropagation(); toggleTree('9')">&#9654;</span>
-  <span class="tree-icon">📂</span>
-  <span>personal</span>
+<div class="tree-item" data-folder="personal" onclick="filterByFolder('personal')" title="personal">
+  <span class="tree-arrow empty">&#9654;</span>
+  <span class="tree-icon">📁</span>
+  <span class="tree-name">personal</span>
   <span class="tree-count">(3)</span>
 </div>
 
@@ -387,31 +378,31 @@ body {
   <main class="main">
     <div class="toolbar">
       <div class="stats">
-        共 <strong>13</strong> 篇　文件夹 <strong>3</strong> 个
+        共 <strong>13</strong> 篇　文件夹 <strong>9</strong> 个
       </div>
     </div>
 
     <div class="file-section" data-folder="scripts">
-  <div class="section-title">scripts（3 篇）</div>
-  <div class="file-grid">
+  <div class="section-title">scripts</div>
+  <div class="file-list">
     <a class="file-card" data-name="dark-mode-demo" href="./scripts/demo/dark-mode-demo.html" target="_blank">
-      <span class="file-icon">&#127760;</span>
+      <span class="file-icon">🌐</span>
       <div class="file-info">
-        <div class="file-name">dark mode demo</div>
+        <div class="file-name">demo / dark mode demo</div>
         <div class="file-meta">HTML</div>
       </div>
     </a>
     <a class="file-card" data-name="smart-dark-mode-demo" href="./scripts/demo/smart-dark-mode-demo.html" target="_blank">
-      <span class="file-icon">&#127760;</span>
+      <span class="file-icon">🌐</span>
       <div class="file-info">
-        <div class="file-name">smart dark mode demo</div>
+        <div class="file-name">demo / smart dark mode demo</div>
         <div class="file-meta">HTML</div>
       </div>
     </a>
     <a class="file-card" data-name="深色模式自动注入-技术实现文档" href="./scripts/scriptsmd/深色模式自动注入-技术实现文档.html" target="_blank">
-      <span class="file-icon">&#127760;</span>
+      <span class="file-icon">🌐</span>
       <div class="file-info">
-        <div class="file-name">深色模式自动注入 技术实现文档</div>
+        <div class="file-name">scriptsmd / 深色模式自动注入 技术实现文档</div>
         <div class="file-meta">HTML</div>
       </div>
     </a>
@@ -419,54 +410,54 @@ body {
 </div>
 
 <div class="file-section" data-folder="科技数码相关">
-  <div class="section-title">科技数码相关（7 篇）</div>
-  <div class="file-grid">
+  <div class="section-title">科技数码相关</div>
+  <div class="file-list">
     <a class="file-card" data-name="目录" href="./科技数码相关/DOCS/目录.html" target="_blank">
-      <span class="file-icon">&#127760;</span>
+      <span class="file-icon">🌐</span>
       <div class="file-info">
-        <div class="file-name">目录</div>
+        <div class="file-name">DOCS / 目录</div>
         <div class="file-meta">HTML</div>
       </div>
     </a>
     <a class="file-card" data-name="gkd 广告关闭规则编写完整指南" href="./科技数码相关/GKD 广告关闭基于AI规则编写/GKD 广告关闭规则编写完整指南.html" target="_blank">
-      <span class="file-icon">&#127760;</span>
+      <span class="file-icon">🌐</span>
       <div class="file-info">
-        <div class="file-name">GKD 广告关闭规则编写完整指南</div>
+        <div class="file-name">GKD 广告关闭基于AI规则编写 / GKD 广告关闭规则编写完整指南</div>
         <div class="file-meta">HTML</div>
       </div>
     </a>
     <a class="file-card" data-name="openlist安卓win部署及应用" href="./科技数码相关/DOCS/Openlist安卓win部署及应用.pdf" target="_blank">
-      <span class="file-icon">&#128217;</span>
+      <span class="file-icon">📕</span>
       <div class="file-info">
-        <div class="file-name">Openlist安卓win部署及应用</div>
+        <div class="file-name">DOCS / Openlist安卓win部署及应用</div>
         <div class="file-meta">PDF</div>
       </div>
     </a>
     <a class="file-card" data-name="基于vps搭建个人节点" href="./科技数码相关/节点搭建/基于vps搭建个人节点.html" target="_blank">
-      <span class="file-icon">&#127760;</span>
+      <span class="file-icon">🌐</span>
       <div class="file-info">
-        <div class="file-name">基于vps搭建个人节点</div>
+        <div class="file-name">节点搭建 / 基于vps搭建个人节点</div>
         <div class="file-meta">HTML</div>
       </div>
     </a>
     <a class="file-card" data-name="存储不足及优化" href="./科技数码相关/DOCS/存储不足及优化.pdf" target="_blank">
-      <span class="file-icon">&#128217;</span>
+      <span class="file-icon">📕</span>
       <div class="file-info">
-        <div class="file-name">存储不足及优化</div>
+        <div class="file-name">DOCS / 存储不足及优化</div>
         <div class="file-meta">PDF</div>
       </div>
     </a>
     <a class="file-card" data-name="极限压缩终极指南：格式、算法与实战全解" href="./科技数码相关/极限压缩终极指南：格式、算法与实战全解.html" target="_blank">
-      <span class="file-icon">&#127760;</span>
+      <span class="file-icon">🌐</span>
       <div class="file-info">
         <div class="file-name">极限压缩终极指南：格式、算法与实战全解</div>
         <div class="file-meta">HTML</div>
       </div>
     </a>
     <a class="file-card" data-name="🚀 给纯小白的浏览器完整指南（从零到顺手）" href="./科技数码相关/浏览器指南/🚀 给纯小白的浏览器完整指南（从零到顺手）.html" target="_blank">
-      <span class="file-icon">&#127760;</span>
+      <span class="file-icon">🌐</span>
       <div class="file-info">
-        <div class="file-name">🚀 给纯小白的浏览器完整指南（从零到顺手）</div>
+        <div class="file-name">浏览器指南 / 🚀 给纯小白的浏览器完整指南（从零到顺手）</div>
         <div class="file-meta">HTML</div>
       </div>
     </a>
@@ -474,24 +465,24 @@ body {
 </div>
 
 <div class="file-section" data-folder="personal">
-  <div class="section-title">personal（3 篇）</div>
-  <div class="file-grid">
+  <div class="section-title">personal</div>
+  <div class="file-list">
     <a class="file-card" data-name="git 命令大全" href="./personal/Git 命令大全.html" target="_blank">
-      <span class="file-icon">&#127760;</span>
+      <span class="file-icon">🌐</span>
       <div class="file-info">
         <div class="file-name">Git 命令大全</div>
         <div class="file-meta">HTML</div>
       </div>
     </a>
     <a class="file-card" data-name="su" href="./personal/su.html" target="_blank">
-      <span class="file-icon">&#127760;</span>
+      <span class="file-icon">🌐</span>
       <div class="file-info">
         <div class="file-name">su</div>
         <div class="file-meta">HTML</div>
       </div>
     </a>
     <a class="file-card" data-name="后记" href="./personal/后记.html" target="_blank">
-      <span class="file-icon">&#127760;</span>
+      <span class="file-icon">🌐</span>
       <div class="file-info">
         <div class="file-name">后记</div>
         <div class="file-meta">HTML</div>
@@ -506,7 +497,7 @@ body {
 
 <!-- Footer -->
 <div class="footer">
-  Powered by generate_index_html.py · 2026-06-14 06:32:30
+  Powered by generate_index_html.py · 2026-06-14 06:52:57
 </div>
 
 <!-- Scripts -->

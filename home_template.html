@@ -146,11 +146,18 @@ body {
 }
 .section-title:first-child { margin-top: 0; }
 
-/* 文件列表 */
+/* 文件列表：手机单列，电脑三栏 */
 .file-list {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+@media (min-width: 769px) {
+  .file-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
 }
 .file-card {
   display: flex;
@@ -163,6 +170,7 @@ body {
   text-decoration: none;
   color: #3a3a3a;
   transition: border-color 0.15s, box-shadow 0.15s;
+  overflow: hidden;
 }
 .file-card:hover {
   border-color: #ccc4bc;

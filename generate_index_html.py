@@ -15,11 +15,16 @@ NOTES_DIR = "."              # 笔记根目录（在目标目录执行即可）
 OUTPUT_FILE = "index.html"    # 生成的索引文件名
 TEMPLATE_FILE = "home_template.html"  # 模板文件名
 
-# 不想被索引的文件夹名称
+# 不想被索引的文件夹名称（按名称匹配，任意层级）
 IGNORE_DIRS = {".git", ".workbuddy", ".obsidian", "assets", "images", "附件",
                 "__pycache__", "templates", "build", "node_modules"}
+# 不想被索引的子目录路径（相对于根目录，精确匹配）
+# 例如："personal/旧文档" 或 "科技数码相关/草稿"
+IGNORE_PATHS = set()
 # 不想被索引的文件名
 IGNORE_FILES = {"home.html", "home_template.html"}  # 自身输出和模板不退化
+# 是否排除根目录下的文件（True = 排除，False = 包含）
+EXCLUDE_ROOT_FILES = True
 # 要扫描的文件扩展名
 SCAN_EXTENSIONS = {".html", ".htm", ".pdf"}
 # =====================================================================
@@ -27,11 +32,19 @@ SCAN_EXTENSIONS = {".html", ".htm", ".pdf"}
 
 def collect_files(base_path):
     """收集所有支持的文件，返回 Path 列表"""
+    base_path = Path(base_path).resolve()
     files = []
     for p in base_path.rglob("*"):
         if not p.is_file():
             continue
+        if EXCLUDE_ROOT_FILES and p.parent.resolve() == base_path:
+            continue  # 排除根目录文件
         if any(ignored in p.parts for ignored in IGNORE_DIRS):
+            continue
+        # 检查 IGNORE_PATHS：文件的相对路径是否以某个忽略路径开头
+        rel = p.relative_to(base_path)
+        rel_str = rel.as_posix()
+        if any(rel_str.startswith(ignore_path) for ignore_path in IGNORE_PATHS):
             continue
         if p.name in IGNORE_FILES:
             continue

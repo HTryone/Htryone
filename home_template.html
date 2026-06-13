@@ -20,7 +20,7 @@ body {
 /* ===== Layout ===== */
 .layout {
   display: flex;
-  max-width: 1200px;
+  width: 90%;
   margin: 0 auto;
   min-height: calc(100vh - 110px);
 }
@@ -59,10 +59,10 @@ body {
   color: #aaa;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  padding: 14px 18px 6px;
+  padding: 14px 14px 6px 12px;
 }
 .sidebar-search {
-  padding: 8px 14px 12px;
+  padding: 8px 12px 12px;
 }
 .sidebar-search input {
   width: 100%;
@@ -82,7 +82,7 @@ body {
 .tree-item {
   display: flex;
   align-items: center;
-  padding: 6px 14px 6px 18px;
+  padding: 6px 12px 6px 12px;
   font-size: 0.85rem;
   color: #555;
   cursor: pointer;
@@ -247,6 +247,7 @@ body {
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+  .layout { width: 100%; }
   .header { padding: 14px 16px 10px; }
   .header h1 { font-size: 1.1rem; }
   .layout { flex-direction: column; }
@@ -392,5 +393,8 @@ renderFiles();
 renderInfo();
 </script>
 
+
+<!-- __DARK_MODE_INJECTED__ -->
+<script src="scripts/dark-mode-toggle.js"></script>
 </body>
 </html>

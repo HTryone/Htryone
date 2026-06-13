@@ -166,6 +166,13 @@ window.SmartDarkMode = (function() {
                     background-color: rgba(255, 255, 255, 0.08) !important;
                     color: rgba(255, 255, 255, 0.8) !important;
                 }
+                [data-unified-mode="smart"] #write a:hover {
+                    background-color: rgba(255, 255, 255, 0.08) !important;
+                }
+                [data-unified-mode="smart"] ::selection {
+                    background-color: rgba(160, 110, 180, 0.4) !important;
+                    color: #fff !important;
+                }
                 ${css}
             `;
             document.head.appendChild(smartStyleEl);

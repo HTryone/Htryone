@@ -16,8 +16,8 @@
         [data-unified-mode="fixed"] {
             --bg-color: #0a0a0f !important;
             --text-color: #b8bfc6 !important;
-            --select-text-bg-color: #4a89dc !important;
-            --select-text-font-color: #ffffff !important;
+            --select-text-bg-color: transparent !important;
+            --select-text-font-color: inherit !important;
         }
 
         /* 页面背景 */
@@ -27,6 +27,16 @@
         [data-unified-mode="fixed"] body {
             background-color: #0a0a0f !important;
             color: #b8bfc6 !important;
+        }
+
+        /* 选中文字 */
+        [data-unified-mode="fixed"] ::selection {
+            background-color: transparent !important;
+            color: inherit !important;
+        }
+        [data-unified-mode="fixed"] ::-moz-selection {
+            background-color: transparent !important;
+            color: inherit !important;
         }
 
         /* 全局关阴影 + 超链接 hover */

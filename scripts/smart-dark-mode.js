@@ -170,7 +170,7 @@ window.SmartDarkMode = (function() {
                     background-color: rgba(255, 255, 255, 0.08) !important;
                 }
                 [data-unified-mode="smart"] ::selection {
-                    background-color: transparent !important;
+                    background-color: rgba(255,255,255,0.08) !important;
                     color: inherit !important;
                 }
                 ${css}

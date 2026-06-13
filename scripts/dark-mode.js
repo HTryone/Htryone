@@ -16,7 +16,7 @@
         [data-unified-mode="fixed"] {
             --bg-color: #0a0a0f !important;
             --text-color: #b8bfc6 !important;
-            --select-text-bg-color: transparent !important;
+            --select-text-bg-color: rgba(255,255,255,0.08) !important;
             --select-text-font-color: inherit !important;
         }
 
@@ -31,11 +31,11 @@
 
         /* 选中文字 */
         [data-unified-mode="fixed"] ::selection {
-            background-color: transparent !important;
+            background-color: rgba(255,255,255,0.08) !important;
             color: inherit !important;
         }
         [data-unified-mode="fixed"] ::-moz-selection {
-            background-color: transparent !important;
+            background-color: rgba(255,255,255,0.08) !important;
             color: inherit !important;
         }
 

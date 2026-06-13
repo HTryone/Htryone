@@ -29,6 +29,10 @@
             color: #b8bfc6 !important;
         }
 
+        /* 全局关阴影 + 超链接 hover */
+        [data-unified-mode="fixed"] * { box-shadow: none !important; }
+        [data-unified-mode="fixed"] #write a:hover { background-color: rgba(255,255,255,0.08) !important; }
+
         /* 内容区域 */
         [data-unified-mode="fixed"] #write {
             background-color: #0a0a0f !important;

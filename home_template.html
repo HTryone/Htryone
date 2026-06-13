@@ -22,7 +22,7 @@ body {
   display: flex;
   max-width: 1200px;
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: calc(100vh - 110px);
 }
 
 /* ===== Header ===== */
@@ -42,13 +42,12 @@ body {
   margin-top: 2px;
 }
 
-/* ===== Sidebar（浅色） ===== */
+/* ===== Sidebar ===== */
 .sidebar {
-  width: 250px;
+  width: 280px;
   flex-shrink: 0;
   background: #fafaf8;
   border-right: 1px solid #e8e4df;
-  padding: 0;
   overflow-y: auto;
   max-height: calc(100vh - 70px);
   position: sticky;
@@ -83,7 +82,7 @@ body {
 .tree-item {
   display: flex;
   align-items: center;
-  padding: 5px 14px 5px 18px;
+  padding: 6px 14px 6px 18px;
   font-size: 0.85rem;
   color: #555;
   cursor: pointer;
@@ -99,55 +98,14 @@ body {
   color: #333;
   font-weight: 600;
 }
-.tree-arrow {
-  display: inline-block;
-  width: 18px;
-  text-align: center;
-  font-size: 0.65rem;
-  color: #bbb;
-  flex-shrink: 0;
-  transition: transform 0.15s;
-  cursor: pointer;
-}
-.tree-arrow.open { transform: rotate(90deg); }
-.tree-arrow.empty { visibility: hidden; }
-.tree-icon { margin-right: 6px; flex-shrink: 0; }
-.tree-children { display: none; }
-.tree-children.open { display: block; }
-.tree-children .tree-item { padding-left: 38px; }
-.tree-children .tree-children .tree-item { padding-left: 54px; }
+.tree-icon { margin-right: 7px; flex-shrink: 0; }
 .tree-count {
   font-size: 0.72rem;
   color: #bbb;
-  margin-left: 4px;
-}
-/* 文件叶子节点（展开文件夹后显示的文件） */
-.tree-leaf {
-  display: flex;
-  align-items: center;
-  padding: 4px 14px 4px 18px;
-  font-size: 0.82rem;
-  color: #777;
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.12s, color 0.12s;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.tree-leaf:hover {
-  background: rgba(0,0,0,0.04);
-  color: #333;
-}
-.tree-leaf .tree-icon { font-size: 0.82rem; flex-shrink: 0; margin-right: 6px; }
-.tree-leaf .tree-name { flex: 1; overflow: hidden; text-overflow: ellipsis; }
-.tree-type {
-  font-size: 0.68rem;
-  color: #ccc;
-  margin-left: 6px;
+  margin-left: auto;
+  padding-left: 8px;
   flex-shrink: 0;
 }
-.tree-children .tree-leaf { padding-left: 42px; }
-.tree-children .tree-children .tree-leaf { padding-left: 58px; }
 
 /* ===== Main ===== */
 .main {
@@ -178,12 +136,11 @@ body {
 
 /* 文件分区标题 */
 .section-title {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 600;
   color: #aaa;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 20px 0 8px;
+  letter-spacing: 0.04em;
+  margin: 22px 0 8px;
   padding-bottom: 5px;
   border-bottom: 1px solid #e8e4df;
 }
@@ -244,53 +201,29 @@ body {
 
 /* ===== Dark Mode ===== */
 [data-unified-mode="fixed"] body,
-[data-unified-mode="smart"] body {
-  background: #0a0a0f !important;
-  color: #b8bfc6 !important;
-}
+[data-unified-mode="smart"] body { background: #0a0a0f !important; color: #b8bfc6 !important; }
 [data-unified-mode="fixed"] .header,
-[data-unified-mode="smart"] .header {
-  background: #12121a !important;
-  border-bottom-color: #2a2a3a !important;
-}
+[data-unified-mode="smart"] .header { background: #12121a !important; border-bottom-color: #2a2a3a !important; }
 [data-unified-mode="fixed"] .header h1,
 [data-unified-mode="smart"] .header h1 { color: #dedede !important; }
 [data-unified-mode="fixed"] .header p,
 [data-unified-mode="smart"] .header p { color: #666 !important; }
 [data-unified-mode="fixed"] .sidebar,
-[data-unified-mode="smart"] .sidebar {
-  background: #12121a !important;
-  border-right-color: #2a2a3a !important;
-}
+[data-unified-mode="smart"] .sidebar { background: #12121a !important; border-right-color: #2a2a3a !important; }
 [data-unified-mode="fixed"] .tree-item,
 [data-unified-mode="smart"] .tree-item { color: #888 !important; }
 [data-unified-mode="fixed"] .tree-item:hover,
 [data-unified-mode="smart"] .tree-item:hover { background: rgba(255,255,255,0.04) !important; }
 [data-unified-mode="fixed"] .tree-item.active,
 [data-unified-mode="smart"] .tree-item.active { background: rgba(100,120,150,0.12) !important; color: #b8bfc6 !important; }
-[data-unified-mode="fixed"] .tree-arrow,
-[data-unified-mode="smart"] .tree-arrow { color: #555 !important; }
 [data-unified-mode="fixed"] .tree-count,
 [data-unified-mode="smart"] .tree-count { color: #555 !important; }
-[data-unified-mode="fixed"] .tree-leaf,
-[data-unified-mode="smart"] .tree-leaf { color: #888 !important; }
-[data-unified-mode="fixed"] .tree-leaf:hover,
-[data-unified-mode="smart"] .tree-leaf:hover { background: rgba(255,255,255,0.04) !important; color: #b8bfc6 !important; }
-[data-unified-mode="fixed"] .tree-type,
-[data-unified-mode="smart"] .tree-type { color: #444 !important; }
 [data-unified-mode="fixed"] .sidebar-title,
 [data-unified-mode="smart"] .sidebar-title { color: #555 !important; }
 [data-unified-mode="fixed"] .file-card,
-[data-unified-mode="smart"] .file-card {
-  background: #1a1a28 !important;
-  border-color: #2a2a3a !important;
-  color: #b8bfc6 !important;
-}
+[data-unified-mode="smart"] .file-card { background: #1a1a28 !important; border-color: #2a2a3a !important; color: #b8bfc6 !important; }
 [data-unified-mode="fixed"] .file-card:hover,
-[data-unified-mode="smart"] .file-card:hover {
-  border-color: #444 !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
-}
+[data-unified-mode="smart"] .file-card:hover { border-color: #444 !important; box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important; }
 [data-unified-mode="fixed"] .file-name,
 [data-unified-mode="smart"] .file-name { color: #dedede !important; }
 [data-unified-mode="fixed"] .file-meta,
@@ -298,11 +231,7 @@ body {
 [data-unified-mode="fixed"] .stats,
 [data-unified-mode="smart"] .stats { color: #666 !important; }
 [data-unified-mode="fixed"] .search-box,
-[data-unified-mode="smart"] .search-box {
-  background: #1a1a28 !important;
-  border-color: #2a2a3a !important;
-  color: #b8bfc6 !important;
-}
+[data-unified-mode="smart"] .search-box { background: #1a1a28 !important; border-color: #2a2a3a !important; color: #b8bfc6 !important; }
 [data-unified-mode="fixed"] .section-title,
 [data-unified-mode="smart"] .section-title { color: #555 !important; border-bottom-color: #2a2a3a !important; }
 [data-unified-mode="fixed"] .footer,
@@ -322,7 +251,6 @@ body {
     padding: 8px 0;
   }
   .main { padding: 16px; }
-  .file-list { gap: 6px; }
   .search-box { width: 100%; }
   .toolbar { flex-direction: column; align-items: flex-start; }
 }
@@ -333,7 +261,7 @@ body {
 <!-- Header -->
 <div class="header">
   <h1>📚 我的知识库</h1>
-  <p>索引更新：{{UPDATE_TIME}}　共 <strong>{{TOTAL}}</strong> 篇</p>
+  <p id="headerInfo">加载中…</p>
 </div>
 
 <!-- Layout -->
@@ -345,74 +273,115 @@ body {
     <div class="sidebar-search">
       <input type="text" placeholder="搜索文件…" id="searchInput" oninput="filterFiles()">
     </div>
-    <nav class="nav-tree" id="folderTree">
-      {{TREE_HTML}}
-    </nav>
+    <nav class="nav-tree" id="folderTree"></nav>
   </aside>
 
   <!-- Main -->
   <main class="main">
     <div class="toolbar">
-      <div class="stats">
-        共 <strong>{{TOTAL}}</strong> 篇　文件夹 <strong>{{FOLDER_COUNT}}</strong> 个
-      </div>
+      <div class="stats" id="statsInfo"></div>
     </div>
-
-    {{FILE_SECTIONS}}
+    <div id="fileSections"></div>
   </main>
 
 </div>
 
 <!-- Footer -->
-<div class="footer">
-  Powered by generate_index_html.py · {{UPDATE_TIME}}
-</div>
+<div class="footer" id="footerInfo"></div>
 
 <!-- Scripts -->
 <script src="scripts/dark-mode-toggle.js"></script>
 <script>
-/* 折叠/展开树节点 */
-function toggleTree(id) {
-  const children = document.getElementById('tree-children-' + id);
-  const arrow = document.getElementById('tree-arrow-' + id);
-  if (!children) return;
-  const isOpen = children.classList.toggle('open');
-  arrow && arrow.classList.toggle('open', isOpen);
-  try { localStorage.setItem('tree-' + id, isOpen ? '1' : '0'); } catch(e){}
-}
+/* ===== 由脚本注入的站点数据 ===== */
+const SITE_DATA = {{SITE_DATA}};
 
-/* 恢复折叠状态 */
-function restoreTreeState() {
-  document.querySelectorAll('[data-tree-id]').forEach(el => {
-    const id = el.dataset.treeId;
-    let open = true;
-    try { open = localStorage.getItem('tree-' + id) !== '0'; } catch(e){}
-    const children = document.getElementById('tree-children-' + id);
-    const arrow = document.getElementById('tree-arrow-' + id);
-    if (children) children.classList.toggle('open', open);
-    if (arrow) arrow.classList.toggle('open', open);
+/* ===== 图标映射 ===== */
+const ICONS = { ".html": "🌐", ".htm": "🌐", ".pdf": "📕" };
+
+/* ===== 渲染左侧文件夹树 ===== */
+function renderTree() {
+  const tree = document.getElementById("folderTree");
+  const total = SITE_DATA.total;
+
+  // "全部文件" 入口
+  let html = `<div class="tree-item active" data-folder="all" onclick="filterByFolder('all')">`
+    + `<span class="tree-icon">📂</span>`
+    + `<span>全部文件</span>`
+    + `<span class="tree-count">(${total})</span>`
+    + `</div>`;
+
+  // 顶级文件夹
+  SITE_DATA.folders.forEach(f => {
+    html += `<div class="tree-item" data-folder="${f.name}" onclick="filterByFolder('${f.name}')">`
+      + `<span class="tree-icon">📁</span>`
+      + `<span>${f.name}</span>`
+      + `<span class="tree-count">(${f.count})</span>`
+      + `</div>`;
   });
+
+  tree.innerHTML = html;
 }
 
-/* 点击文件夹过滤 */
+/* ===== 渲染右侧文件卡片 ===== */
+function renderFiles() {
+  const container = document.getElementById("fileSections");
+  let html = "";
+
+  SITE_DATA.folders.forEach(folder => {
+    html += `<div class="file-section" data-folder="${folder.name}">`;
+    html += `<div class="section-title">${folder.name}</div>`;
+    html += `<div class="file-list">`;
+
+    folder.files.forEach(f => {
+      const icon = ICONS[f.ext] || "📄";
+      const displayName = f.name;
+      html += `<a class="file-card" data-name="${f.name.toLowerCase()}" href="${f.path}" target="_blank">`
+        + `<span class="file-icon">${icon}</span>`
+        + `<div class="file-info">`
+        + `<div class="file-name">${displayName}</div>`
+        + `<div class="file-meta">${f.type}</div>`
+        + `</div></a>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+/* ===== 填充 Header/Footer ===== */
+function renderInfo() {
+  const d = SITE_DATA;
+  document.getElementById("headerInfo").innerHTML =
+    `索引更新：${d.updateTime}　共 <strong>${d.total}</strong> 篇`;
+  document.getElementById("statsInfo").innerHTML =
+    `共 <strong>${d.total}</strong> 篇　文件夹 <strong>${d.folders.length}</strong> 个`;
+  document.getElementById("footerInfo").textContent =
+    `Powered by generate_index_html.py · ${d.updateTime}`;
+}
+
+/* ===== 文件夹过滤 ===== */
 function filterByFolder(name) {
-  document.querySelectorAll('.tree-item').forEach(t =>
-    t.classList.toggle('active', t.dataset.folder === name)
+  document.querySelectorAll(".tree-item").forEach(t =>
+    t.classList.toggle("active", t.dataset.folder === name)
   );
-  document.querySelectorAll('.file-section').forEach(s => {
-    s.style.display = (name === 'all' || s.dataset.folder === name) ? '' : 'none';
+  document.querySelectorAll(".file-section").forEach(s => {
+    s.style.display = (name === "all" || s.dataset.folder === name) ? "" : "none";
   });
 }
 
-/* 搜索过滤 */
+/* ===== 搜索过滤 ===== */
 function filterFiles() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  document.querySelectorAll('.file-card').forEach(c => {
-    c.style.display = c.dataset.name.includes(q) ? '' : 'none';
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  document.querySelectorAll(".file-card").forEach(c => {
+    c.style.display = c.dataset.name.includes(q) ? "" : "none";
   });
 }
 
-restoreTreeState();
+/* ===== 初始化 ===== */
+renderTree();
+renderFiles();
+renderInfo();
 </script>
 
 </body>

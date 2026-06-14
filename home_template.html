@@ -90,17 +90,17 @@ function renderFiles() {
     title.textContent = folder.name;
     section.appendChild(title);
 
-    // 直接文件列表
+    // 文件网格（门户卡片也放在里面，统一 3 栏宽度）
     const list = document.createElement("div");
     list.className = "file-list";
     section.appendChild(list);
     folderLists[folder.name] = list;
 
-    // 门户子文件夹卡片
+    // 门户子文件夹卡片（插入网格内）
     if (folder.portals && folder.portals.length > 0) {
       folder.portals.forEach(portal => {
         const portalCard = document.createElement("div");
-        portalCard.className = "portal-card";
+        portalCard.className = "file-card portal-card";
         portalCard.innerHTML = `<span class="file-icon">📁</span>`
           + `<div class="file-info">`
           + `<div class="file-name">${portal.name}</div>`
@@ -117,7 +117,7 @@ function renderFiles() {
           portalCard.classList.toggle("portal-open", show);
         });
 
-        section.appendChild(portalCard);
+        list.appendChild(portalCard);
         section.appendChild(portalList);
         folderLists[portal.path] = portalList;
       });
@@ -180,7 +180,7 @@ function renderFiles() {
 function renderInfo() {
   const d = SITE_DATA;
   document.getElementById("headerInfo").innerHTML =
-    `索引更新：${d.updateTime}　共 <strong>${d.total}</strong> 篇　文件夹 <strong>${d.folders.length}</strong> 个`;
+    `索引更新：${d.updateTime}　共 <strong>${d.total}</strong> 篇　主文件夹 <strong>${d.folders.length}</strong> 个`;
   document.getElementById("footerInfo").textContent =
     `Powered by generate_index_html.py · ${d.updateTime}`;
 }

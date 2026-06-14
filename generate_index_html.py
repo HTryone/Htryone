@@ -238,14 +238,9 @@ def generate_html(base_dir):
     # 构建 JSON 数据
     data = build_file_data(files, base_path)
 
-    # 写入 JSON 数据文件
+    # 写入 JS 数据文件（供 <script> 加载）
     data_dir = base_path / DATA_DIR
     data_dir.mkdir(parents=True, exist_ok=True)
-    json_path = data_dir / "index.json"
-    json_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"[OK] JSON 数据：{json_path}")
-
-    # 写入 JS 数据文件（供 <script> 加载，解决 file:// 协议下 fetch CORS 问题）
     js_path = data_dir / "site_data.js"
     js_content = "const SITE_DATA = " + json.dumps(data, ensure_ascii=False) + ";"
     js_path.write_text(js_content, encoding="utf-8")

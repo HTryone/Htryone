@@ -148,6 +148,14 @@ body {
   border-style: dashed;
 }
 
+/* 搜索无结果 */
+.search-empty {
+  text-align: center;
+  padding: 48px;
+  color: #aaa;
+  font-size: 0.92rem;
+}
+
 /* 文件列表：手机单列，电脑三栏 */
 .file-list {
   display: flex;

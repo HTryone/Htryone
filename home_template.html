@@ -70,6 +70,23 @@ function renderTree() {
   tree.innerHTML = html;
 }
 
+/* ===== 搜索索引（全量，含门户内部文件） ===== */
+const SEARCH_INDEX = (function() {
+  const idx = [];
+  SITE_DATA.folders.forEach(folder => {
+    // 直接文件
+    folder.files.forEach(f => idx.push({ ...f, folder: folder.name, _kind: "file" }));
+    // 门户子文件夹卡片 + 门户内部文件
+    if (folder.portals) {
+      folder.portals.forEach(p => {
+        idx.push({ name: p.name, path: "./" + p.path + "/page2.html", ext: "", type: "文件夹", folder: folder.name, _kind: "portal", _count: p.count });
+        p.files.forEach(f => idx.push({ ...f, folder: folder.name, _kind: "portal-file", _portalName: p.name }));
+      });
+    }
+  });
+  return idx;
+})();
+
 /* ===== 渲染右侧文件卡片（懒加载 + 门户子文件夹） ===== */
 const BATCH_SIZE = 30;
 
@@ -178,12 +195,69 @@ function filterByFolder(name) {
   });
 }
 
-/* ===== 搜索过滤 ===== */
+/* ===== 搜索过滤（基于全量索引） ===== */
 function filterFiles() {
-  const q = document.getElementById("searchInput").value.toLowerCase();
-  document.querySelectorAll(".file-card").forEach(c => {
-    c.style.display = c.dataset.name.includes(q) ? "" : "none";
+  const q = document.getElementById("searchInput").value.toLowerCase().trim();
+  const container = document.getElementById("fileSections");
+
+  // 空搜索 → 恢复懒加载视图
+  if (!q) {
+    renderFiles();
+    return;
+  }
+
+  container.innerHTML = "";
+  const matches = SEARCH_INDEX.filter(f => f.name.toLowerCase().includes(q));
+
+  if (matches.length === 0) {
+    container.innerHTML = '<div class="search-empty">未找到匹配的文件</div>';
+    return;
+  }
+
+  // 按文件夹分组
+  const groups = {};
+  matches.forEach(f => {
+    if (!groups[f.folder]) groups[f.folder] = [];
+    groups[f.folder].push(f);
   });
+
+  for (const [fname, files] of Object.entries(groups)) {
+    const section = document.createElement("div");
+    section.className = "file-section";
+    section.innerHTML = `<div class="section-title">${fname}</div>`;
+
+    const list = document.createElement("div");
+    list.className = "file-list";
+
+    files.forEach(f => {
+      const card = document.createElement("a");
+      card.className = "file-card";
+      card.href = f.path;
+      card.target = "_blank";
+
+      if (f._kind === "portal") {
+        card.innerHTML = `<span class="file-icon">📁</span>`
+          + `<div class="file-info">`
+          + `<div class="file-name">${f.name}</div>`
+          + `<div class="file-meta">${f._count} 个文件</div></div>`;
+      } else if (f._kind === "portal-file") {
+        card.innerHTML = `<span class="file-icon">${ICONS[f.ext] || "📄"}</span>`
+          + `<div class="file-info">`
+          + `<div class="file-name">${f.name}</div>`
+          + `<div class="file-meta">📁 ${f._portalName} · ${f.type}</div></div>`;
+      } else {
+        card.innerHTML = `<span class="file-icon">${ICONS[f.ext] || "📄"}</span>`
+          + `<div class="file-info">`
+          + `<div class="file-name">${f.name}</div>`
+          + `<div class="file-meta">${f.type}</div></div>`;
+      }
+
+      list.appendChild(card);
+    });
+
+    section.appendChild(list);
+    container.appendChild(section);
+  }
 }
 
 /* ===== 初始化 ===== */

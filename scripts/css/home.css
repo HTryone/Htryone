@@ -143,19 +143,9 @@ body {
 /* 文件分区 */
 .file-section { margin-bottom: 24px; }
 
-/* 门户子文件夹卡片（继承 .file-card 样式） */
+/* 门户子文件夹卡片（继承 .file-card 样式，虚线边框区分） */
 .portal-card {
-  cursor: pointer;
-  user-select: none;
   border-style: dashed;
-}
-.portal-card.portal-open {
-  border-style: solid;
-  border-color: #bbb4aa;
-  background: #eee9e2;
-}
-.portal-file-list {
-  margin: 6px 0 12px;
 }
 
 /* 文件列表：手机单列，电脑三栏 */

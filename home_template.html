@@ -96,30 +96,18 @@ function renderFiles() {
     section.appendChild(list);
     folderLists[folder.name] = list;
 
-    // 门户子文件夹卡片（插入网格内）
+    // 门户子文件夹卡片（点击跳转子页面）
     if (folder.portals && folder.portals.length > 0) {
       folder.portals.forEach(portal => {
-        const portalCard = document.createElement("div");
+        const portalCard = document.createElement("a");
         portalCard.className = "file-card portal-card";
+        portalCard.href = "./" + portal.path + "/page2.html";
         portalCard.innerHTML = `<span class="file-icon">📁</span>`
           + `<div class="file-info">`
           + `<div class="file-name">${portal.name}</div>`
           + `<div class="file-meta">${portal.count} 个文件</div>`
           + `</div>`;
-
-        const portalList = document.createElement("div");
-        portalList.className = "file-list portal-file-list";
-        portalList.style.display = "none";
-
-        portalCard.addEventListener("click", () => {
-          const show = portalList.style.display === "none";
-          portalList.style.display = show ? "" : "none";
-          portalCard.classList.toggle("portal-open", show);
-        });
-
         list.appendChild(portalCard);
-        section.appendChild(portalList);
-        folderLists[portal.path] = portalList;
       });
     }
 
@@ -131,15 +119,10 @@ function renderFiles() {
   sentinel.style.cssText = "height:1px;width:100%";
   container.appendChild(sentinel);
 
-  // 扁平化所有文件：直接文件 + 门户内文件
+  // 扁平化所有直接文件（门户内文件在独立子页面展示）
   const allFiles = [];
   SITE_DATA.folders.forEach(folder => {
     folder.files.forEach(f => allFiles.push({ target: folder.name, file: f }));
-    if (folder.portals) {
-      folder.portals.forEach(portal => {
-        portal.files.forEach(f => allFiles.push({ target: portal.path, file: f }));
-      });
-    }
   });
 
   let idx = 0;

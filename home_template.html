@@ -39,10 +39,8 @@
 <div class="footer" id="footerInfo"></div>
 
 <!-- Scripts -->
+<script src="./scripts/data/site_data.js"></script>
 <script>
-/* ===== 由脚本注入的站点数据 ===== */
-const SITE_DATA = {{SITE_DATA}};
-
 /* ===== 图标映射 ===== */
 const ICONS = { ".html": "🌐", ".htm": "🌐", ".pdf": "📕" };
 
@@ -71,7 +69,9 @@ function renderTree() {
 }
 
 /* ===== 搜索索引（全量，含门户内部文件） ===== */
-const SEARCH_INDEX = (function() {
+let SEARCH_INDEX = [];
+
+function buildSearchIndex() {
   const idx = [];
   SITE_DATA.folders.forEach(folder => {
     // 直接文件
@@ -84,8 +84,8 @@ const SEARCH_INDEX = (function() {
       });
     }
   });
-  return idx;
-})();
+  SEARCH_INDEX = idx;
+}
 
 /* ===== 渲染右侧文件卡片（懒加载 + 门户子文件夹） ===== */
 const BATCH_SIZE = 30;
@@ -261,6 +261,7 @@ function filterFiles() {
 }
 
 /* ===== 初始化 ===== */
+buildSearchIndex();
 renderTree();
 renderFiles();
 renderInfo();

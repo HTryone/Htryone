@@ -15,6 +15,7 @@ import json
 NOTES_DIR = "."              # 笔记根目录（在目标目录执行即可）
 OUTPUT_FILE = "index.html"    # 生成的索引文件名
 TEMPLATE_FILE = "home_template.html"  # 模板文件名
+DATA_DIR = "scripts/data"     # JSON 数据输出目录
 
 # 不想被索引的文件夹名称（按名称匹配，任意层级）
 IGNORE_DIRS = {".git", ".workbuddy", ".obsidian", "assets", "images", "附件",
@@ -237,10 +238,21 @@ def generate_html(base_dir):
     # 构建 JSON 数据
     data = build_file_data(files, base_path)
 
-    # 替换占位符：注入 JSON 数据
-    html = template.replace("{{SITE_DATA}}", json.dumps(data, ensure_ascii=False))
+    # 写入 JSON 数据文件
+    data_dir = base_path / DATA_DIR
+    data_dir.mkdir(parents=True, exist_ok=True)
+    json_path = data_dir / "index.json"
+    json_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"[OK] JSON 数据：{json_path}")
 
-    # 写入主页
+    # 写入 JS 数据文件（供 <script> 加载，解决 file:// 协议下 fetch CORS 问题）
+    js_path = data_dir / "site_data.js"
+    js_content = "const SITE_DATA = " + json.dumps(data, ensure_ascii=False) + ";"
+    js_path.write_text(js_content, encoding="utf-8")
+    print(f"[OK] JS 数据：{js_path}")
+
+    # 生成主页 HTML（模板不再内嵌 SITE_DATA，改为运行时 fetch JSON）
+    html = template
     output_path = base_path / OUTPUT_FILE
     output_path.write_text(html, encoding="utf-8")
     print(f"[OK] 生成成功：{output_path}")

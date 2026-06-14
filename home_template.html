@@ -39,7 +39,6 @@
 <div class="footer" id="footerInfo"></div>
 
 <!-- Scripts -->
-<script src="scripts/dark-mode-toggle.js"></script>
 <script>
 /* ===== 由脚本注入的站点数据 ===== */
 const SITE_DATA = {{SITE_DATA}};
@@ -71,31 +70,110 @@ function renderTree() {
   tree.innerHTML = html;
 }
 
-/* ===== 渲染右侧文件卡片 ===== */
+/* ===== 渲染右侧文件卡片（懒加载 + 门户子文件夹） ===== */
+const BATCH_SIZE = 30;
+
 function renderFiles() {
   const container = document.getElementById("fileSections");
-  let html = "";
+  container.innerHTML = "";
 
+  // 创建所有文件夹的占位 section + 门户卡片
+  const folderLists = {};
   SITE_DATA.folders.forEach(folder => {
-    html += `<div class="file-section" data-folder="${folder.name}">`;
-    html += `<div class="section-title">${folder.name}</div>`;
-    html += `<div class="file-list">`;
+    const section = document.createElement("div");
+    section.className = "file-section";
+    section.dataset.folder = folder.name;
 
-    folder.files.forEach(f => {
-      const icon = ICONS[f.ext] || "📄";
-      const displayName = f.name;
-      html += `<a class="file-card" data-name="${f.name.toLowerCase()}" href="${f.path}" target="_blank">`
-        + `<span class="file-icon">${icon}</span>`
-        + `<div class="file-info">`
-        + `<div class="file-name">${displayName}</div>`
-        + `<div class="file-meta">${f.type}</div>`
-        + `</div></a>`;
-    });
+    // 标题
+    const title = document.createElement("div");
+    title.className = "section-title";
+    title.textContent = folder.name;
+    section.appendChild(title);
 
-    html += `</div></div>`;
+    // 直接文件列表
+    const list = document.createElement("div");
+    list.className = "file-list";
+    section.appendChild(list);
+    folderLists[folder.name] = list;
+
+    // 门户子文件夹卡片
+    if (folder.portals && folder.portals.length > 0) {
+      folder.portals.forEach(portal => {
+        const portalCard = document.createElement("div");
+        portalCard.className = "portal-card";
+        portalCard.innerHTML = `<span class="file-icon">📁</span>`
+          + `<div class="file-info">`
+          + `<div class="file-name">${portal.name}</div>`
+          + `<div class="file-meta">${portal.count} 个文件</div>`
+          + `</div>`;
+
+        const portalList = document.createElement("div");
+        portalList.className = "file-list portal-file-list";
+        portalList.style.display = "none";
+
+        portalCard.addEventListener("click", () => {
+          const show = portalList.style.display === "none";
+          portalList.style.display = show ? "" : "none";
+          portalCard.classList.toggle("portal-open", show);
+        });
+
+        section.appendChild(portalCard);
+        section.appendChild(portalList);
+        folderLists[portal.path] = portalList;
+      });
+    }
+
+    container.appendChild(section);
   });
 
-  container.innerHTML = html;
+  // 滚动哨兵
+  const sentinel = document.createElement("div");
+  sentinel.style.cssText = "height:1px;width:100%";
+  container.appendChild(sentinel);
+
+  // 扁平化所有文件：直接文件 + 门户内文件
+  const allFiles = [];
+  SITE_DATA.folders.forEach(folder => {
+    folder.files.forEach(f => allFiles.push({ target: folder.name, file: f }));
+    if (folder.portals) {
+      folder.portals.forEach(portal => {
+        portal.files.forEach(f => allFiles.push({ target: portal.path, file: f }));
+      });
+    }
+  });
+
+  let idx = 0;
+
+  function loadBatch() {
+    const end = Math.min(idx + BATCH_SIZE, allFiles.length);
+    for (let i = idx; i < end; i++) {
+      const { target, file: f } = allFiles[i];
+      const icon = ICONS[f.ext] || "📄";
+      const card = document.createElement("a");
+      card.className = "file-card";
+      card.dataset.name = f.name.toLowerCase();
+      card.href = f.path;
+      card.target = "_blank";
+      card.innerHTML = `<span class="file-icon">${icon}</span>`
+        + `<div class="file-info">`
+        + `<div class="file-name">${f.name}</div>`
+        + `<div class="file-meta">${f.type}</div>`
+        + `</div>`;
+      folderLists[target].appendChild(card);
+    }
+    idx = end;
+    if (idx >= allFiles.length) {
+      observer.unobserve(sentinel);
+      sentinel.remove();
+    }
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) loadBatch();
+  }, { rootMargin: "200px" });
+  observer.observe(sentinel);
+
+  loadBatch();
 }
 
 /* ===== 填充 Header/Footer ===== */

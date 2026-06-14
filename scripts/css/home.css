@@ -143,6 +143,34 @@ body {
 /* 文件分区 */
 .file-section { margin-bottom: 24px; }
 
+/* 门户子文件夹卡片 */
+.portal-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  background: #f8f6f3;
+  border: 1px dashed #d6d0c8;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.15s, background 0.15s;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.portal-card:hover {
+  border-color: #bbb4aa;
+  background: #f0ede8;
+}
+.portal-card.portal-open {
+  border-style: solid;
+  border-color: #bbb4aa;
+  background: #eee9e2;
+}
+.portal-file-list {
+  margin-bottom: 8px;
+}
+
 /* 文件列表：手机单列，电脑三栏 */
 .file-list {
   display: flex;

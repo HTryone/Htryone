@@ -180,6 +180,7 @@ def generate_portal_pages(data, base_path):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{portal["name"]} - 文件索引</title>
 <link rel="stylesheet" href="{up}scripts/css/home.css">
+<link rel="stylesheet" href="{up}scripts/css/home-dark.css">
 </head>
 <body>
 

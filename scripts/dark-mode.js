@@ -220,33 +220,6 @@
             background: #70717d;
         }
 
-        /* ===== 固定深色模式 - 索引页适配 ===== */
-        [data-unified-mode="fixed"] body { color: #b8bfc6 !important; }
-        [data-unified-mode="fixed"] .header { background: #12121a !important; border-bottom-color: #2a2a3a !important; }
-        [data-unified-mode="fixed"] .header h1 { color: #dedede !important; }
-        [data-unified-mode="fixed"] .header p { color: #666 !important; }
-        [data-unified-mode="fixed"] .sidebar { background: #12121a !important; border-right-color: #2a2a3a !important; }
-        [data-unified-mode="fixed"] .tree-item { color: #888 !important; }
-        [data-unified-mode="fixed"] .tree-item:hover { background: rgba(255,255,255,0.04) !important; }
-        [data-unified-mode="fixed"] .tree-item.active { background: rgba(100,120,150,0.12) !important; color: #b8bfc6 !important; }
-        [data-unified-mode="fixed"] .tree-count { color: #555 !important; }
-        [data-unified-mode="fixed"] .sidebar-title { color: #555 !important; }
-        [data-unified-mode="fixed"] .file-card { background: #1a1a28 !important; border-color: #2a2a3a !important; color: #b8bfc6 !important; }
-        [data-unified-mode="fixed"] .file-card:hover { border-color: #444 !important; box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important; }
-        [data-unified-mode="fixed"] .file-name { color: #dedede !important; }
-        [data-unified-mode="fixed"] .file-meta { color: #555 !important; }
-        [data-unified-mode="fixed"] .stats { color: #666 !important; }
-        [data-unified-mode="fixed"] .sidebar-search .search-box,
-        [data-unified-mode="fixed"] .sidebar-search input { background: #1a1a28 !important; border-color: #2a2a3a !important; color: #b8bfc6 !important; }
-        [data-unified-mode="fixed"] .section-title { color: #b8bfc6 !important; border-bottom-color: #2a2a3a !important; }
-        [data-unified-mode="fixed"] .sidebar-search .search-box:focus { border-color: #555 !important; box-shadow: 0 0 0 2px rgba(100,120,150,0.15) !important; }
-        [data-unified-mode="fixed"] .sidebar-search input::placeholder { color: #555 !important; }
-        [data-unified-mode="fixed"] .footer { color: #444 !important; border-top-color: #2a2a3a !important; }
-        @media (max-width: 768px) {
-            [data-unified-mode="fixed"] .sidebar { border-bottom-color: #2a2a3a !important; }
-            [data-unified-mode="fixed"] .sidebar-search .search-box,
-            [data-unified-mode="fixed"] .sidebar-search input { width: 100% !important; }
-        }
     `;
     document.head.appendChild(style);
 })();

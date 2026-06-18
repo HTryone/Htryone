@@ -115,18 +115,6 @@ body {
   flex-wrap: wrap;
   gap: 10px;
 }
-.stats { font-size: 0.82rem; color: #999; }
-.stats strong { color: #555; }
-.search-box {
-  padding: 6px 12px;
-  border: 1px solid #ddd8d0;
-  border-radius: 6px;
-  font-size: 0.84rem;
-  width: 200px;
-  outline: none;
-  background: #fff;
-}
-.search-box:focus { border-color: #aaa; }
 
 /* 文件分区标题 */
 .section-title {
@@ -280,6 +268,5 @@ body {
   .tree-count { display: none; }
 
   .main { padding: 16px; }
-  .search-box { width: 100%; }
   .toolbar { flex-direction: column; align-items: flex-start; }
 }

@@ -148,10 +148,11 @@ window.SmartDarkMode = (function() {
 
     // ========== 公共 API ==========
     function enable() {
-        // 首页（有 layout 类）由 home-dark.css 的 [data-unified-mode="smart"] 规则覆盖，不需要动态注入
-        const isHomePage = !!document.querySelector('.layout');
+        // 首页和 page2 都引入了 home-dark.css，smart 模式由静态 CSS 规则覆盖，不需要动态注入
+        const hasHomeDarkCss = !!document.querySelector('link[href*="home-dark.css"]');
 
-        if (!isHomePage) {
+        if (!hasHomeDarkCss) {
+            // Typora 导出页等没有 home-dark.css 的页面，才走动态 HSL 算法
             markOriginalColors();
             if (!smartStyleEl) {
                 const css = generateSmartStyles();

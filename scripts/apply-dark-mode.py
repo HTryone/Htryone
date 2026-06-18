@@ -12,9 +12,11 @@
     2. 根据每个文件的位置，自动计算相对路径
     3. 在 </body> 标签前插入注入标记 + <script> 标签
     4. 已注入过的文件会跳过，不会重复插入
+    5. 若文件已有 script 但缺标记，会自动补标记并去重
 """
 
 import os
+import re
 
 # 配置
 WORKSPACE   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,6 +42,16 @@ def rel_script(filepath, script_rel):
     return os.path.relpath(target, d).replace("\\", "/")
 
 
+def _script_pattern(basename):
+    """匹配任意路径引用的同名 js 文件的 <script> 标签"""
+    return re.compile(
+        r'\s*<script[^>]+src=["\'][^"\']*?'
+        + re.escape(basename)
+        + r'["\'][^>]*></script>\s*\n?',
+        re.IGNORECASE,
+    )
+
+
 def inject_file(filepath):
     """
     对单个 HTML 文件执行所有注入。
@@ -57,15 +69,17 @@ def inject_file(filepath):
         if inj["tag"] in content:
             continue   # 已有标记，跳过
 
-        # 兼容旧版无标记的手动注入：检查 script 标签是否已存在
-        # 如果内容中已经引用了该 js 文件但没有标记，补上标记后跳过注入
-        script_filename = os.path.basename(inj["file"])
-        if script_filename in content:
-            # 已有引用但缺标记 → 不重复注入，只静默跳过
-            # （如果你希望给旧文件自动补标记，可改为下面注释的代码）
-            continue
+        basename = os.path.basename(inj["file"])
+        pattern  = _script_pattern(basename)
 
-        src = rel_script(filepath, inj["file"])
+        # 移除所有重复的 script 标签（无论路径如何）
+        new_content = pattern.sub("", content)
+        if new_content != content:
+            content = new_content
+            changed = True
+
+        # 注入：标记 + script
+        src    = rel_script(filepath, inj["file"])
         insert = f"\n{inj['tag']}\n<script src=\"{src}\"></script>\n"
 
         pos = content.rfind("</body>")
@@ -83,7 +97,7 @@ def inject_file(filepath):
         f.write(content)
 
     rel = os.path.relpath(filepath, WORKSPACE)
-    print(f"  [注入] {rel}")
+    print(f"  [注入/修复] {rel}")
     return True
 
 
@@ -97,7 +111,7 @@ def scan_all():
                 fp = os.path.join(root, fname)
                 if inject_file(fp):
                     count += 1
-    print(f"\n  扫描完成：注入 {count} 个文件\n")
+    print(f"\n  扫描完成：注入/修复 {count} 个文件\n")
 
 
 def main():

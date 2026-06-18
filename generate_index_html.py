@@ -93,6 +93,7 @@ def build_file_data(files, base_path):
             "type": {"html": "HTML", "htm": "HTML", "pdf": "PDF"}.get(ext.lstrip("."), ""),
             "subPath": sub_path,
             "mtime": mtime,
+            "folder": folder if folder != "__root__" else "根目录",
         }
 
         if folder not in groups:

@@ -311,7 +311,7 @@ function renderRecent() {
       card.innerHTML = `<span class="file-icon">${icon}</span>`
         + `<div class="file-info">`
         + `<div class="file-name">${f.name}</div>`
-        + `<div class="file-meta">${f.type}　${fmt(f.mtime)}</div>`
+        + `<div class="file-meta">📁 ${f.folder}　${fmt(f.mtime)}</div>`
         + `</div>`;
       list.appendChild(card);
     }

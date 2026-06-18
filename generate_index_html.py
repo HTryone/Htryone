@@ -9,6 +9,7 @@
 
 import json
 import os
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -166,9 +167,13 @@ def build_file_data(files, base_path):
     all_files.sort(key=lambda x: x["mtime"], reverse=True)
     recent = all_files[:10]
 
+    # updateTime 取最新文件的真实修改时间，而非脚本运行时间
+    latest_mtime = all_files[0]["mtime"] if all_files else time.time()
+    update_time_str = datetime.fromtimestamp(latest_mtime).strftime("%Y-%m-%d %H:%M:%S")
+
     return {
         "total": len(files),
-        "updateTime": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "updateTime": update_time_str,
         "folders": folders,
         "recent": recent,
     }

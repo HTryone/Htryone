@@ -237,8 +237,7 @@
     background-color: rgba(255, 255, 255, 0.04) !important;
 }
 [data-unified-mode="fixed"] .outline-content .outline-item-active > .outline-item > .outline-label {
-    color: #58a6ff !important;
-    background-color: rgba(88, 166, 255, 0.1) !important;
+    color: #c9d1d9 !important;
 }
 [data-unified-mode="fixed"] .outline-content .outline-expander {
     color: #484f58 !important;

@@ -205,6 +205,16 @@ body {
   margin-top: 24px;
 }
 
+/* ===== 工具栏 ===== */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
 /* ===== Tab 按钮 ===== */
 .tab-btns {
   display: flex;
@@ -285,9 +295,9 @@ body {
   }
   .tree-item:hover { background: #f0ede8; }
   .tree-item.active {
-    background: rgba(100,100,200,0.10);
-    border-color: rgba(100,100,200,0.3);
-    color: #333;
+    background: rgba(139,69,19,0.10);
+    border-color: rgba(139,69,19,0.3);
+    color: #8b4513;
     font-weight: 600;
   }
   /* 数量角标收起（空间紧凑） */

@@ -1,12 +1,10 @@
 
 /* ============================================================
    home-dark.css
-   索引页深色模式覆盖样式（固定模式 + 智能模式）
-   由 home_template.html 直接引入，通过 data-unified-mode 属性生效
+   索引页固定深色模式覆盖样式
+   由 home_template.html 直接引入，通过 data-unified-mode="fixed" 生效
 
-   配色原则：
-   - 固定模式：纯黑背景（#000），高对比度，小字用 #aaa 保证可读
-   - 智能模式：跟随系统，由 smart-dark-mode.js 动态注入
+   配色原则：纯黑背景（#000），高对比度，小字用 #aaa 保证可读
    ============================================================ */
 
 /* ========== 固定深色模式（纯黑） ========== */
@@ -110,103 +108,3 @@
     }
 }
 
-/* ========== 智能深色模式 ========== */
-
-/* --- 全局 --- */
-[data-unified-mode="smart"] body {
-    background: #1a1a1a !important;
-    color: #c8c8c8 !important;
-}
-
-/* --- Header --- */
-[data-unified-mode="smart"] .header {
-    background: #1a1a1a !important;
-    border-bottom-color: #333333 !important;
-}
-[data-unified-mode="smart"] .header h1 { color: #e0e0e0 !important; }
-[data-unified-mode="smart"] .header p   { color: #999 !important; }
-
-/* --- Sidebar --- */
-[data-unified-mode="smart"] .sidebar {
-    background: #1a1a1a !important;
-    border-right-color: #333333 !important;
-}
-[data-unified-mode="smart"] .sidebar-title { color: #888 !important; }
-
-[data-unified-mode="smart"] .tree-item { color: #aaa !important; }
-[data-unified-mode="smart"] .tree-item:hover { background: rgba(255,255,255,0.06) !important; }
-[data-unified-mode="smart"] .tree-item.active {
-    background: rgba(255,255,255,0.10) !important;
-    color: #e0e0e0 !important;
-}
-[data-unified-mode="smart"] .tree-count { color: #888 !important; }
-
-[data-unified-mode="smart"] .sidebar-search input {
-    background: #222222 !important;
-    border-color: #333333 !important;
-    color: #c8c8c8 !important;
-}
-[data-unified-mode="smart"] .sidebar-search input::placeholder { color: #888 !important; }
-
-/* --- 主内容区 --- */
-[data-unified-mode="smart"] .main { background: #1a1a1a !important; }
-
-[data-unified-mode="smart"] .section-title {
-    color: #c8c8c8 !important;
-    border-bottom-color: #333333 !important;
-}
-
-/* --- 文件卡片 --- */
-[data-unified-mode="smart"] .file-card {
-    background: #222222 !important;
-    border-color: #333333 !important;
-    color: #c8c8c8 !important;
-}
-[data-unified-mode="smart"] .file-card:hover {
-    border-color: #555555 !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
-}
-[data-unified-mode="smart"] .file-name  { color: #e0e0e0 !important; }
-[data-unified-mode="smart"] .file-meta  { color: #999 !important; }
-
-/* --- 搜索无结果 --- */
-[data-unified-mode="smart"] .search-empty { color: #888 !important; }
-
-/* --- Tab 按钮 --- */
-[data-unified-mode="smart"] .tab-btn {
-    background: #222222 !important;
-    border-color: #333333 !important;
-    color: #aaa !important;
-}
-[data-unified-mode="smart"] .tab-btn:hover {
-    background: rgba(255,255,255,0.08) !important;
-    color: #e0e0e0 !important;
-}
-[data-unified-mode="smart"] .tab-btn.active {
-    background: #444444 !important;
-    border-color: #444444 !important;
-    color: #e0e0e0 !important;
-}
-
-/* --- Footer --- */
-[data-unified-mode="smart"] .footer {
-    color: #888 !important;
-    border-top-color: #333333 !important;
-}
-
-/* --- 手机端 --- */
-@media (max-width: 768px) {
-    [data-unified-mode="smart"] .sidebar {
-        border-bottom-color: #333333 !important;
-    }
-    [data-unified-mode="smart"] .tree-item {
-        background: #222222 !important;
-        border-color: #333333 !important;
-        color: #aaa !important;
-    }
-    [data-unified-mode="smart"] .tree-item.active {
-        background: rgba(255,255,255,0.12) !important;
-        border-color: rgba(255,255,255,0.20) !important;
-        color: #e0e0e0 !important;
-    }
-}

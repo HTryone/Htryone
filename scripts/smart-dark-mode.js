@@ -148,42 +148,34 @@ window.SmartDarkMode = (function() {
 
     // ========== 公共 API ==========
     function enable() {
-        // 首页(index.html)和门户页(page2.html)已引入 home-dark.css，
-        // smart 模式由静态 CSS 规则覆盖，不需要动态注入
-        const path = window.location.pathname;
-        const isHomeOrPortal = path.endsWith('/index.html') || path.endsWith('/page2.html');
-
-        if (!isHomeOrPortal) {
-            // Typora 导出页等没有 home-dark.css 的页面，才走动态 HSL 算法
-            markOriginalColors();
-            if (!smartStyleEl) {
-                const css = generateSmartStyles();
-                smartStyleEl = document.createElement('style');
-                smartStyleEl.id = 'smart-dark-styles';
-                smartStyleEl.textContent = `
-                    [data-unified-mode="smart"] { background-color: #1a1a1a !important; }
-                    [data-unified-mode="smart"] body { background-color: #1a1a1a !important; }
-                    [data-unified-mode="smart"] * { background-image: none !important; box-shadow: none !important; }
-                    [data-unified-mode="smart"] #write table tbody tr:hover td,
-                    [data-unified-mode="smart"] #write table tbody tr:hover th {
-                        background-color: rgba(255, 255, 255, 0.05) !important;
-                    }
-                    [data-unified-mode="smart"] .typora-export-sidebar .outline-item:hover,
-                    [data-unified-mode="smart"] .outline-item:hover {
-                        background-color: rgba(255, 255, 255, 0.08) !important;
-                        color: rgba(255, 255, 255, 0.8) !important;
-                    }
-                    [data-unified-mode="smart"] #write a:hover {
-                        background-color: rgba(255, 255, 255, 0.08) !important;
-                    }
-                    [data-unified-mode="smart"] ::selection {
-                        background-color: rgba(100,120,150,0.12) !important;
-                        color: inherit !important;
-                    }
-                    ${css}
-                `;
-                document.head.appendChild(smartStyleEl);
-            }
+        markOriginalColors();
+        if (!smartStyleEl) {
+            const css = generateSmartStyles();
+            smartStyleEl = document.createElement('style');
+            smartStyleEl.id = 'smart-dark-styles';
+            smartStyleEl.textContent = `
+                [data-unified-mode="smart"] { background-color: #1a1a1a !important; }
+                [data-unified-mode="smart"] body { background-color: #1a1a1a !important; }
+                [data-unified-mode="smart"] * { background-image: none !important; box-shadow: none !important; }
+                [data-unified-mode="smart"] #write table tbody tr:hover td,
+                [data-unified-mode="smart"] #write table tbody tr:hover th {
+                    background-color: rgba(255, 255, 255, 0.05) !important;
+                }
+                [data-unified-mode="smart"] .typora-export-sidebar .outline-item:hover,
+                [data-unified-mode="smart"] .outline-item:hover {
+                    background-color: rgba(255, 255, 255, 0.08) !important;
+                    color: rgba(255, 255, 255, 0.8) !important;
+                }
+                [data-unified-mode="smart"] #write a:hover {
+                    background-color: rgba(255, 255, 255, 0.08) !important;
+                }
+                [data-unified-mode="smart"] ::selection {
+                    background-color: rgba(100,120,150,0.12) !important;
+                    color: inherit !important;
+                }
+                ${css}
+            `;
+            document.head.appendChild(smartStyleEl);
         }
 
         document.documentElement.setAttribute('data-unified-mode', 'smart');

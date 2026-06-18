@@ -209,6 +209,7 @@ def generate_portal_pages(data, base_path):
 <link rel="stylesheet" href="{up}scripts/css/home.css">
 <link rel="stylesheet" href="{up}scripts/css/home-dark.css">
 </head>
+<!-- smart-mode: static -->  <!-- 此注释告知 smart-dark-mode.js 跳过 HSL 注入，走 home-dark.css 静态规则 -->
 <body>
 
 <div class="header">

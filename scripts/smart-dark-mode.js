@@ -148,11 +148,11 @@ window.SmartDarkMode = (function() {
 
     // ========== 公共 API ==========
     function enable() {
-        // 首页(index.html)和门户页(page2.html)已有 home-dark.css 静态 smart 规则，跳过 HSL 注入
-        const path = window.location.pathname;
-        const isHomeOrPortal = path.endsWith('/index.html') || path.endsWith('/page2.html');
+        // 检测 HTML 注释标签 <!-- smart-mode: static -->
+        // 有此标签的页面（首页、page2）走 home-dark.css 静态规则，跳过 HSL 注入
+        const hasStaticSmart = document.documentElement.innerHTML.indexOf('smart-mode: static') !== -1;
 
-        if (!isHomeOrPortal) {
+        if (!hasStaticSmart) {
             // Typora 导出页等：走动态 HSL 算法
             markOriginalColors();
             if (!smartStyleEl) {

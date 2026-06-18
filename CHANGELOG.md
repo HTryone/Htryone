@@ -9,6 +9,7 @@
 - 优化：smart-dark-mode.js 首页和 page2 跳过动态注入，走 home-dark.css 静态规则
 - 修复：updateTime 改为最新文件真实修改时间，非脚本运行时间
 - 修复：scripts/css/home.css 补充 Tab 按钮浅色样式
+- 修复：手机端 .tree-item.active 配色改为暖棕色，补 .toolbar 桌面端 flex 样式
 
 ## 2026-06-18
 

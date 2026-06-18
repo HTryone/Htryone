@@ -148,10 +148,12 @@ window.SmartDarkMode = (function() {
 
     // ========== 公共 API ==========
     function enable() {
-        // 首页和 page2 都引入了 home-dark.css，smart 模式由静态 CSS 规则覆盖，不需要动态注入
-        const hasHomeDarkCss = !!document.querySelector('link[href*="home-dark.css"]');
+        // 首页(index.html)和门户页(page2.html)已引入 home-dark.css，
+        // smart 模式由静态 CSS 规则覆盖，不需要动态注入
+        const path = window.location.pathname;
+        const isHomeOrPortal = path.endsWith('/index.html') || path.endsWith('/page2.html');
 
-        if (!hasHomeDarkCss) {
+        if (!isHomeOrPortal) {
             // Typora 导出页等没有 home-dark.css 的页面，才走动态 HSL 算法
             markOriginalColors();
             if (!smartStyleEl) {

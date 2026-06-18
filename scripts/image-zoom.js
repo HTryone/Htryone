@@ -86,8 +86,9 @@
         '#iz-overlay .iz-close {',
         '  position: fixed; top: 20px; right: 20px;',
         '  width: 40px; height: 40px; z-index: 1;',
+        '  display: flex; align-items: center; justify-content: center;',
         '  background: rgba(255,255,255,0.12); border: none; border-radius: 50%;',
-        '  color: #fff; font-size: 24px; line-height: 40px; text-align: center;',
+        '  color: #fff; font-size: 22px;',
         '  cursor: pointer; transition: background 0.2s;',
         '  user-select: none;',
         '}',
@@ -98,7 +99,7 @@
         '@media (max-width: 600px) {',
         '  #iz-overlay .iz-container { max-width: 98vw; max-height: 96vh; }',
         '  #iz-overlay .iz-image { max-width: 98vw; max-height: 80vh; }',
-        '  #iz-overlay .iz-close { top: 12px; right: 12px; width: 36px; height: 36px; font-size: 20px; line-height: 36px; }',
+        '  #iz-overlay .iz-close { top: 12px; right: 12px; width: 36px; height: 36px; font-size: 18px; }',
         '}'
     ].join('\n');
 

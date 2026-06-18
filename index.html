@@ -201,7 +201,7 @@ function filterByFolder(name) {
   document.querySelectorAll(".tree-item").forEach(t =>
     t.classList.toggle("active", t.dataset.folder === name)
   );
-  document.querySelectorAll(".file-section").forEach(s => {
+  document.querySelectorAll("#fileSections > .file-section").forEach(s => {
     s.style.display = (name === "all" || s.dataset.folder === name) ? "" : "none";
   });
 }

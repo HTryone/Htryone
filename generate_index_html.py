@@ -7,9 +7,10 @@
 用法：python generate_index_html.py
 """
 
-from pathlib import Path
-from datetime import datetime
 import json
+import os
+from datetime import datetime
+from pathlib import Path
 
 # ==================== 配置区（可按需修改） ====================
 NOTES_DIR = "."              # 笔记根目录（在目标目录执行即可）
@@ -78,6 +79,11 @@ def build_file_data(files, base_path):
         stem = f.stem.replace("_", " ").replace("-", " ")
         ext = f.suffix.lower()
 
+        try:
+            mtime = f.stat().st_mtime
+        except Exception:
+            mtime = 0
+
         sub_path = "/".join(parts[1:-1]) if len(parts) > 2 else ""
 
         file_info = {
@@ -86,6 +92,7 @@ def build_file_data(files, base_path):
             "ext": ext,
             "type": {"html": "HTML", "htm": "HTML", "pdf": "PDF"}.get(ext.lstrip("."), ""),
             "subPath": sub_path,
+            "mtime": mtime,
         }
 
         if folder not in groups:
@@ -145,10 +152,24 @@ def build_file_data(files, base_path):
             "portals": portals,
         })
 
+    # 构建 recent 列表：所有文件按 mtime 降序，取前 10
+    all_files = []
+    for g in groups.values():
+        for f in g["files"]:
+            if "mtime" in f:
+                all_files.append(f)
+        for p in g["portals"].values():
+            for f in p["files"]:
+                if "mtime" in f:
+                    all_files.append(f)
+    all_files.sort(key=lambda x: x["mtime"], reverse=True)
+    recent = all_files[:10]
+
     return {
         "total": len(files),
         "updateTime": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "folders": folders,
+        "recent": recent,
     }
 
 

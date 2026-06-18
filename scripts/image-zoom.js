@@ -1,7 +1,7 @@
 /**
  * 图片点击放大灯箱 (Image Zoom Lightbox)
  * 点击页面中的图片即可放大悬浮查看，支持动画过渡、ESC/点击关闭、移动端适配
- * 
+ *
  * 用法：在 HTML 的 </body> 前引入此脚本即可
  *   <script src="路径/scripts/image-zoom.js"></script>
  */
@@ -12,22 +12,48 @@
     if (window.__imageZoomInitialized) return;
     window.__imageZoomInitialized = true;
 
-    // ==================== DOM 构建 ====================
+    // ==================== 辅助函数 ====================
 
-    // 获取脚本所在目录（处理相对路径）
-    function getScriptDir() {
-        var scripts = document.getElementsByTagName('script');
-        for (var i = scripts.length - 1; i >= 0; i--) {
-            var src = scripts[i].src;
-            if (src && src.indexOf('image-zoom.js') !== -1) {
-                var lastSlash = src.lastIndexOf('/');
-                return lastSlash >= 0 ? src.substring(0, lastSlash + 1) : '';
-            }
-        }
-        return '';
+    // 判断图片是否太小（图标/装饰图，不放大）
+    function isTooSmall(img) {
+        var w = img.naturalWidth || img.width || 0;
+        var h = img.naturalHeight || img.height || 0;
+        // 一侧小于 50 且另一侧也小于 100 → 跳过
+        if (w > 0 && h > 0 && (w < 50 || h < 50) && w < 100 && h < 100) return true;
+        // 尺寸未知 → 不跳过（可能还未加载）
+        return false;
     }
 
-    var scriptDir = getScriptDir();
+    // 判断是否在非图片链接内（跳转链接的缩略图不拦截）
+    function isInsideNonImageLink(img) {
+        var el = img;
+        while (el) {
+            if (el.tagName === 'A' && el.getAttribute('href')) {
+                var href = el.getAttribute('href');
+                if (href.indexOf('#') === 0) return false; // 锚点链接放行
+                return !/\.(png|jpg|jpeg|gif|webp|svg|bmp|ico)$/i.test(href);
+            }
+            // 向上查 3 层，超出不查（性能）
+            el = el.parentElement;
+            if (el === document.body) break;
+        }
+        return false;
+    }
+
+    // 判断点击目标是否是"可放大图片"
+    function isValidZoomTarget(img) {
+        if (!img || img.tagName !== 'IMG') return false;
+        // 跳过灯箱自身的大图
+        if (img.closest && img.closest('#iz-overlay')) return false;
+        if (img.parentElement && img.parentElement.id === 'iz-overlay') return false;
+        // 跳过太小的图标
+        if (isTooSmall(img)) return false;
+        // 跳过非图片链接
+        if (isInsideNonImageLink(img)) return false;
+        return true;
+    }
+
+    // ==================== DOM 构建 ====================
 
     // 创建遮罩层
     var overlay = document.createElement('div');
@@ -118,20 +144,16 @@
         var overlayImg = overlay.querySelector('.iz-image');
         var caption    = overlay.querySelector('.iz-caption');
 
-        // 设置大图
         overlayImg.src = imgEl.src;
         overlayImg.alt = imgEl.alt || '';
         overlayImg.classList.add('animating');
 
-        // 设置标题
         var title = imgEl.alt || imgEl.title || '';
         caption.textContent = title;
 
-        // 禁止背景滚动
         document.body.style.overflow = 'hidden';
         document.body.appendChild(overlay);
 
-        // 触发动画
         requestAnimationFrame(function() {
             requestAnimationFrame(function() {
                 overlay.classList.add('active');
@@ -153,7 +175,6 @@
         overlayImg.classList.add('animating');
         overlay.classList.remove('active');
 
-        // 动画结束后移除
         var onTransitionEnd = function() {
             overlayImg.removeEventListener('transitionend', onTransitionEnd);
             if (overlay.parentNode) {
@@ -165,7 +186,7 @@
         };
         overlayImg.addEventListener('transitionend', onTransitionEnd);
 
-        // 兜底：如果动画没触发 transitionend（如 reduced motion），强制移除
+        // 兜底：reduced motion 等场景
         setTimeout(function() {
             if (overlay.parentNode && !isOpen) {
                 if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
@@ -177,86 +198,44 @@
 
     // ==================== 事件绑定 ====================
 
-    // 关闭按钮
     overlay.querySelector('.iz-close').addEventListener('click', function(e) {
         e.stopPropagation();
         close();
     });
 
-    // 点击背景关闭
     overlay.querySelector('.iz-bg').addEventListener('click', close);
 
-    // 点击大图也关闭（切换 zoom-out 光标暗示了这一点）
     overlay.querySelector('.iz-image').addEventListener('click', close);
 
-    // ESC 键关闭
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && isOpen) {
             close();
         }
     });
 
-    // 绑定图片点击
-    function bindImages() {
-        // 主要扫描 #write 区域内的图片（Typora 导出格式）
-        var container = document.getElementById('write') || document.body;
-        var images = container.querySelectorAll('img');
+    // ★ 核心改动：事件委托，捕获阶段统一拦截，不再逐个绑定
+    document.addEventListener('click', function(e) {
+        var img = e.target;
+        if (!isValidZoomTarget(img)) return;
 
-        for (var i = 0; i < images.length; i++) {
-            var img = images[i];
+        e.preventDefault();
+        e.stopPropagation();
+        open(img);
+    }, true); // true = 捕获阶段，比子元素的 click 先触发
 
-            // 跳过已绑定的
-            if (img.dataset.izBound === '1') continue;
+    // ==================== CSS 注入 ====================
 
-            // 跳过太小或装饰性图片
-            if (img.naturalWidth > 0 && img.naturalWidth < 40 && img.naturalHeight < 40) continue;
-
-            // 跳过已经在链接中的图片（用户可能想跳转链接而非放大）
-            var parent = img.parentElement;
-            if (parent && parent.tagName === 'A' && parent.getAttribute('href') && parent.getAttribute('href').indexOf('#') !== 0) {
-                // 如果链接指向的是图片文件本身，仍然绑定灯箱
-                var href = parent.getAttribute('href').toLowerCase();
-                if (!/\.(png|jpg|jpeg|gif|webp|svg|bmp|ico)$/i.test(href)) {
-                    continue;
-                }
-            }
-
-            img.dataset.izBound = '1';
-            img.style.cursor = 'zoom-in';
-
-            img.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                open(this);
-            });
-        }
-    }
-
-    // ==================== 初始化 ====================
-
-    function init() {
-        // 先注入样式
-        if (!document.getElementById('iz-styles')) {
-            style.id = 'iz-styles';
+    function injectStyles() {
+        if (document.getElementById('iz-styles')) return;
+        style.id = 'iz-styles';
+        if (document.head) {
             document.head.appendChild(style);
-        }
-
-        // DOM 就绪后绑定
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', bindImages);
         } else {
-            bindImages();
-        }
-
-        // 监听动态加载的图片（如 lazyload）
-        if (window.MutationObserver) {
-            var observer = new MutationObserver(function() {
-                bindImages();
+            document.addEventListener('DOMContentLoaded', function() {
+                document.head.appendChild(style);
             });
-            var target = document.getElementById('write') || document.body;
-            observer.observe(target, { childList: true, subtree: true });
         }
     }
 
-    init();
+    injectStyles();
 })();

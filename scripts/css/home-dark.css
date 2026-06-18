@@ -3,82 +3,210 @@
    home-dark.css
    索引页深色模式覆盖样式（固定模式 + 智能模式）
    由 home_template.html 直接引入，通过 data-unified-mode 属性生效
+
+   配色原则：
+   - 固定模式：纯黑背景（#000），高对比度，小字用 #aaa 保证可读
+   - 智能模式：跟随系统，由 smart-dark-mode.js 动态注入
    ============================================================ */
 
-/* ----- 固定深色模式 ----- */
-[data-unified-mode="fixed"] body { color: #b8bfc6 !important; }
-[data-unified-mode="fixed"] .header { background: #12121a !important; border-bottom-color: #2a2a3a !important; }
-[data-unified-mode="fixed"] .header h1 { color: #dedede !important; }
-[data-unified-mode="fixed"] .header p { color: #666 !important; }
-[data-unified-mode="fixed"] .sidebar { background: #12121a !important; border-right-color: #2a2a3a !important; }
-[data-unified-mode="fixed"] .tree-item { color: #888 !important; }
-[data-unified-mode="fixed"] .tree-item:hover { background: rgba(255,255,255,0.04) !important; }
-[data-unified-mode="fixed"] .tree-item.active { background: rgba(100,120,150,0.12) !important; color: #b8bfc6 !important; }
-[data-unified-mode="fixed"] .tree-count { color: #555 !important; }
-[data-unified-mode="fixed"] .sidebar-title { color: #555 !important; }
-[data-unified-mode="fixed"] .file-card { background: #1a1a28 !important; border-color: #2a2a3a !important; color: #b8bfc6 !important; }
-[data-unified-mode="fixed"] .file-card:hover { border-color: #444 !important; box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important; }
-[data-unified-mode="fixed"] .file-name { color: #dedede !important; }
-[data-unified-mode="fixed"] .file-meta { color: #555 !important; }
-[data-unified-mode="fixed"] .sidebar-search input { background: #1a1a28 !important; border-color: #2a2a3a !important; color: #b8bfc6 !important; }
-[data-unified-mode="fixed"] .section-title { color: #b8bfc6 !important; border-bottom-color: #2a2a3a !important; }
-[data-unified-mode="fixed"] .sidebar-search input::placeholder { color: #555 !important; }
-[data-unified-mode="fixed"] .footer { color: #444 !important; border-top-color: #2a2a3a !important; }
-[data-unified-mode="fixed"] .tab-btn { background: #1a1a28 !important; border-color: #2a2a3a !important; color: #888 !important; }
-[data-unified-mode="fixed"] .tab-btn:hover { background: rgba(255,255,255,0.06) !important; color: #b8bfc6 !important; }
-[data-unified-mode="fixed"] .tab-btn.active { background: #555 !important; border-color: #555 !important; color: #dedede !important; }
+/* ========== 固定深色模式（纯黑） ========== */
 
+/* --- 全局 --- */
+[data-unified-mode="fixed"] body {
+    background: #000000 !important;
+    color: #c8c8c8 !important;
+}
+
+/* --- Header --- */
+[data-unified-mode="fixed"] .header {
+    background: #000000 !important;
+    border-bottom-color: #222222 !important;
+}
+[data-unified-mode="fixed"] .header h1 { color: #e0e0e0 !important; }
+[data-unified-mode="fixed"] .header p   { color: #999 !important; }
+
+/* --- Sidebar --- */
+[data-unified-mode="fixed"] .sidebar {
+    background: #000000 !important;
+    border-right-color: #222222 !important;
+}
+[data-unified-mode="fixed"] .sidebar-title { color: #888 !important; }
+
+[data-unified-mode="fixed"] .tree-item { color: #aaa !important; }
+[data-unified-mode="fixed"] .tree-item:hover { background: rgba(255,255,255,0.06) !important; }
+[data-unified-mode="fixed"] .tree-item.active {
+    background: rgba(255,255,255,0.10) !important;
+    color: #e0e0e0 !important;
+}
+[data-unified-mode="fixed"] .tree-count { color: #888 !important; }
+
+[data-unified-mode="fixed"] .sidebar-search input {
+    background: #0d0d0d !important;
+    border-color: #222222 !important;
+    color: #c8c8c8 !important;
+}
+[data-unified-mode="fixed"] .sidebar-search input::placeholder { color: #888 !important; }
+
+/* --- 主内容区 --- */
+[data-unified-mode="fixed"] .main { background: #000000 !important; }
+
+[data-unified-mode="fixed"] .section-title {
+    color: #c8c8c8 !important;
+    border-bottom-color: #222222 !important;
+}
+
+/* --- 文件卡片（全部文件 + 最近更新 共用） --- */
+[data-unified-mode="fixed"] .file-card {
+    background: #0d0d0d !important;
+    border-color: #222222 !important;
+    color: #c8c8c8 !important;
+}
+[data-unified-mode="fixed"] .file-card:hover {
+    border-color: #444444 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.6) !important;
+}
+[data-unified-mode="fixed"] .file-name  { color: #e0e0e0 !important; }
+[data-unified-mode="fixed"] .file-meta  { color: #999 !important; }
+
+/* --- 搜索无结果 --- */
+[data-unified-mode="fixed"] .search-empty { color: #888 !important; }
+
+/* --- Tab 按钮 --- */
+[data-unified-mode="fixed"] .tab-btn {
+    background: #0d0d0d !important;
+    border-color: #222222 !important;
+    color: #aaa !important;
+}
+[data-unified-mode="fixed"] .tab-btn:hover {
+    background: rgba(255,255,255,0.08) !important;
+    color: #e0e0e0 !important;
+}
+[data-unified-mode="fixed"] .tab-btn.active {
+    background: #333333 !important;
+    border-color: #333333 !important;
+    color: #e0e0e0 !important;
+}
+
+/* --- Footer --- */
+[data-unified-mode="fixed"] .footer {
+    color: #888 !important;
+    border-top-color: #222222 !important;
+}
+
+/* --- 手机端 --- */
 @media (max-width: 768px) {
-    [data-unified-mode="fixed"] .sidebar { border-bottom-color: #2a2a3a !important; }
-    [data-unified-mode="fixed"] .sidebar-search input { width: 100% !important; }
-    /* 手机标签条深色 */
+    [data-unified-mode="fixed"] .sidebar {
+        border-bottom-color: #222222 !important;
+    }
     [data-unified-mode="fixed"] .tree-item {
-        background: #1a1a28 !important;
-        border-color: #2a2a3a !important;
-        color: #888 !important;
+        background: #0d0d0d !important;
+        border-color: #222222 !important;
+        color: #aaa !important;
     }
     [data-unified-mode="fixed"] .tree-item.active {
-        background: rgba(100,120,150,0.18) !important;
-        border-color: rgba(100,120,150,0.35) !important;
-        color: #b8bfc6 !important;
+        background: rgba(255,255,255,0.12) !important;
+        border-color: rgba(255,255,255,0.20) !important;
+        color: #e0e0e0 !important;
     }
 }
 
-/* ----- 智能深色模式 ----- */
-[data-unified-mode="smart"] body { color: #b8bfc6 !important; }
-[data-unified-mode="smart"] .header { background: #12121a !important; border-bottom-color: #2a2a3a !important; }
-[data-unified-mode="smart"] .header h1 { color: #dedede !important; }
-[data-unified-mode="smart"] .header p { color: #666 !important; }
-[data-unified-mode="smart"] .sidebar { background: #12121a !important; border-right-color: #2a2a3a !important; }
-[data-unified-mode="smart"] .tree-item { color: #888 !important; }
-[data-unified-mode="smart"] .tree-item:hover { background: rgba(255,255,255,0.04) !important; }
-[data-unified-mode="smart"] .tree-item.active { background: rgba(100,120,150,0.12) !important; color: #b8bfc6 !important; }
-[data-unified-mode="smart"] .tree-count { color: #555 !important; }
-[data-unified-mode="smart"] .sidebar-title { color: #555 !important; }
-[data-unified-mode="smart"] .file-card { background: #1a1a28 !important; border-color: #2a2a3a !important; color: #b8bfc6 !important; }
-[data-unified-mode="smart"] .file-card:hover { border-color: #444 !important; box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important; }
-[data-unified-mode="smart"] .file-name { color: #dedede !important; }
-[data-unified-mode="smart"] .file-meta { color: #555 !important; }
-[data-unified-mode="smart"] .sidebar-search input { background: #1a1a28 !important; border-color: #2a2a3a !important; color: #b8bfc6 !important; }
-[data-unified-mode="smart"] .section-title { color: #b8bfc6 !important; border-bottom-color: #2a2a3a !important; }
-[data-unified-mode="smart"] .sidebar-search input::placeholder { color: #555 !important; }
-[data-unified-mode="smart"] .footer { color: #444 !important; border-top-color: #2a2a3a !important; }
-[data-unified-mode="smart"] .tab-btn { background: #1a1a28 !important; border-color: #2a2a3a !important; color: #888 !important; }
-[data-unified-mode="smart"] .tab-btn:hover { background: rgba(255,255,255,0.06) !important; color: #b8bfc6 !important; }
-[data-unified-mode="smart"] .tab-btn.active { background: #555 !important; border-color: #555 !important; color: #dedede !important; }
+/* ========== 智能深色模式 ========== */
 
+/* --- 全局 --- */
+[data-unified-mode="smart"] body {
+    background: #1a1a1a !important;
+    color: #c8c8c8 !important;
+}
+
+/* --- Header --- */
+[data-unified-mode="smart"] .header {
+    background: #1a1a1a !important;
+    border-bottom-color: #333333 !important;
+}
+[data-unified-mode="smart"] .header h1 { color: #e0e0e0 !important; }
+[data-unified-mode="smart"] .header p   { color: #999 !important; }
+
+/* --- Sidebar --- */
+[data-unified-mode="smart"] .sidebar {
+    background: #1a1a1a !important;
+    border-right-color: #333333 !important;
+}
+[data-unified-mode="smart"] .sidebar-title { color: #888 !important; }
+
+[data-unified-mode="smart"] .tree-item { color: #aaa !important; }
+[data-unified-mode="smart"] .tree-item:hover { background: rgba(255,255,255,0.06) !important; }
+[data-unified-mode="smart"] .tree-item.active {
+    background: rgba(255,255,255,0.10) !important;
+    color: #e0e0e0 !important;
+}
+[data-unified-mode="smart"] .tree-count { color: #888 !important; }
+
+[data-unified-mode="smart"] .sidebar-search input {
+    background: #222222 !important;
+    border-color: #333333 !important;
+    color: #c8c8c8 !important;
+}
+[data-unified-mode="smart"] .sidebar-search input::placeholder { color: #888 !important; }
+
+/* --- 主内容区 --- */
+[data-unified-mode="smart"] .main { background: #1a1a1a !important; }
+
+[data-unified-mode="smart"] .section-title {
+    color: #c8c8c8 !important;
+    border-bottom-color: #333333 !important;
+}
+
+/* --- 文件卡片 --- */
+[data-unified-mode="smart"] .file-card {
+    background: #222222 !important;
+    border-color: #333333 !important;
+    color: #c8c8c8 !important;
+}
+[data-unified-mode="smart"] .file-card:hover {
+    border-color: #555555 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
+}
+[data-unified-mode="smart"] .file-name  { color: #e0e0e0 !important; }
+[data-unified-mode="smart"] .file-meta  { color: #999 !important; }
+
+/* --- 搜索无结果 --- */
+[data-unified-mode="smart"] .search-empty { color: #888 !important; }
+
+/* --- Tab 按钮 --- */
+[data-unified-mode="smart"] .tab-btn {
+    background: #222222 !important;
+    border-color: #333333 !important;
+    color: #aaa !important;
+}
+[data-unified-mode="smart"] .tab-btn:hover {
+    background: rgba(255,255,255,0.08) !important;
+    color: #e0e0e0 !important;
+}
+[data-unified-mode="smart"] .tab-btn.active {
+    background: #444444 !important;
+    border-color: #444444 !important;
+    color: #e0e0e0 !important;
+}
+
+/* --- Footer --- */
+[data-unified-mode="smart"] .footer {
+    color: #888 !important;
+    border-top-color: #333333 !important;
+}
+
+/* --- 手机端 --- */
 @media (max-width: 768px) {
-    [data-unified-mode="smart"] .sidebar { border-bottom-color: #2a2a3a !important; }
-    [data-unified-mode="smart"] .sidebar-search input { width: 100% !important; }
-    /* 手机标签条深色 */
+    [data-unified-mode="smart"] .sidebar {
+        border-bottom-color: #333333 !important;
+    }
     [data-unified-mode="smart"] .tree-item {
-        background: #1a1a28 !important;
-        border-color: #2a2a3a !important;
-        color: #888 !important;
+        background: #222222 !important;
+        border-color: #333333 !important;
+        color: #aaa !important;
     }
     [data-unified-mode="smart"] .tree-item.active {
-        background: rgba(100,120,150,0.18) !important;
-        border-color: rgba(100,120,150,0.35) !important;
-        color: #b8bfc6 !important;
+        background: rgba(255,255,255,0.12) !important;
+        border-color: rgba(255,255,255,0.20) !important;
+        color: #e0e0e0 !important;
     }
 }

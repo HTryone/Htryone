@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-深色模式自动监控（watchdog 事件驱动版）
+一键监控注入（watchdog 事件驱动版）
+监听工作区新增/修改的 HTML 文件，自动注入 dark-mode-toggle.js + image-zoom.js
+
 用法：python watch-dark-mode.py
 """
 
@@ -13,14 +15,19 @@ from watchdog.events import FileSystemEventHandler
 # ── 配置 ────────────────────────────────────────────────
 SCRIPTS_DIR   = os.path.dirname(os.path.abspath(__file__))
 WORKSPACE     = os.path.dirname(SCRIPTS_DIR)
-INJECT_TAG    = "<!-- __DARK_MODE_INJECTED__ -->"   # 唯一注入标记
 EXCLUDE_FILES = {"dark-mode-demo.html", "smart-dark-mode-demo.html"}
+
+INJECTIONS = [
+    {
+        "tag":  "<!-- __DARK_MODE_INJECTED__ -->",
+        "file": "scripts/dark-mode-toggle.js",
+    },
+    {
+        "tag":  "<!-- __IMAGE_ZOOM_INJECTED__ -->",
+        "file": "scripts/image-zoom.js",
+    },
+]
 # ──────────────────────────────────────────────────────────
-
-
-def is_injected(content):
-    """判断是否已注入，只认唯一标记注释"""
-    return INJECT_TAG in content
 
 
 def rel_path(script_abs, html_file):
@@ -31,8 +38,8 @@ def rel_path(script_abs, html_file):
 
 def inject_file(filepath):
     """
-    对单个 HTML 文件执行注入。
-    返回 True 表示文件被修改了，False 表示跳过（已注入或出错）。
+    对单个 HTML 文件执行所有注入。
+    返回 True 表示文件被修改了，False 表示跳过。
     """
     try:
         with open(filepath, "r", encoding="utf-8") as f:
@@ -41,31 +48,35 @@ def inject_file(filepath):
         print(f"  [读取失败] {filepath}: {e}")
         return False
 
-    if is_injected(content):
-        return False   # 已有标记，跳过
+    changed = False
+    for inj in INJECTIONS:
+        if inj["tag"] in content:
+            continue
 
-    script_abs = os.path.join(WORKSPACE, "scripts", "dark-mode-toggle.js")
-    src = rel_path(script_abs, filepath)
+        script_filename = os.path.basename(inj["file"])
+        if script_filename in content:
+            continue   # 已有引用但缺标记，静默跳过
 
-    # 构造要插入的片段：标记 + script 标签
-    insert = f"\n{INJECT_TAG}\n<script src=\"{src}\"></script>\n"
+        script_abs = os.path.join(WORKSPACE, inj["file"].replace("/", os.sep))
+        src = rel_path(script_abs, filepath)
+        insert = f"\n{inj['tag']}\n<script src=\"{src}\"></script>\n"
 
-    # 在 </body> 前插入，没有 </body> 就追加末尾
-    pos = content.rfind("</body>")
-    if pos != -1:
-        new_content = content[:pos] + insert + content[pos:]
-    else:
-        new_content = content.rstrip() + insert
+        pos = content.rfind("</body>")
+        if pos != -1:
+            content = content[:pos] + insert + content[pos:]
+        else:
+            content = content.rstrip() + insert
 
-    # 只有内容真的变了才写文件
-    if new_content == content:
+        changed = True
+
+    if not changed:
         return False
 
     with open(filepath, "w", encoding="utf-8") as f:
-        f.write(new_content)
+        f.write(content)
 
     rel = os.path.relpath(filepath, WORKSPACE)
-    print(f"  [注入] {rel}  →  {src}")
+    print(f"  [注入] {rel}")
     return True
 
 
@@ -103,7 +114,6 @@ class Handler(FileSystemEventHandler):
     def on_any_event(self, event):
         if event.is_directory:
             return
-        # 兼容 moved 事件（src_path + dest_path）
         fp = getattr(event, "dest_path", None) or event.src_path
         fp = os.path.normpath(fp)
         if not self._is_target(fp) or not self._debounce(fp):
@@ -116,11 +126,15 @@ class Handler(FileSystemEventHandler):
 
 def main():
     print("=" * 60)
-    print("  深色模式脚本自动监控（watchdog 事件驱动）")
+    print("  一键监控注入（深色模式 + 图片缩放）")
     print("=" * 60)
-    print(f"\n工作目录 : {WORKSPACE}")
-    print(f"注入标记   : {INJECT_TAG}")
-    print(f"防抖间隔   : 5 秒\n")
+    print(f"\n工作目录   : {WORKSPACE}")
+    print(f"防抖间隔   : 5 秒")
+    for inj in INJECTIONS:
+        sf = os.path.join(WORKSPACE, inj["file"].replace("/", os.sep))
+        ok = "✓" if os.path.exists(sf) else "✗ 缺失!"
+        print(f"  {ok}  {inj['file']}")
+    print()
     print("-" * 60)
 
     scan_all()

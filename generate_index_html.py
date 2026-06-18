@@ -202,7 +202,11 @@ def generate_portal_pages(data, base_path):
   Powered by generate_index_html.py · {update_time}
 </div>
 
+<!-- __DARK_MODE_INJECTED__ -->
 <script src="{up}scripts/dark-mode-toggle.js"></script>
+
+<!-- __IMAGE_ZOOM_INJECTED__ -->
+<script src="{up}scripts/image-zoom.js"></script>
 </body>
 </html>'''
 

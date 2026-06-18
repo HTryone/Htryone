@@ -1,5 +1,6 @@
 /**
  * 固定深色模式样式 (Typora 导出页面专用)
+ * 色板：GitHub Dark 官方配色
  * 被 dark-mode-toggle.js 动态加载
  * 选择器: [data-unified-mode="fixed"]
  */
@@ -10,216 +11,268 @@
     const style = document.createElement('style');
     style.id = 'dark-mode-fixed-styles';
     style.textContent = `
-        /* ===== 固定深色模式 - Typora 导出页面适配 ===== */
+        /* ===== 固定深色模式 - GitHub Dark 配色 ===== */
 
-        /* 基础变量 */
+        /* ---------- 基础 ---------- */
         [data-unified-mode="fixed"] {
-            --bg-color: #0a0a0f !important;
-            --text-color: #b8bfc6 !important;
-            --select-text-bg-color: rgba(255,255,255,0.08) !important;
-            --select-text-font-color: inherit !important;
+            --bg: #0d1117; --surface: #161b22;
+            --border: #30363d; --text: #c9d1d9;
+            --text-dim: #8b949e;
         }
-
-        /* 页面背景 */
-        [data-unified-mode="fixed"] html {
-            background-color: #0a0a0f !important;
-        }
+        [data-unified-mode="fixed"] html,
         [data-unified-mode="fixed"] body {
-            background-color: #0a0a0f !important;
-            color: #b8bfc6 !important;
+            background-color: #0d1117 !important;
+            color: #c9d1d9 !important;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* 选中文字 */
+        /* ---------- 选中文字 ---------- */
         [data-unified-mode="fixed"] ::selection {
-            background-color: rgba(100,120,150,0.12) !important;
+            background-color: rgba(88, 166, 255, 0.15) !important;
             color: inherit !important;
         }
         [data-unified-mode="fixed"] ::-moz-selection {
-            background-color: rgba(100,120,150,0.12) !important;
+            background-color: rgba(88, 166, 255, 0.15) !important;
             color: inherit !important;
         }
 
-        /* 全局关阴影 + 超链接 hover */
-        [data-unified-mode="fixed"] * { box-shadow: none !important; }
-        [data-unified-mode="fixed"] #write a:hover { background-color: rgba(100,120,150,0.12) !important; }
-
-        /* 内容区域 */
+        /* ---------- 内容区域 ---------- */
         [data-unified-mode="fixed"] #write {
-            background-color: #0a0a0f !important;
+            background-color: #0d1117 !important;
         }
 
-        /* 标题 */
+        /* ---------- 标题 ---------- */
         [data-unified-mode="fixed"] #write h1,
         [data-unified-mode="fixed"] #write h2,
         [data-unified-mode="fixed"] #write h3,
         [data-unified-mode="fixed"] #write h4,
         [data-unified-mode="fixed"] #write h5,
         [data-unified-mode="fixed"] #write h6 {
-            color: #dedede !important;
+            color: #c9d1d9 !important;
+        }
+        [data-unified-mode="fixed"] #write h1,
+        [data-unified-mode="fixed"] #write h2 {
+            border-bottom-color: #21262d !important;
+        }
+        [data-unified-mode="fixed"] #write h6 {
+            color: #8b949e !important;
         }
 
-        /* 段落和正文 */
+        /* ---------- 正文、列表 ---------- */
         [data-unified-mode="fixed"] #write p,
-        [data-unified-mode="fixed"] #write li {
-            color: #b8bfc6 !important;
+        [data-unified-mode="fixed"] #write li,
+        [data-unified-mode="fixed"] #write span:not(.md-plain) {
+            color: #c9d1d9 !important;
+        }
+        [data-unified-mode="fixed"] #write strong {
+            color: #c9d1d9 !important;
+        }
+        [data-unified-mode="fixed"] #write em {
+            color: #c9d1d9 !important;
         }
 
-        /* 链接 */
+        /* ---------- 链接 ---------- */
         [data-unified-mode="fixed"] #write a {
-            color: #7ec8ff !important;
+            color: #58a6ff !important;
         }
         [data-unified-mode="fixed"] #write a:hover {
-            color: #a8ddff !important;
+            color: #79c0ff !important;
         }
 
-        /* 代码块 - 深黑背景 */
+        /* ---------- 水平线 ---------- */
+        [data-unified-mode="fixed"] #write hr {
+            background-color: #21262d !important;
+            border-color: #21262d !important;
+        }
+
+        /* ---------- 代码块 (.md-fences) ---------- */
+        [data-unified-mode="fixed"] #write .md-fences,
         [data-unified-mode="fixed"] #write pre,
-        [data-unified-mode="fixed"] #write pre.md-fences {
-            background-color: #0d1117 !important;
+        [data-unified-mode="fixed"] pre:not(#write) {
+            background-color: #161b22 !important;
             border-color: #30363d !important;
+            color: #c9d1d9 !important;
         }
-        [data-unified-mode="fixed"] #write pre .CodeMirror,
-        [data-unified-mode="fixed"] #write pre .CodeMirror-scroll,
-        [data-unified-mode="fixed"] #write pre .CodeMirror-sizer,
-        [data-unified-mode="fixed"] #write pre .CodeMirror-lines,
-        [data-unified-mode="fixed"] #write pre .CodeMirror-code {
-            background-color: #0d1117 !important;
-        }
-        [data-unified-mode="fixed"] #write pre .CodeMirror-activeline-background,
-        [data-unified-mode="fixed"] #write pre .CodeMirror-linebackground {
+        [data-unified-mode="fixed"] #write .md-fences .CodeMirror,
+        [data-unified-mode="fixed"] #write .md-fences .CodeMirror-scroll,
+        [data-unified-mode="fixed"] #write .md-fences .CodeMirror-sizer,
+        [data-unified-mode="fixed"] #write .md-fences .CodeMirror-lines,
+        [data-unified-mode="fixed"] #write .md-fences .CodeMirror-code {
             background-color: #161b22 !important;
         }
-        [data-unified-mode="fixed"] #write pre code {
-            background-color: transparent !important;
-            color: #b8bfc6;
-        }
-        [data-unified-mode="fixed"] #write pre .CodeMirror-line {
-            background-color: transparent !important;
-            color: #b8bfc6 !important;
-        }
-        /* 语法高亮 */
-        [data-unified-mode="fixed"] #write pre .cm-comment { color: #f0a050 !important; }
-        [data-unified-mode="fixed"] #write pre .cm-string { color: #ff7b72 !important; }
-        [data-unified-mode="fixed"] #write pre .cm-keyword { color: #ff7b72 !important; }
-        [data-unified-mode="fixed"] #write pre .cm-property,
-        [data-unified-mode="fixed"] #write pre .cm-variable { color: #79c0ff !important; }
-        [data-unified-mode="fixed"] #write pre .cm-number { color: #79c0ff !important; }
-        [data-unified-mode="fixed"] #write pre .cm-tag { color: #7ee787 !important; }
-        [data-unified-mode="fixed"] #write pre .cm-attribute { color: #79c0ff !important; }
-        [data-unified-mode="fixed"] #write pre .cm-operator { color: #ff7b72 !important; }
-        [data-unified-mode="fixed"] #write pre .cm-atom { color: #ff7b72 !important; }
-
-        /* 普通 HTML 代码块 */
-        [data-unified-mode="fixed"] pre:not(#write pre) {
+        [data-unified-mode="fixed"] #write .md-fences .CodeMirror-activeline-background,
+        [data-unified-mode="fixed"] #write .md-fences .CodeMirror-linebackground {
             background-color: #0d1117 !important;
-            border: 1px solid #30363d !important;
-            border-radius: 5px;
-            padding: 15px;
         }
-        [data-unified-mode="fixed"] pre:not(#write pre) code {
+        [data-unified-mode="fixed"] #write .md-fences code,
+        [data-unified-mode="fixed"] #write pre code,
+        [data-unified-mode="fixed"] pre:not(#write) code {
             background-color: transparent !important;
-            color: #b8bfc6 !important;
+            color: #c9d1d9 !important;
+        }
+        [data-unified-mode="fixed"] #write .md-fences .CodeMirror-line {
+            background-color: transparent !important;
+            color: #c9d1d9 !important;
         }
 
-        /* 行内代码 */
-        [data-unified-mode="fixed"] #write code:not(pre code) {
-            background-color: #21262d !important;
-            color: #d0d0d0 !important;
-            border-color: #30363d !important;
+        /* ---------- 语法高亮 ---------- */
+        [data-unified-mode="fixed"] #write .md-fences .cm-comment,
+        [data-unified-mode="fixed"] #write pre .cm-comment { color: #8b949e !important; }
+        [data-unified-mode="fixed"] #write .md-fences .cm-string,
+        [data-unified-mode="fixed"] #write pre .cm-string { color: #a5d6ff !important; }
+        [data-unified-mode="fixed"] #write .md-fences .cm-keyword,
+        [data-unified-mode="fixed"] #write pre .cm-keyword { color: #ff7b72 !important; }
+        [data-unified-mode="fixed"] #write .md-fences .cm-variable,
+        [data-unified-mode="fixed"] #write pre .cm-variable,
+        [data-unified-mode="fixed"] #write .md-fences .cm-property,
+        [data-unified-mode="fixed"] #write pre .cm-property { color: #79c0ff !important; }
+        [data-unified-mode="fixed"] #write .md-fences .cm-number,
+        [data-unified-mode="fixed"] #write pre .cm-number { color: #a5d6ff !important; }
+        [data-unified-mode="fixed"] #write .md-fences .cm-tag,
+        [data-unified-mode="fixed"] #write pre .cm-tag { color: #7ee787 !important; }
+        [data-unified-mode="fixed"] #write .md-fences .cm-attribute,
+        [data-unified-mode="fixed"] #write pre .cm-attribute { color: #79c0ff !important; }
+        [data-unified-mode="fixed"] #write .md-fences .cm-operator,
+        [data-unified-mode="fixed"] #write pre .cm-operator { color: #ff7b72 !important; }
+        [data-unified-mode="fixed"] #write .md-fences .cm-atom,
+        [data-unified-mode="fixed"] #write pre .cm-atom { color: #ff7b72 !important; }
+        [data-unified-mode="fixed"] #write .md-fences .cm-builtin,
+        [data-unified-mode="fixed"] #write pre .cm-builtin { color: #d2a8ff !important; }
+        [data-unified-mode="fixed"] #write .md-fences .cm-header,
+        [data-unified-mode="fixed"] #write pre .cm-header,
+        [data-unified-mode="fixed"] #write .md-fences .cm-def,
+        [data-unified-mode="fixed"] #write pre .cm-def { color: #79c0ff !important; }
+
+        /* ---------- 行内代码 ---------- */
+        [data-unified-mode="fixed"] #write code:not(pre code):not(.md-fences code),
+        [data-unified-mode="fixed"] #write tt {
+            background-color: #343941 !important;
+            color: #c9d1d9 !important;
+            border-color: transparent !important;
+        }
+        [data-unified-mode="fixed"] #write .md-lang {
+            color: #8b949e !important;
         }
 
-        /* 引用块 */
+        /* ---------- 引用块 ---------- */
         [data-unified-mode="fixed"] #write blockquote {
-            background-color: #252535 !important;
-            border-left-color: #6dc1e7 !important;
-            color: #b8bfc6 !important;
+            background-color: transparent !important;
+            border-left: 4px solid #30363d !important;
+            color: #8b949e !important;
+        }
+        [data-unified-mode="fixed"] #write blockquote blockquote {
+            border-left-color: #21262d !important;
+        }
+        [data-unified-mode="fixed"] #write blockquote strong {
+            color: #c9d1d9 !important;
         }
 
-        /* 表格 */
+        /* ---------- 表格 ---------- */
         [data-unified-mode="fixed"] #write table {
-            background-color: #1e1e2f !important;
+            background-color: transparent !important;
         }
         [data-unified-mode="fixed"] #write th,
         [data-unified-mode="fixed"] #write td {
-            border-color: #4a4a5e !important;
-            color: #b8bfc6 !important;
+            border-color: #30363d !important;
+            color: #c9d1d9 !important;
         }
+        [data-unified-mode="fixed"] #write thead,
         [data-unified-mode="fixed"] #write th {
-            background-color: #2d2d3a !important;
+            background-color: #161b22 !important;
         }
-        [data-unified-mode="fixed"] #write tr:nth-child(even) {
-            background-color: #242436 !important;
+        [data-unified-mode="fixed"] #write tr {
+            background-color: transparent !important;
+            border-color: #30363d !important;
         }
-        [data-unified-mode="fixed"] #write table tbody tr:hover td,
-        [data-unified-mode="fixed"] #write table tbody td:hover {
-            background-color: #1a1a28 !important;
-            color: #b8bfc6 !important;
-            box-shadow: none !important;
+        [data-unified-mode="fixed"] #write tr:nth-child(2n) {
+            background-color: #161b22 !important;
         }
-
-        /* 水平线 */
-        [data-unified-mode="fixed"] #write hr {
-            border-color: #4a4a5e !important;
+        [data-unified-mode="fixed"] #write figure.table-figure {
+            background-color: transparent !important;
         }
 
-        /* 图片 */
+        /* ---------- 图片 ---------- */
         [data-unified-mode="fixed"] #write img {
             opacity: 0.92;
         }
-
-        /* 侧边栏大纲 */
-        [data-unified-mode="fixed"] .typora-export-sidebar {
-            background-color: #2e3033 !important;
-            border-right-color: #404050 !important;
+        [data-unified-mode="fixed"] #write img:hover {
+            opacity: 1;
         }
+        [data-unified-mode="fixed"] .md-image > .md-meta {
+            color: #8b949e !important;
+        }
+
+        /* ---------- 元数据 / 数学 / TOC ---------- */
+        [data-unified-mode="fixed"] #write pre.md-meta-block {
+            background-color: #161b22 !important;
+            color: #8b949e !important;
+        }
+        [data-unified-mode="fixed"] .md-mathjax-midline,
+        [data-unified-mode="fixed"] .mathjax-block {
+            background-color: #0d1117 !important;
+            color: #c9d1d9 !important;
+        }
+        [data-unified-mode="fixed"] .md-toc {
+            color: #c9d1d9 !important;
+        }
+        [data-unified-mode="fixed"] .md-toc a {
+            color: #8b949e !important;
+        }
+        [data-unified-mode="fixed"] .md-toc a:hover {
+            color: #58a6ff !important;
+        }
+        [data-unified-mode="fixed"] .md-tag {
+            color: #8b949e !important;
+        }
+
+        /* ---------- 复选框 ---------- */
+        [data-unified-mode="fixed"] .md-task-list-item > input {
+            filter: invert(1) hue-rotate(180deg) brightness(0.7);
+        }
+
+        /* ---------- 侧边栏大纲 ---------- */
+        [data-unified-mode="fixed"] .typora-export-sidebar {
+            background-color: #161b22 !important;
+            border-right-color: #21262d !important;
+        }
+        [data-unified-mode="fixed"] .outline-content {
+            background-color: #161b22 !important;
+        }
+        [data-unified-mode="fixed"] .outline-content li,
         [data-unified-mode="fixed"] .outline-content .outline-item-wrapper {
             background-color: transparent !important;
         }
         [data-unified-mode="fixed"] .outline-content .outline-label {
-            color: #b8bfc6 !important;
+            color: #8b949e !important;
         }
         [data-unified-mode="fixed"] .outline-content .outline-item:hover {
-            background-color: rgba(255,255,255,0.05) !important;
+            background-color: rgba(255, 255, 255, 0.04) !important;
         }
         [data-unified-mode="fixed"] .outline-content .outline-item-active > .outline-item > .outline-label {
-            color: #6dc1e7 !important;
-            background-color: rgba(109,193,231,0.12) !important;
+            color: #58a6ff !important;
+            background-color: rgba(88, 166, 255, 0.1) !important;
         }
         [data-unified-mode="fixed"] .outline-content .outline-expander {
-            color: #888 !important;
+            color: #484f58 !important;
         }
         [data-unified-mode="fixed"] .outline-content .outline-expander:hover {
-            color: #b8bfc6 !important;
-        }
-        [data-unified-mode="fixed"] .typora-export-sidebar ::-webkit-scrollbar {
-            width: 6px;
-        }
-        [data-unified-mode="fixed"] .typora-export-sidebar ::-webkit-scrollbar-track {
-            background: #2e3033;
-        }
-        [data-unified-mode="fixed"] .typora-export-sidebar ::-webkit-scrollbar-thumb {
-            background: #505050;
-            border-radius: 3px;
-        }
-        [data-unified-mode="fixed"] .outline-content {
-            background-color: #2e3033 !important;
+            color: #8b949e !important;
         }
 
-        /* 滚动条 */
+        /* ---------- 滚动条 ---------- */
         [data-unified-mode="fixed"] ::-webkit-scrollbar {
             width: 8px; height: 8px;
         }
         [data-unified-mode="fixed"] ::-webkit-scrollbar-track {
-            background: #0a0a0f;
+            background: #0d1117;
         }
         [data-unified-mode="fixed"] ::-webkit-scrollbar-thumb {
-            background: #505060;
+            background: #30363d;
             border-radius: 4px;
         }
         [data-unified-mode="fixed"] ::-webkit-scrollbar-thumb:hover {
-            background: #70717d;
+            background: #484f58;
         }
-
     `;
     document.head.appendChild(style);
 })();

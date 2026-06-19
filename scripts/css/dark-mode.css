@@ -5,7 +5,7 @@
 [data-unified-mode="fixed"] {
     --bg: #1e1e1e; --surface: #252526;
     --border: #3d3d3d; --text: #d4d4d4;
-    --text-dim: #858585;
+    --text-dim: #a0a0b0;
 }
 [data-unified-mode="fixed"] html,
 [data-unified-mode="fixed"] body {
@@ -45,7 +45,7 @@
     border-bottom-color: #3d3d3d !important;
 }
 [data-unified-mode="fixed"] #write h6 {
-    color: #858585 !important;
+    color: #a0a0b0 !important;
 }
 
 /* ---------- 正文、列表 ---------- */
@@ -141,7 +141,7 @@
     border-color: transparent !important;
 }
 [data-unified-mode="fixed"] #write .md-lang {
-    color: #858585 !important;
+    color: #a0a0b0 !important;
 }
 
 /* ---------- 引用块 ---------- */
@@ -193,7 +193,7 @@
     opacity: 1;
 }
 [data-unified-mode="fixed"] .md-image > .md-meta {
-    color: #858585 !important;
+    color: #a0a0b0 !important;
 }
 
 /* ---------- 元数据 / 数学 / TOC ---------- */
@@ -210,13 +210,13 @@
     color: #d4d4d4 !important;
 }
 [data-unified-mode="fixed"] .md-toc a {
-    color: #858585 !important;
+    color: #a0a0b0 !important;
 }
 [data-unified-mode="fixed"] .md-toc a:hover {
     color: #569cd6 !important;
 }
 [data-unified-mode="fixed"] .md-tag {
-    color: #858585 !important;
+    color: #a0a0b0 !important;
 }
 
 /* ---------- 搜索高亮 ---------- */
@@ -243,7 +243,7 @@
     background-color: transparent !important;
 }
 [data-unified-mode="fixed"] .outline-content .outline-label {
-    color: #858585 !important;
+    color: #a0a0b0 !important;
 }
 [data-unified-mode="fixed"] .outline-content .outline-item:hover {
     background-color: rgba(255, 255, 255, 0.06) !important;
@@ -252,10 +252,10 @@
     color: #d4d4d4 !important;
 }
 [data-unified-mode="fixed"] .outline-content .outline-expander {
-    color: #4d4d4d !important;
+    color: #6a6a6a !important;
 }
 [data-unified-mode="fixed"] .outline-content .outline-expander:hover {
-    color: #858585 !important;
+    color: #a0a0b0 !important;
 }
 
 /* ---------- 滚动条 ---------- */
@@ -309,7 +309,7 @@
 /* ---------- 标题属性标签 ---------- */
 [data-unified-mode="fixed"] #write .md-attr,
 [data-unified-mode="fixed"] #write .md-header-span .md-attr {
-    color: #858585 !important;
+    color: #a0a0b0 !important;
 }
 
 /* ---------- Alert 告警文本 ---------- */
@@ -345,7 +345,7 @@
 
 /* ---------- 展开图片元数据 ---------- */
 [data-unified-mode="fixed"] #write .md-expand.md-image > .md-meta {
-    color: #858585 !important;
+    color: #a0a0b0 !important;
 }
 
 /* ---------- TOC 项目 ---------- */

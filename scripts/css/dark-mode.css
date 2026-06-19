@@ -272,3 +272,120 @@
 [data-unified-mode="fixed"] ::-webkit-scrollbar-thumb:hover {
     background: #4d4d4d;
 }
+
+/* ===== 补充覆盖（vscode dark+ 风格） ===== */
+
+/* ---------- 脚注 ---------- */
+[data-unified-mode="fixed"] #write sup.md-footnote {
+    background-color: #2d2d2d !important;
+    color: #569cd6 !important;
+}
+
+/* ---------- 代码工具提示 ---------- */
+[data-unified-mode="fixed"] div.code-tooltip,
+[data-unified-mode="fixed"] .md-hover-tip .md-arrow:after {
+    background-color: #252526 !important;
+    border-color: #3d3d3d !important;
+}
+[data-unified-mode="fixed"] div.code-tooltip-content {
+    color: #d4d4d4 !important;
+}
+
+/* ---------- 图表面板（mermaid/sequence/flow） ---------- */
+[data-unified-mode="fixed"] #write .md-diagram-panel {
+    background-color: #252526 !important;
+    border-color: #3d3d3d !important;
+}
+[data-unified-mode="fixed"] #write .md-diagram-panel-error {
+    color: #f48771 !important;
+}
+[data-unified-mode="fixed"] #write .md-diagram-panel svg .label,
+[data-unified-mode="fixed"] #write .md-diagram-panel svg text {
+    color: #d4d4d4 !important;
+    fill: #d4d4d4 !important;
+}
+
+/* ---------- MD 源码注释 ---------- */
+[data-unified-mode="fixed"] #write .md-comment {
+    color: #6a9955 !important;
+}
+
+/* ---------- 行内数学公式 ---------- */
+[data-unified-mode="fixed"] #write .md-inline-math script,
+[data-unified-mode="fixed"] #write .md-inline-math svg {
+    color: #9cdcfe !important;
+}
+
+/* ---------- 标题属性标签 ---------- */
+[data-unified-mode="fixed"] #write .md-attr,
+[data-unified-mode="fixed"] #write .md-header-span .md-attr {
+    color: #858585 !important;
+}
+
+/* ---------- 表格编辑浮层 ---------- */
+[data-unified-mode="fixed"] #write .md-table-resize-popover,
+[data-unified-mode="fixed"] .ty-table-edit {
+    background-color: #252526 !important;
+    border-color: #3d3d3d !important;
+}
+
+/* ---------- Alert 告警文本 ---------- */
+[data-unified-mode="fixed"] #write .md-alert-text-note {
+    color: #569cd6 !important;
+}
+[data-unified-mode="fixed"] #write .md-alert-text-important {
+    color: #c586c0 !important;
+}
+[data-unified-mode="fixed"] #write .md-alert-text-warning {
+    color: #dcdcaa !important;
+}
+
+/* ---------- 扩展代码高亮 ---------- */
+[data-unified-mode="fixed"] #write .md-fences .cm-variable-2,
+[data-unified-mode="fixed"] #write pre .cm-variable-2 { color: #9cdcfe !important; }
+[data-unified-mode="fixed"] #write .md-fences .cm-variable-3,
+[data-unified-mode="fixed"] #write pre .cm-variable-3 { color: #9cdcfe !important; }
+[data-unified-mode="fixed"] #write .md-fences .cm-bracket,
+[data-unified-mode="fixed"] #write pre .cm-bracket { color: #808080 !important; }
+[data-unified-mode="fixed"] #write .md-fences .cm-meta,
+[data-unified-mode="fixed"] #write pre .cm-meta { color: #9cdcfe !important; }
+[data-unified-mode="fixed"] #write .md-fences .cm-qualifier,
+[data-unified-mode="fixed"] #write pre .cm-qualifier { color: #d7ba7d !important; }
+[data-unified-mode="fixed"] #write .md-fences .cm-link,
+[data-unified-mode="fixed"] #write pre .cm-link { color: #569cd6 !important; }
+[data-unified-mode="fixed"] #write .md-fences .cm-quote,
+[data-unified-mode="fixed"] #write pre .cm-quote { color: #6a9955 !important; }
+[data-unified-mode="fixed"] #write .md-fences .cm-hr,
+[data-unified-mode="fixed"] #write pre .cm-hr { color: #808080 !important; }
+[data-unified-mode="fixed"] #write .md-fences .cm-string-2,
+[data-unified-mode="fixed"] #write pre .cm-string-2 { color: #ce9178 !important; }
+
+/* ---------- CodeMirror 光标与选中 ---------- */
+[data-unified-mode="fixed"] #write .CodeMirror div.CodeMirror-cursor {
+    border-left-color: #aeafad !important;
+}
+[data-unified-mode="fixed"] #write .CodeMirror-selected,
+[data-unified-mode="fixed"] #write .CodeMirror-selectedtext {
+    background-color: rgba(86, 156, 214, 0.15) !important;
+}
+
+/* ---------- 展开图片元数据 ---------- */
+[data-unified-mode="fixed"] #write .md-expand.md-image > .md-meta {
+    color: #858585 !important;
+}
+
+/* ---------- TOC 项目与提示 ---------- */
+[data-unified-mode="fixed"] #write .md-toc-item {
+    color: #9cdcfe !important;
+}
+[data-unified-mode="fixed"] #write div.md-toc-tooltip {
+    background-color: #252526 !important;
+}
+
+/* ---------- 键盘按键 ---------- */
+[data-unified-mode="fixed"] #write kbd {
+    background-color: #2d2d2d !important;
+    color: #d4d4d4 !important;
+    border-color: #3d3d3d !important;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,0.25) !important;
+}

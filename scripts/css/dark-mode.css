@@ -233,7 +233,7 @@
 /* ---------- 侧边栏大纲 ---------- */
 [data-unified-mode="fixed"] .typora-export-sidebar {
     background-color: #252526 !important;
-    border-right-color: #3d3d3d !important;
+    border-right: 1px solid #3d3d3d !important;
 }
 [data-unified-mode="fixed"] .outline-content {
     background-color: #252526 !important;
@@ -242,20 +242,44 @@
 [data-unified-mode="fixed"] .outline-content .outline-item-wrapper {
     background-color: transparent !important;
 }
+/* 大纲文字：h1 亮白，子级次灰 */
 [data-unified-mode="fixed"] .outline-content .outline-label {
+    color: #c8c8d0 !important;
+}
+[data-unified-mode="fixed"] .outline-content .outline-h2 .outline-label,
+[data-unified-mode="fixed"] .outline-content .outline-h3 .outline-label,
+[data-unified-mode="fixed"] .outline-content .outline-h4 .outline-label,
+[data-unified-mode="fixed"] .outline-content .outline-h5 .outline-label,
+[data-unified-mode="fixed"] .outline-content .outline-h6 .outline-label {
     color: #a0a0b0 !important;
 }
+/* hover：去白框 + 左侧蓝色细条 + 微亮背景 */
+[data-unified-mode="fixed"] .outline-content .outline-item {
+    border-color: transparent !important;
+    transition: background-color 0.15s ease !important;
+}
 [data-unified-mode="fixed"] .outline-content .outline-item:hover {
-    background-color: rgba(255, 255, 255, 0.06) !important;
+    background-color: rgba(86, 156, 214, 0.12) !important;
+    border-color: transparent !important;
+}
+[data-unified-mode="fixed"] .outline-content .outline-item-wrapper > .outline-item:hover {
+    box-shadow: inset 2px 0 0 #569cd6 !important;
+}
+/* active 项：加粗 + 亮色 + 左条 */
+[data-unified-mode="fixed"] .outline-content .outline-item-active > .outline-item {
+    background-color: rgba(86, 156, 214, 0.18) !important;
+    box-shadow: inset 2px 0 0 #569cd6 !important;
 }
 [data-unified-mode="fixed"] .outline-content .outline-item-active > .outline-item > .outline-label {
     color: #d4d4d4 !important;
+    font-weight: 600 !important;
 }
+/* 展开箭头 */
 [data-unified-mode="fixed"] .outline-content .outline-expander {
     color: #6a6a6a !important;
 }
 [data-unified-mode="fixed"] .outline-content .outline-expander:hover {
-    color: #a0a0b0 !important;
+    color: #569cd6 !important;
 }
 
 /* ---------- 滚动条 ---------- */

@@ -20,13 +20,13 @@
 ├── update_index.py          # Markdown 目录索引生成脚本
 ├── scripts/                 # 前端脚本与样式
 │   ├── dark-mode-toggle.js  # 深色模式三档切换（light / fixed / smart）
-│   ├── dark-mode.js         # 固定深色模式（GitHub Dark 配色）
+│   ├── dark-mode.js         # 固定深色模式加载器
 │   ├── smart-dark-mode.js   # 智能深色模式（HSL 压暗算法）
 │   ├── image-zoom.js        # 图片点击放大灯箱
 │   ├── css/
-│   │   ├── home.css         # 主页样式
-│   │   ├── home-dark.css    # 主页深色样式
-│   │   └── dark-mode.css    # 内容页深色样式
+│   │   ├── home.css         # 非常规页面浅色样式（home 索引页等）
+│   │   ├── home-dark.css    # 非常规页面深色样式（fixed + smart）
+│   │   └── dark-mode.css    # Typora 导出页 fixed 深色样式（VS Code Dark+）
 │   └── data/
 │       └── site_data.js     # 站点文件索引数据（脚本生成）
 ├── personal/                # 个人笔记
@@ -53,6 +53,16 @@ generate_index_html.py
 ```
 
 主页和门户页在浏览器运行时从 `site_data.js` 加载数据，通过内联 JS 渲染文件列表。
+
+### CSS 文件分工
+
+| 文件 | 适用页面 | 职责 |
+|------|----------|------|
+| `home.css` | 非常规页面（home 索引页等） | 浅色样式 |
+| `home-dark.css` | 非常规页面 | 深色样式（fixed + smart） |
+| `dark-mode.css` | Typora 导出页 | fixed 深色样式（VS Code Dark+ 配色，通用兜底，不区分/适配主题） |
+
+**追加规则**：非常规页面样式写 `home.css` / `home-dark.css`，Typora 导出页样式写 `dark-mode.css`，按页面类型归类，不混写。
 
 ### JS 注入
 

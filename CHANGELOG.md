@@ -10,6 +10,14 @@
 - 修复：updateTime 改为最新文件真实修改时间，非脚本运行时间
 - 修复：scripts/css/home.css 补充 Tab 按钮浅色样式
 - 修复：手机端 .tree-item.active 配色改为暖棕色，补 .toolbar 桌面端 flex 样式
+- 重构：新建 `refactor/dark-mode` 分支，dark-mode.css 配色从 GitHub Dark 切换为 VS Code Dark+
+  - 色值：背景 #1e1e1e、代码块 #252526、边框 #3d3d3d、文字 #d4d4d4
+  - 语法高亮：关键字 #569cd6(蓝)、字符串 #ce9178(橙)、注释 #6a9955(绿)
+- 新增：dark-mode.css 补充 16 个缺失模块覆盖（脚注、图表面板、行内公式、Alert 告警、kbd 等）
+- 清理：dark-mode.css 删除导出 HTML 中不存在的编辑器专属选择器
+- 优化：次要文字灰色 #858585→#a0a0b0，大纲展开箭头提亮
+- 优化：侧边栏大纲深色模式（hover/active 交回原主题处理）
+- 文档：三个 CSS 文件头部注释补充分工说明，README.md 同步更新 CSS 分工表
 
 ## 2026-06-18
 

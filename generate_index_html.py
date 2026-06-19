@@ -187,6 +187,15 @@ def generate_portal_pages(data, base_path):
             depth = portal["path"].count("/") + 1
             up = "../" * depth
 
+            # 检查是否需要重新生成
+            output_path = base_path / portal["path"] / "page2.html"
+            if output_path.exists():
+                page_mtime = output_path.stat().st_mtime
+                files_mtime = max(f["mtime"] for f in portal["files"]) if portal["files"] else 0
+                if page_mtime >= files_mtime:
+                    print(f"[SKIP] 无变化，跳过：{output_path}")
+                    continue
+
             files_html = ""
             for f in portal["files"]:
                 icon = {"html": "🌐", "htm": "🌐", "pdf": "📕"}.get(f["ext"].lstrip("."), "📄")

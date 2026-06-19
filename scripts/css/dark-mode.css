@@ -175,8 +175,9 @@
 [data-unified-mode="fixed"] #write tr:nth-child(2n) {
     background-color: #161b22 !important;
 }
-[data-unified-mode="fixed"] #write tr:hover {
-    background-color: #1c2128 !important;
+[data-unified-mode="fixed"] #write tr:hover,
+[data-unified-mode="fixed"] #write tr:hover td {
+    background-color: #161b22 !important;
 }
 [data-unified-mode="fixed"] #write figure.table-figure {
     background-color: transparent !important;

@@ -1,5 +1,8 @@
-/* ===== 固定深色模式 - VS Code Dark+ 配色 ===== */
+/* ===== dark-mode.css · Typora 导出页面固定深色样式 ===== */
+/* 职责：Typora 导出 HTML 的 fixed 深色模式覆盖（VS Code Dark+ 配色） */
 /* 由 dark-mode.js 自动加载，选择器: [data-unified-mode="fixed"] */
+/* 通用兜底，不区分/适配 Typora 主题 */
+/* ⚠️ 非常规页面（home 等）深色样式请写 home-dark.css，勿写此处 */
 
 /* ---------- 基础 ---------- */
 [data-unified-mode="fixed"] {

@@ -1,4 +1,8 @@
 
+/* ===== home.css · 非常规页面浅色样式 ===== */
+/* 职责：home 索引页等非常规页面的浅色模式样式 */
+/* 深色样式请写 home-dark.css，Typora 导出页样式请写 dark-mode.css */
+
 /* ===== Reset ===== */
 *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
 html { scroll-behavior: smooth; }

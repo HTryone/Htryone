@@ -23,12 +23,17 @@
 │   ├── dark-mode.js         # 固定深色模式加载器
 │   ├── smart-dark-mode.js   # 智能深色模式（HSL 压暗算法）
 │   ├── image-zoom.js        # 图片点击放大灯箱
+│   ├── apply-dark-mode.py   # 内容页深色模式批量注入
+│   ├── watch-dark-mode.py   # 内容页深色模式常驻监控（watchdog）
+│   ├── start-watch.bat      # Windows 双击启动监控脚本
 │   ├── css/
 │   │   ├── home.css         # 非常规页面浅色样式（home 索引页等）
 │   │   ├── home-dark.css    # 非常规页面深色样式（fixed + smart）
 │   │   └── dark-mode.css    # Typora 导出页 fixed 深色样式（VS Code Dark+）
-│   └── data/
-│       └── site_data.js     # 站点文件索引数据（脚本生成）
+│   ├── data/
+│   │   └── site_data.js     # 站点文件索引数据（脚本生成）
+│   ├── demo/                # 深色模式演示页
+│   └── scriptsmd/           # 技术实现文档（深色模式自动注入方案）
 ├── personal/                # 个人笔记
 └── 科技数码相关/             # 科技数码类内容
 ```

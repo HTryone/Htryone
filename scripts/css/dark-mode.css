@@ -281,16 +281,6 @@
     color: #569cd6 !important;
 }
 
-/* ---------- 代码工具提示 ---------- */
-[data-unified-mode="fixed"] div.code-tooltip,
-[data-unified-mode="fixed"] .md-hover-tip .md-arrow:after {
-    background-color: #252526 !important;
-    border-color: #3d3d3d !important;
-}
-[data-unified-mode="fixed"] div.code-tooltip-content {
-    color: #d4d4d4 !important;
-}
-
 /* ---------- 图表面板（mermaid/sequence/flow） ---------- */
 [data-unified-mode="fixed"] #write .md-diagram-panel {
     background-color: #252526 !important;
@@ -320,13 +310,6 @@
 [data-unified-mode="fixed"] #write .md-attr,
 [data-unified-mode="fixed"] #write .md-header-span .md-attr {
     color: #858585 !important;
-}
-
-/* ---------- 表格编辑浮层 ---------- */
-[data-unified-mode="fixed"] #write .md-table-resize-popover,
-[data-unified-mode="fixed"] .ty-table-edit {
-    background-color: #252526 !important;
-    border-color: #3d3d3d !important;
 }
 
 /* ---------- Alert 告警文本 ---------- */
@@ -360,26 +343,14 @@
 [data-unified-mode="fixed"] #write .md-fences .cm-string-2,
 [data-unified-mode="fixed"] #write pre .cm-string-2 { color: #ce9178 !important; }
 
-/* ---------- CodeMirror 光标与选中 ---------- */
-[data-unified-mode="fixed"] #write .CodeMirror div.CodeMirror-cursor {
-    border-left-color: #aeafad !important;
-}
-[data-unified-mode="fixed"] #write .CodeMirror-selected,
-[data-unified-mode="fixed"] #write .CodeMirror-selectedtext {
-    background-color: rgba(86, 156, 214, 0.15) !important;
-}
-
 /* ---------- 展开图片元数据 ---------- */
 [data-unified-mode="fixed"] #write .md-expand.md-image > .md-meta {
     color: #858585 !important;
 }
 
-/* ---------- TOC 项目与提示 ---------- */
+/* ---------- TOC 项目 ---------- */
 [data-unified-mode="fixed"] #write .md-toc-item {
     color: #9cdcfe !important;
-}
-[data-unified-mode="fixed"] #write div.md-toc-tooltip {
-    background-color: #252526 !important;
 }
 
 /* ---------- 键盘按键 ---------- */

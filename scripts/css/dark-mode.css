@@ -37,6 +37,8 @@
 [data-unified-mode="fixed"] #write h5,
 [data-unified-mode="fixed"] #write h6 {
     color: #c9d1d9 !important;
+    background-color: transparent !important;
+    background-image: none !important;
 }
 [data-unified-mode="fixed"] #write h1,
 [data-unified-mode="fixed"] #write h2 {

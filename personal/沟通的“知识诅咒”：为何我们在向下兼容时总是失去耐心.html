@@ -1,0 +1,2498 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'><style type='text/css'>html {overflow-x: initial !important;}</style>
+<style type='text/css'  id="style-base">:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
+.mac-os-11 { --title-bar-height: 28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, "Segoe UI Emoji", "SF Pro", sans-serif; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, h5 { white-space: pre-wrap; }
+body { margin: 0px; padding: 0px; height: auto; inset: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p *, #write.first-line-indent svg * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; image-orientation: from-image; }
+img:not([height]) { height: auto; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; position: relative; }
+#write svg h1, #write svg h2, #write svg h3, #write svg h4, #write svg h5, #write svg h6, #write svg p { position: static; }
+svg sub, svg sup { position: static; }
+.nodeLabel p { padding-right: 2px; padding-left: 2px; }
+.typora-export .nodeLabel p { padding-right: 0px; padding-left: 0px; }
+foreignobject { overflow: visible; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+li p { orphans: 1; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+thead, tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-fences-adv-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+svg { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; border-color: transparent !important; padding-top: 0px !important; padding-bottom: 0px !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+  #write > p:nth-child(1) { margin-top: 0px; }
+  .typora-export-show-outline .typora-export-sidebar { display: none; }
+  figure { overflow-x: visible; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.reversefootnote { font-family: ui-monospace, sans-serif; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.6; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+.md-expand mark .md-meta { opacity: 0.3 !important; }
+mark .md-meta { color: rgb(0, 0, 0); }
+@media print {
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-fences.md-fences-math { font-size: 1em; }
+.md-fences-advanced:not(.md-focus) { padding: 0px; white-space: nowrap; border: 0px; }
+.md-fences-advanced:not(.md-focus) { background: inherit; }
+.mermaid-svg { margin: auto; }
+.typora-export-show-outline .typora-export-content { max-width: 1440px; margin: auto; display: flex; flex-direction: row; }
+.typora-export-sidebar { width: 300px; font-size: 0.8rem; margin-top: 80px; margin-right: 18px; }
+.typora-export-show-outline #write { --webkit-flex: 2; flex: 2 1 0%; }
+.typora-export-sidebar .outline-content { position: fixed; top: 0px; max-height: 100%; overflow: hidden auto; padding-bottom: 30px; padding-top: 60px; width: 300px; }
+@media screen and (max-width: 1024px) {
+  .typora-export-sidebar, .typora-export-sidebar .outline-content { width: 240px; }
+}
+@media screen and (max-width: 800px) {
+  .typora-export-sidebar { display: none; }
+}
+.outline-content li, .outline-content ul { margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; list-style: none; overflow-wrap: anywhere; }
+.outline-content ul { margin-top: 0px; margin-bottom: 0px; }
+.outline-content strong { font-weight: 400; }
+.outline-expander { width: 1rem; height: 1.42857rem; position: relative; display: table-cell; vertical-align: middle; cursor: pointer; padding-left: 4px; }
+.outline-expander::before { content: ""; position: relative; font-family: Ionicons; display: inline-block; font-size: 8px; vertical-align: middle; }
+.outline-item { padding-top: 3px; padding-bottom: 3px; cursor: pointer; }
+.outline-expander:hover::before { content: ""; }
+.outline-h1 > .outline-item { padding-left: 0px; }
+.outline-h2 > .outline-item { padding-left: 1em; }
+.outline-h3 > .outline-item { padding-left: 2em; }
+.outline-h4 > .outline-item { padding-left: 3em; }
+.outline-h5 > .outline-item { padding-left: 4em; }
+.outline-h6 > .outline-item { padding-left: 5em; }
+.outline-label { cursor: pointer; display: table-cell; vertical-align: middle; text-decoration: none; color: inherit; }
+.outline-label:hover { text-decoration: underline; }
+.outline-item:hover { border-color: rgb(245, 245, 245); background-color: var(--item-hover-bg-color); }
+.outline-item:hover { margin-left: -28px; margin-right: -28px; border-left: 28px solid transparent; border-right: 28px solid transparent; }
+.outline-item-single .outline-expander::before, .outline-item-single .outline-expander:hover::before { display: none; }
+.outline-item-open > .outline-item > .outline-expander::before { content: ""; }
+.outline-children { display: none; }
+.info-panel-tab-wrapper { display: none; }
+.outline-item-open > .outline-children { display: block; }
+.typora-export .outline-item { padding-top: 1px; padding-bottom: 1px; }
+.typora-export .outline-item:hover { margin-right: -8px; border-right: 8px solid transparent; }
+.typora-export .outline-expander::before { content: "+"; font-family: inherit; top: -1px; }
+.typora-export .outline-expander:hover::before, .typora-export .outline-item-open > .outline-item > .outline-expander::before { content: "−"; }
+.typora-export-collapse-outline .outline-children { display: none; }
+.typora-export-collapse-outline .outline-item-open > .outline-children, .typora-export-no-collapse-outline .outline-children { display: block; }
+.typora-export-no-collapse-outline .outline-expander::before { content: "" !important; }
+.typora-export-show-outline .outline-item-active > .outline-item .outline-label { font-weight: 700; }
+.md-inline-math-container mjx-container { zoom: 0.95; }
+mjx-container { break-inside: avoid; }
+.md-alert.md-alert-note { border-left-color: rgb(9, 105, 218); }
+.md-alert.md-alert-important { border-left-color: rgb(130, 80, 223); }
+.md-alert.md-alert-warning { border-left-color: rgb(154, 103, 0); }
+.md-alert.md-alert-tip { border-left-color: rgb(31, 136, 61); }
+.md-alert.md-alert-caution { border-left-color: rgb(207, 34, 46); }
+.md-alert { padding: 0px 1em; margin-bottom: 16px; color: inherit; border-left: 0.25em solid rgb(0, 0, 0); }
+.md-alert-text-note { color: rgb(9, 105, 218); }
+.md-alert-text-important { color: rgb(130, 80, 223); }
+.md-alert-text-warning { color: rgb(154, 103, 0); }
+.md-alert-text-tip { color: rgb(31, 136, 61); }
+.md-alert-text-caution { color: rgb(207, 34, 46); }
+.md-alert-text { font-size: 0.9rem; font-weight: 700; }
+.md-alert-text svg { fill: currentcolor; position: relative; top: 0.125em; margin-right: 1ch; overflow: visible; }
+.md-alert-text-container::after { content: attr(data-text); text-transform: capitalize; pointer-events: none; margin-right: 1ch; }
+
+</style>
+<style type='text/css'  id="style-theme_css">/* 
+ *     Typora Theme - Lapis    /    Author - YiNN 
+ *     https://github.com/YiNNx/typora-theme-lapis
+ */
+
+:root {
+    --text-color: #40464f;
+    /* Text */
+    --primary-color: #4870ac;
+    /* Primary Color */
+    --bg-color: #ffffff;
+    --side-bar-bg-color: var(--bg-color);
+    /* Background */
+
+    --marker-color: #a2b6d4;
+    /* List Marker */
+    --source-color: #a8a8a9;
+    /* for comment / link source */
+    --highlight-color: #ffffb5c2;
+    /* Highlight */
+    --header-span-color: var(--primary-color);
+    /* h2 Span Color */
+    --block-bg-color: #f6f8fa;
+    /* Block Background */
+    --img-shadow-color: #e3e8f0;
+
+    /* Overwrite of Typora Base Color */
+    --search-hit-bg-color: var(--select-text-bg-color);
+    --search-select-bg-color: #5bb3ff;
+    --control-text-hover-color: #a2b6d4;
+    --rawblock-edit-panel-bd: var(--block-bg-color);
+    --item-hover-bg-color: rgb(246 248 250);
+    --active-file-bg-color: var(--block-bg-color);
+}
+
+@media print {
+    :root {
+        --text-color: rgb(0, 0, 0);
+    }
+
+    .typora-export {
+        margin: 2mm 6mm 0 6mm;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: transparent !important;
+    }
+}
+
+/*
+ * Font-face for Cantarell, Source Han Serif CN and JetBrains Mono
+ */
+
+/*
+ * Basic Style
+ */
+
+#write {
+    max-width: 950px;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    line-height: 1.6;
+    word-spacing: 0px;
+    letter-spacing: 0px;
+    word-break: break-word;
+    word-wrap: break-word;
+    text-align: justify;
+
+    font-family: 'Cantarell', 'SourceHanSerifCN', 'JetBrainsMono';
+    margin-bottom: 20rem;
+}
+
+.searchpanel-search-option-btn {
+    position: absolute;
+    width: 24px;
+    height: 16px;
+    right: 5px;
+    top: 5px;
+    z-index: 99;
+    cursor: pointer;
+    margin-top: 1px;
+    padding: 1px;
+    border-radius: 3px;
+    line-height: 10px;
+    border: 1px solid #ddd;
+    border-color: var(--active-toggle-btn-color);
+}
+
+/* Strong */
+
+#write strong {
+    color: var(--primary-color);
+}
+
+/* Link */
+
+#write a {
+    color: var(--primary-color);
+    /* font-family: "Cantarell"; */
+}
+
+#write .md-p a,
+#write .md-heading a,
+[md-inline=url],
+[md-inline=link]>.md-content {
+    word-wrap: break-word;
+    text-decoration: underline solid;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+}
+
+#write h2.md-heading a {
+    text-decoration: underline;
+    border-bottom: 0;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1.2px;
+}
+
+.md-meta,
+[md-inline=link]>.md-content,
+[md-inline=image]>.md-meta,
+.md-image>.md-meta {
+    word-break: break-all;
+    font-weight: normal;
+    color: var(--source-color);
+    font-family: "JetBrainsMono";
+    font-size: 90%;
+}
+
+
+/* 
+ * TOC
+ */
+
+.md-toc-content {
+    font-family: 'SourceHanSerifCN';
+}
+
+.md-toc-content:empty:before {
+    color: var(--primary-color);
+}
+
+#write div.md-toc-tooltip {
+    font-family: 'SourceHanSerifCN';
+    color: var(--primary-color);
+    position: static;
+    margin-top: 10px;
+    background-color: var(--block-bg-color);
+    line-height: 1.6rem;
+    padding: 0.3rem 0.75rem;
+    border-top: none;
+    /* border-left: 2px solid var(--primary-color);
+     */
+    border-radius: .5rem;
+}
+
+.md-toc:focus .md-toc-content {
+    border-color: var(--bg-color);
+    margin: 9px -1px;
+    margin-top: 9px;
+}
+
+.md-toc .md-toc-content {
+    border-color: var(--bg-color);
+    margin: 10px 0px;
+    margin-top: 10px;
+}
+
+
+/* mark */
+
+mark {
+    background: var(--highlight-color);
+    padding: 1px .15rem;
+    border-radius: 1px;
+    color: inherit;
+}
+
+/* 
+ * Paragraph
+ */
+
+#write+p,
+#write blockquote p,
+#write .md-alert p {
+    font-size: 1.1rem;
+    padding-top: .2rem;
+    padding-bottom: .2rem;
+    margin: 0;
+    line-height: 1.8rem;
+    color: var(--text-color);
+}
+
+/*
+ * Header
+ */
+
+#write h4,
+#write h5,
+#write h6 {
+    font-weight: normal;
+}
+
+#write h1,
+#write h2,
+#write h3,
+#write h4,
+#write h5,
+#write h6 {
+    font-family: 'SourceHanSerifCN';
+    padding: 0px;
+    color: var(--primary-color);
+}
+
+#write h1 {
+    text-align: center;
+}
+
+#write h2 {
+    padding: 1px 12.5px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+#write h2,
+#write h2 code {
+    background-color: var(--header-span-color);
+}
+
+#write h2,
+#write h2 a,
+#write h2 code,
+#write h2 strong,
+#write h2 script {
+    color: var(--bg-color);
+}
+
+#write h2 a {
+    border-bottom-color: var(--bg-color) !important;
+}
+
+#write h1 {
+    font-size: 2rem;
+}
+
+#write h2 {
+    font-size: 1.5rem;
+}
+
+#write h3 {
+    font-size: 1.4rem;
+}
+
+#write h4 {
+    font-size: 1.2rem;
+}
+
+#write h5 {
+    font-size: 1.1rem;
+}
+
+#write h6 {
+    font-size: 1.1rem;
+}
+
+#write h1 {
+    padding-top: 0.9rem;
+    margin-bottom: 2.3rem;
+}
+
+#write h2 {
+    margin: .3em 0;
+}
+
+#write h3 {
+    margin: 1em 0 1em;
+}
+
+#write h4 {
+    margin: 0.8em 0 0.8em;
+}
+
+#write h5 {
+    margin: 0.6em 0 0.6em;
+}
+
+#write h6 {
+    margin: 0.4em 0 0.4em;
+}
+
+blockquote h3.md-focus:before,
+blockquote h4.md-focus:before,
+blockquote h5.md-focus:before,
+blockquote h6.md-focus:before {
+    left: -1.3rem;
+}
+
+/*
+ * List
+ */
+
+::marker {
+    font-weight: bold;
+    color: var(--marker-color);
+}
+
+li.md-list-item {
+    margin: 0.4rem 0;
+}
+
+#write ul,
+#write ol {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding-left: 20px;
+}
+
+#write ul {
+    list-style-type: disc;
+}
+
+#write em {
+    padding: 0 3px 0 0;
+}
+
+#write ul ul {
+    list-style-type: square;
+}
+
+#write ol {
+    list-style-type: decimal;
+}
+
+#write li section {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    line-height: 1.7rem;
+    text-align: justify;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/*
+ * Quote
+ */
+
+#write blockquote {
+    display: block;
+    font-size: .9em;
+    overflow: auto;
+    border-left: 3px solid var(--primary-color);
+    padding: 15px 30px 15px 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background: var(--block-bg-color);
+}
+
+.md-alert {
+    display: block;
+    overflow: auto;
+    border-left: 3px solid var(--primary-color);
+    padding: 15px 30px 15px 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background: var(--block-bg-color);
+}
+
+.md-alert-text-container {
+    font-size: 1.2em;
+}
+
+.md-alert-text-important {
+    color: #614f9c;
+}
+
+.md-alert.md-alert-important {
+    background-color: #614f9c0a;
+    border-left-color: #614f9c;
+}
+
+.md-alert-text-note {
+    color: #527da8;
+}
+
+.md-alert.md-alert-note {
+    background-color: #527da80a;
+    border-left-color: #527da8;
+}
+
+.md-alert-text-tip {
+    color: #428485;
+}
+
+.md-alert.md-alert-tip {
+    background-color: #4284850a;
+    border-left-color: #428485;
+}
+
+.md-alert-text-warning {
+    color: #a88652;
+}
+
+.md-alert.md-alert-warning {
+    background-color: #9b80490a;
+    border-left-color: #a88652;
+}
+
+
+.md-alert-text-caution {
+    color: #a34f55;
+}
+
+.md-alert.md-alert-caution {
+    background-color: #a34f550a;
+    border-left-color: #a34f55;
+}
+
+
+/*
+ * Inline code
+ */
+
+#write code {
+    color: var(--primary-color);
+    font-size: 94%;
+    font-weight: normal;
+    word-wrap: break-word;
+    padding: 2px 4px 2px;
+    border-radius: 3px;
+    margin: 2px;
+    background-color: var(--block-bg-color);
+    font-family: 'JetBrainsMono';
+    word-break: break-all;
+}
+
+/*
+ * Img
+ */
+
+#write img {
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+#write p>.md-image:only-child:not(.md-img-error) img,
+#write p>img:only-child {
+    filter: drop-shadow(var(--img-shadow-color) 0px 6px 6px);
+    display: block;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/*
+ * Table
+ */
+#write table {
+    display: table;
+    text-align: justify;
+    overflow-x: auto;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    font-size: 1em;
+    margin: 0px 0px 20px;
+    width: 100%;
+}
+
+#write tbody {
+    border: 0;
+}
+
+#write table tr {
+    border: 0;
+    border-top: 1px solid #ccc;
+}
+
+#write table tr th,
+#write table tr td {
+    font-size: 1rem;
+    border: 1px solid #d9dfe4;
+    padding: 5px 10px;
+    text-align: justify;
+}
+
+#write table tr th {
+    font-family: SourceHanSerifCN;
+    text-align: center;
+    min-width: 10rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+#write table tr td:hover,
+#write table tr th:hover {
+    background-color: var(--block-bg-color);
+}
+
+table td {
+    min-width: 32px;
+}
+
+.md-table-resize-popover {
+    width: auto !important;
+}
+
+/* Footnote */
+
+sup.md-footnote {
+    background-color: var(--block-bg-color);
+    color: var(--primary-color);
+}
+
+.md-def-name {
+    color: var(--primary-color);
+}
+
+/*
+ * Math Script 
+ */
+
+.md-inline-math script {
+    color: var(--primary-color);
+}
+
+.md-rawblock-control:not(.md-rawblock-tooltip) {
+    background: var(--bg-color);
+    color: var(--md-char-color);
+}
+
+
+.code-tooltip {
+    box-shadow: none;
+}
+
+.md-rawblock-tooltip.md-rawblock-control {
+    border-radius: 1rem;
+}
+
+.md-rawblock .md-rawblock-tooltip {
+    inset: auto 0.3rem auto auto;
+    transform: translateY(-120%);
+}
+
+/* 
+ * Comment
+ */
+.md-comment {
+    color: var(--source-color);
+    opacity: 1;
+    font-family: 'JetBrainsMono';
+}
+
+/*
+ * Dividing line
+ */
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 2px solid #eef2f5;
+    border-radius: 2px;
+}
+
+/* Checkbox */
+
+#write input[type=checkbox] {
+    width: 0;
+}
+
+.task-list-item input::before {
+    content: "";
+    display: inline-block;
+    width: 1.0125rem;
+    height: 1.0125rem;
+    vertical-align: middle;
+    text-align: center;
+    border: 1px solid var(--marker-color);
+    border-radius: 1.2rem;
+    background-color: #fdfdfd;
+    margin-left: -0.1rem;
+    margin-right: 0.1rem;
+    margin-top: -.6rem;
+}
+
+.task-list-item input:checked::before {
+    content: '✓';
+    font-weight: bold;
+    -webkit-text-stroke: 1px var(--primary-color);
+    color: var(--primary-color);
+    background-color: var(--bg-color);
+    font-size: 0.75rem;
+    line-height: 0.8rem;
+}
+
+blockquote .task-list-item input::before {
+    margin-top: .2rem;
+}
+
+/*
+ * Sidebar
+ */
+#typora-sidebar {
+    font-family: 'Cantarell', 'SourceHanSerifCN';
+    height: 100%;
+    color: var(--text-color);
+    font-size: 0.92rem;
+    background-color: var(--bg-color);
+}
+
+#sidebar-content.sidebar-content {
+    margin-top: .5rem;
+}
+
+.html-for-mac #write input[type=checkbox] {
+    margin-top: 0.65rem;
+}
+
+.html-for-mac #write .task-list-item input::before {
+    margin-top: -.85rem;
+}
+
+
+/*
+ * Sidebar - FileNode
+ */
+
+.active-tab-files #info-panel-tab-file .info-panel-tab-border,
+.active-tab-outline #info-panel-tab-outline .info-panel-tab-border,
+.ty-show-search #info-panel-tab-search .info-panel-tab-border {
+    border-radius: 10px;
+    height: 1px;
+    background-color: var(--primary-color);
+}
+
+.file-node-content {
+    color: var(--primary-color);
+    line-height: 1.6rem;
+}
+
+span.file-node-title-name-part {
+    color: var(--text-color);
+}
+
+span.file-node-title-ext-part {
+    color: var(--text-color);
+}
+
+.file-node-icon {
+    padding-right: 0.2rem;
+}
+
+.file-tree-node.active>.file-node-background {
+    border-left: 4px solid var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/*
+ * Sidebar - Outline
+ */
+
+#outline-content {
+    height: 100%;
+    overflow-x: hidden;
+    line-height: 1.6rem;
+    font-size: .96rem;
+}
+
+#outline-content .outline-active,
+.pin-outline .outline-active {
+    color: var(--primary-color);
+}
+
+.outline-item {
+    padding-left: 2em;
+}
+
+.outline-item>.outline-expander:before {
+    transform: translateY(-1px) !important;
+}
+
+/* Meta Block */
+
+pre.md-meta-block {
+    font-family: 'JetBrainsMono';
+    color: var(--primary-color);
+    background: #f6f8fa;
+    padding: 1.5rem;
+    margin: -37px 0rem 3.8rem;
+    /* border-radius: 1rem; */
+    filter: drop-shadow(var(--img-shadow-color) 0px 3px 3px);
+    /* border-top: 1px solid var(--primary-color); */
+    /* border-bottom: 1px solid var(--primary-color); */
+}
+
+pre.md-fences-advanced.md-focus .md-fences-adv-panel {
+    border-radius: .8rem;
+}
+
+/*
+ * Scrollbar
+ */
+
+#outline-content::-webkit-scrollbar {
+    width: .5rem;
+}
+
+#file-library::-webkit-scrollbar {
+    width: .5rem;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(179, 179, 179, 0.425);
+}
+
+::-webkit-scrollbar {
+    width: 1rem;
+}
+
+/* 
+ * Code Block - Style
+ */
+
+.md-fences:before {
+    content: ' ';
+    display: block;
+    width: 100%;
+    background-size: 40px;
+    background-repeat: no-repeat;
+    /* background-color: #282c34; */
+    margin-bottom: -7px;
+    border-radius: 5px;
+    background-position: 10px 10px;
+}
+
+.CodeMirror-wrap .CodeMirror-scroll {
+    overflow-x: auto;
+}
+
+.md-fences .cm-s-inner.CodeMirror {
+    margin: 1.5rem 0;
+}
+
+.cm-s-inner.CodeMirror {
+    padding: 1.2rem .8rem;
+    color: #4f5467;
+    font-family: 'JetBrainsMono';
+    border-radius: 10px;
+    background-color: var(--block-bg-color);
+    /* border: 1px solid #eef2f5;*/
+    line-height: 1.6rem;
+}
+
+.CodeMirror-gutters {
+    border-right: 1px solid #a2b6d452;
+    background: inherit;
+    white-space: nowrap;
+}
+
+pre.CodeMirror-line {
+    padding: 0 1.2rem;
+}
+
+.CodeMirror-linenumber {
+    white-space: nowrap;
+    padding: 0 3px 0 5px;
+    text-align: right;
+    color: var(--primary-color);
+}
+
+/* 
+ * Code Block - Color Scheme
+ */
+
+.cm-s-inner .cm-keyword {
+    color: #1694b6 !important;
+}
+
+.cm-s-inner .cm-operator {
+    color: #2f86d2 !important;
+}
+
+.cm-s-inner .cm-variable,
+.cm-s-inner .cm-builtin,
+.cm-s-inner .cm-header,
+.cm-s-inner .cm-tag,
+.cm-s-inner .cm-property,
+.cm-s-inner .cm-quote {
+    color: #b9218e !important;
+}
+
+.cm-s-inner .cm-variable-2 {
+    color: #7aadad !important;
+}
+
+.cm-s-inner .cm-variable-3,
+.cm-s-inner .cm-type,
+.cm-s-inner .cm-atom {
+    color: #378ed8 !important;
+}
+
+.cm-s-inner .cm-number {
+    color: #1a5494 !important;
+}
+
+.cm-s-inner .cm-def,
+.cm-s-inner .cm-qualifier {
+    color: #0744ac !important;
+}
+
+.cm-s-inner .cm-string {
+    color: #6f42c2 !important;
+}
+
+.cm-s-inner .cm-string-2 {
+    color: #27638f !important;
+}
+
+.cm-s-inner .cm-comment {
+    color: #9a9a9a !important;
+}
+
+.cm-s-inner .cm-meta {
+    color: #0b93be !important;
+}
+
+.cm-s-inner .cm-attribute {
+    color: #8f6aa8 !important;
+}
+
+.cm-s-inner .cm-error {
+    color: rgba(255, 255, 255, 1) !important;
+    background-color: #b9218e40 !important;
+}
+
+.cm-s-inner .CodeMirror-matchingbracket {
+    text-decoration: underline;
+    color: white !important;
+}
+
+.CodeMirror div.CodeMirror-cursor {
+    border-left: 1px solid var(--primary-color);
+    z-index: 3;
+}
+
+.cm-s-inner div.CodeMirror-selected {
+    background: rgba(167, 178, 189, 0.2) !important;
+}
+
+.cm-s-inner.CodeMirror-focused div.CodeMirror-selected {
+    background: rgba(167, 178, 189, 0.2) !important;
+}
+
+.cm-s-inner .CodeMirror-selected,
+.cm-s-inner .CodeMirror-selectedtext {
+    background-color: rgba(167, 178, 189, 0.0) !important;
+}
+
+.cm-s-inner .CodeMirror-line::-moz-selection,
+.cm-s-inner .CodeMirror-line>span::-moz-selection,
+.cm-s-inner .CodeMirror-line>span>span::-moz-selection {
+    background-color: rgba(167, 178, 189, 0.2);
+}
+
+.cm-s-inner .CodeMirror-line::selection,
+.cm-s-inner .CodeMirror-line>span::selection,
+.cm-s-inner .CodeMirror-line>span>span::selection {
+    background-color: rgba(167, 178, 189, 0.2);
+}
+
+.md-rawblock .md-rawblock-tooltip {
+    inset: auto 0.3rem auto auto;
+    transform: translateY(-120%);
+}
+
+/*
+ * Sitting - Unibody
+ */
+
+.megamenu-menu-header {
+    border: none;
+    color: var(--text-color);
+}
+
+.megamenu-menu-header #megamenu-back-btn,
+.megamenu-menu-header .megamenu-menu-header-title-back,
+.megamenu-menu-header .megamenu-menu-header-title-menu {
+    color: var(--text-color);
+}
+
+.megamenu-menu {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    box-shadow: none !important;
+}
+
+header,
+#megamenu-content {
+    background-color: var(--bg-color);
+    background-image: none !important;
+}
+
+.md-search-hit {
+    background-color: var(--search-hit-bg-color);
+}
+
+#recent-file-panel tbody tr:nth-child(2n-1) {
+    background-color: var(--recent-file-panel-n-bg-color);
+    color: var(--recent-file-panel-n-color);
+}
+
+.export-detail,
+.export-item.active,
+.export-items-list-control {
+    width: 75%;
+}/* 
+ *   Typora Theme - Lapis - Dark Version / Author - YiNN 
+ *   https://github.com/YiNNx/typora-theme-lapis
+ */
+
+@import "";
+
+:root {
+    --text-color: #e4e4e4e3;
+    /* Text */
+    --primary-color: #8393ad;
+    /* Primary Color */
+    --bg-color: #1e222a;
+    --side-bar-bg-color: #181c24;
+    --panel-bg-color: #40464f;
+    /* Background */
+
+    --code-color: #abbad4;
+    /* Inline Code & Code Block */
+    --marker-color: #7d8a9f;
+    /* List Marker */
+    --highlight-color: #ffffb5c2;
+    /* Highlight */
+    --header-span-color: #47556d;
+    /* h2 Span Color */
+    --block-bg-color: #080e1d;
+    /* Code Block Background */
+    --quote-block-bg-color: #2a2f3b;
+    /* Quote Block Background */
+    --img-shadow-color: var(--block-bg-color);
+
+    /* Overwrite of Typora Base Color */
+    --md-char-color: #7d8a9f7d;
+    --heading-char-color: var(--text-color);
+    --select-text-bg-color: #dae3ea2e;
+    --search-select-bg-color: #346895;
+    --item-hover-bg-color: var(--block-bg-color);
+    --window-border: 1px solid var(--bg-color);
+    --control-text-hover-color: var(--text-color);
+    --rawblock-edit-panel-bd: var(--block-bg-color);
+}
+
+/*
+ * Background Color
+ */
+
+content {
+    background: var(--bg-color);
+}
+
+/*
+ * Header
+ */
+#write h2 {
+    color: var(--text-color);
+}
+
+/*
+ * Mark
+ */
+
+mark {
+    background: var(--highlight-color);
+    border-radius: 1px;
+    color: var(--bg-color);
+}
+
+/*
+ * Quote
+ */
+
+#write blockquote,.md-alert {
+    background: var(--quote-block-bg-color);
+}
+
+.md-alert-text-note {
+    color: #83a4c4;
+}
+
+.md-alert.md-alert-note {
+    background-color: var(--quote-block-bg-color);
+    border-left-color: #83a4c4;
+}
+
+.md-alert-text-tip {
+    color: #81b3a7;
+}
+
+.md-alert.md-alert-tip {
+    background-color: var(--quote-block-bg-color);
+    border-left-color: #81b3a7;
+}
+
+.md-alert-text-important {
+    color: #968abd;
+}
+
+.md-alert.md-alert-important {
+    background-color: var(--quote-block-bg-color);
+    border-left-color: #968abd;
+}
+
+.md-alert-text-caution {
+    color: #b8797e;
+}
+
+.md-alert.md-alert-caution {
+    background-color: var(--quote-block-bg-color);
+    border-left-color: #b8797e;
+}
+
+.md-alert-text-warning {
+    color: #b3a17c;
+}
+
+.md-alert.md-alert-warning {
+    background-color: var(--quote-block-bg-color);
+    border-left-color: #b3a17c;
+}
+
+
+
+/*
+ * Code
+ */
+
+#write code {
+    color: var(--code-color);
+}
+
+#write h2 code {
+    background-color: var(--header-span-color);
+    color: var(--text-color);
+}
+
+/*
+ * Table
+ */
+
+#write table.md-table tr th,
+#write table.md-table tr td {
+    border: 1px solid var(--header-span-color);
+}
+
+#write table.md-table tr th {
+    color: var(--text-color);
+}
+
+table.md-table.md-table td {
+    background-color: var(--bg-color);
+}
+
+#write table.md-table tr td:hover,
+#write table.md-table tr th:hover {
+    background-color: var(--side-bar-bg-color);
+}
+
+/*
+ * megamenu
+ */
+
+#recent-file-panel {
+    color: var(--text-color);
+}
+#recent-file-panel-action-btn {
+    background-color: var(--bg-color);
+}
+#recent-file-panel-action-btn-container {
+    color: rgba(146, 146, 146, 0.56);
+}
+#recent-file-panel tbody tr:nth-child(2n-1) {
+    background-color: var(--panel-bg-color);
+}
+.megamenu-menu-panel .btn {
+    border: 1px solid #9292928f;
+}
+
+/*
+ * Task List
+ */
+
+.task-list-item input:checked::before,
+.task-list-item input:before {
+    background-color: var(--bg-color);
+}
+
+/*
+ * Sidebar
+ */
+
+#typora-sidebar {
+    color: var(--text-color);
+    background-color: var(--side-bar-bg-color);
+}
+
+/* .typora-sidebar-resizer-bar {
+     border-left: 2px solid var(--block-bg-color);
+   } */
+
+/*
+ * Horizontal Line
+ */
+
+#write hr {
+    border-top: 1px solid var(--header-span-color);
+}
+
+/*
+ * Comment
+ */
+
+.md-comment {
+    color: var(--header-span-color);
+}
+
+/*
+ * Front Matter
+ */
+
+pre.md-meta-block {
+    background: var(--quote-block-bg-color);
+}
+
+/* 
+ * Code Block - Style
+ */
+
+.cm-s-inner.CodeMirror {
+    color: var(--code-color);
+    background-color: var(--block-bg-color);
+}
+
+.CodeMirror-gutters {
+    border-right: 1px solid #a2b6d452;
+}
+
+.CodeMirror-linenumber {
+    color: var(--primary-color);
+}
+
+/* 
+ * Code Block - Color Scheme
+ */
+
+.cm-s-inner .cm-keyword {
+    color: #66cfe9 !important;
+}
+
+.cm-s-inner .cm-operator {
+    color: #e7fc4a !important;
+}
+
+.cm-s-inner .cm-variable,
+.cm-s-inner .cm-builtin,
+.cm-s-inner .cm-header,
+.cm-s-inner .cm-tag,
+.cm-s-inner .cm-property,
+.cm-s-inner .cm-quote {
+    color: #c2eaff !important;
+}
+
+.cm-s-inner .cm-variable-2 {
+    color: #8eb0b0 !important;
+}
+
+.cm-s-inner .cm-variable-3,
+.cm-s-inner .cm-type,
+.cm-s-inner .cm-atom {
+    color: #debbfb !important;
+}
+
+.cm-s-inner .cm-number {
+    color: #b0f6ae !important;
+}
+
+.cm-s-inner .cm-def,
+.cm-s-inner .cm-qualifier {
+    color: #f9fbfd !important;
+}
+
+.cm-s-inner .cm-string {
+    color: #acd9a4 !important;
+}
+
+.cm-s-inner .cm-string-2 {
+    color: #89acc5 !important;
+}
+
+.cm-s-inner .cm-comment {
+    color: rgb(168, 168, 168) !important;
+}
+
+.cm-s-inner .cm-meta {
+    color: #a0b4f6 !important;
+}
+
+.cm-s-inner .cm-attribute {
+    color: #baacc3 !important;
+}
+
+.cm-s-inner .cm-error {
+    color: rgba(255, 255, 255, 1) !important;
+    background-color: #ffcff140 !important;
+}
+
+.cm-s-inner .CodeMirror-matchingbracket {
+    text-decoration: underline;
+    color: white !important;
+}
+
+.CodeMirror div.CodeMirror-cursor {
+    border-left: 1px solid var(--primary-color);
+    z-index: 3;
+}
+
+.cm-s-inner div.CodeMirror-selected {
+    background: rgba(167, 178, 189, 0.2) !important;
+}
+
+.cm-s-inner.CodeMirror-focused div.CodeMirror-selected {
+    background: rgba(167, 178, 189, 0.2) !important;
+}
+
+.cm-s-inner .CodeMirror-selected,
+.cm-s-inner .CodeMirror-selectedtext {
+    background-color: rgba(167, 178, 189, 0.0) !important;
+}
+
+.cm-s-inner .CodeMirror-line::-moz-selection,
+.cm-s-inner .CodeMirror-line>span::-moz-selection,
+.cm-s-inner .CodeMirror-line>span>span::-moz-selection {
+    background-color: rgba(167, 178, 189, 0.2);
+}
+
+.cm-s-inner .CodeMirror-line::selection,
+.cm-s-inner .CodeMirror-line>span::selection,
+.cm-s-inner .CodeMirror-line>span>span::selection {
+    background-color: rgba(167, 178, 189, 0.2);
+}
+
+/*
+ * Source Code Mode
+ */
+
+cm-s-inner .cm-link,
+.cm-s-inner.cm-link {
+    color: #42a5f5;
+}
+
+.cm-s-typora-default .cm-link {
+    color: #42a5f5;
+    text-decoration: underline;
+}
+
+/* 
+ * Preferences
+ */
+
+ .typora-sourceview-on #toggle-sourceview-btn {
+    background: #41444b;
+}
+
+.typora-sourceview-on #toggle-sourceview-btn {
+    background: #41444b;
+    padding-left: 10px;
+    margin-left: -2px;
+}
+
+.nav-group-item.active {
+    background: #2A2E35 !important;
+    color: var(--bg-color);
+}
+
+.nav-group-item {
+    background: var(--bg-color) !important;
+}
+
+.md-def-name:before {
+    color: var(--md-char-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--block-bg-color);
+}
+
+.export-detail, .export-item.active, .export-items-list-control {
+    background: #2A2E35 !important;
+}
+/* 
+ * Alto 配置 / Alto Configuration
+ * -----------------------------
+ */
+
+@media print {
+    html {
+        background-color: #fff !important;
+    }
+}
+
+html {
+    background-color: var(--alto-main-color);
+}
+
+/*
+ * 书写区域
+ * Write
+ */
+
+/* 右键菜单 */
+
+[role="menu"] li>a {
+    border-radius: 7px !important;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.outline-btn {
+    transform: rotate3d(-1, -1, 0, 15deg);
+}
+
+#top-titlebar {
+    background-color: transparent !important;
+}
+
+content {
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 8px !important;
+    margin: 2px 8px 8px 8px;
+}
+
+/* 书写区域鼠标移入的动画 */
+content:hover {
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* 使得小窗口下，书写区域放大后底栏不遮挡 */
+footer.ty-footer {
+    background-color: transparent;
+}
+
+.stopselect.ty-footer {
+    border-top-width: 0px;
+}
+
+.typora-node.pin-outline:not(.megamenu-opened):not(.typora-sourceview-on) footer.ty-footer {
+    margin-bottom: 3px;
+}
+
+/* 书写区域与侧边栏的右键菜单以及字数统计、拼写检查的样式 */
+#spell-check-panel,
+#footer-word-count-info,
+[role="menu"] {
+    border-radius: 7px;
+    border: #d1d6d9 solid 1px;
+    background-color: var(--alto-content-color);
+}
+
+/* 非 Mac 下的阴影效果 */
+@media not (-webkit-backdrop-filter: blur(1px)) {
+
+    #spell-check-panel,
+    #footer-word-count-info,
+    [role="menu"] {
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
+    }
+}
+
+#ty-spell-check-panel-item-label {
+    border: #d1d6d9 solid 1px !important;
+    border-radius: 7px;
+    background-color: var(--alto-content-color);
+}
+
+.ty-footer-word-count-all table tr {
+    display: block;
+    border-radius: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.ty-footer-word-count-all table tr:hover {
+    background-color: var(--alto-main-color) !important;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+/* 设置界面不显示滚动条 */
+#megamenu-content::-webkit-scrollbar-thumb {
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0000001c !important;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+#write {
+    margin-bottom: 0px;
+    background-color: transparent;
+}
+
+footer.stopselect.ty-footer {
+    background-color: transparent;
+}
+
+.typora-sourceview-on #toggle-sourceview-btn {
+    background-color: var(--alto-main-color);
+    border-radius: 7px;
+}
+
+/* Code Mode 下的背景 */
+#typora-source {
+    background-color: transparent;
+}
+
+/* 插入表格 */
+.form-control {
+    border-radius: 6px !important;
+    border: 1.5px solid var(--alto-accent-color);
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.form-control:focus {
+    border-color: var(--alto-accent-color);
+}
+
+/*
+ * 顶栏
+ * Header
+ */
+
+/* 顶栏按钮 */
+.btn:active {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+
+
+/*
+ * 侧边栏
+ * Sidebar
+ */
+
+#file-library-search-input:focus {
+    border-color: var(--alto-accent-color);
+}
+
+/* 侧边栏主颜色 */
+#typora-sidebar {
+    border-right: none !important;
+    background-color: transparent;
+    color: var(--alto-text-color);
+}
+
+/* 非 Mac 下的侧边栏内容定位 */
+@media not (-webkit-backdrop-filter: blur(1px)) {
+    #sidebar-content.sidebar-content {
+        top: 4rem;
+    }
+}
+
+.file-tree-node.active>.file-node-background {
+    display: none;
+}
+
+/* 文件未被选中 */
+.file-library-node.file-tree-node.file-library-file-node {
+    border-radius: 6px;
+    border: 1.5px solid transparent;
+    transform: scale(1);
+    transition: transform 0.2s ease, box-shadow 0.3s ease, border 0.3s ease !important;
+}
+
+/* 文件被悬停 */
+.file-library-node.file-tree-node.file-library-file-node:hover {
+    transform: scale(0.98);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 2px 3px rgba(0, 0, 0, 0.08);
+    border: 1.5px solid var(--alto-accent-color);
+}
+
+/* 文件被选中但鼠标不在侧边栏 */
+.file-library-node.file-tree-node.file-library-file-node.active {
+    background-color: var(--alto-content-color);
+}
+
+/* 文件被选中且被悬浮 */
+.file-library-node.file-tree-node.file-library-file-node.active:hover {
+    transform: scale(1.02);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 2px 3px rgba(0, 0, 0, 0.08);
+    background-color: var(--alto-content-color);
+}
+
+/* 文件被选中但鼠标在侧边栏 */
+#file-library:hover .file-library-node.file-tree-node.file-library-file-node.active {
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 2px 3px rgba(0, 0, 0, 0.08);
+    border: 1.5px solid var(--alto-accent-color);
+    background-color: var(--alto-content-color);
+}
+
+/* 文件被拖动 */
+.blink-area {
+    background-color: var(--alto-content-color) !important;
+}
+
+/* 文件被拖动后拉到的目标 */
+.ty-on-drag-enter {
+    border-radius: 6px;
+    border: 1.5px solid var(--alto-accent-color);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 2px 3px rgba(0, 0, 0, 0.08);
+    background-color: var(--alto-content-color);
+}
+
+/* 文件被重命名 */
+input {
+    border-radius: 6px;
+    border: 1.5px solid var(--alto-accent-color);
+}
+
+/* 删除拖动时的虚线边框 */
+.file-library-node:not(.file-node-root):focus>.file-node-content {
+    outline: none;
+}
+
+.active-tab-files #info-panel-tab-file .info-panel-tab-border,
+.active-tab-outline #info-panel-tab-outline .info-panel-tab-border,
+.ty-show-search #info-panel-tab-search .info-panel-tab-border {
+    display: none !important;
+}
+
+.file-library-node.file-tree-node.file-library-file-node:hover {
+    background-color: var(--alto-content-color)fff50;
+}
+
+#file-library-tree {
+    padding-right: 8px;
+}
+
+#file-library-tree .file-tree-node {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.file-node-content {
+    color: var(--alto-text-color) !important;
+    line-height: 2.1rem;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    display: flex;
+    align-items: center;
+}
+
+.file-node-icon.fa.fa-folder {
+    color: var(--alto-accent-color);
+}
+
+.file-node-on-edi,
+#file-library-search-input {
+    border-radius: 6px;
+}
+
+.file-library-node.file-tree-node.file-library-file-node:hover {
+    background-color: var(--alto-content-color);
+    border-radius: 6px;
+}
+
+#typora-sidebar .file-tree-node.file-library-file-node:not(.active):hover .file-node-background {
+    background-color: transparent;
+}
+
+#typora-sidebar #sidebar-content .sidebar-content-content .file-tree-node:not(.file-node-root):hover>.file-node-background {
+    border: none;
+    background-color: transparent;
+}
+
+/* 列表视图文件列表 */
+.file-list-item.active {
+    background-color: var(--alto-content-color);
+}
+
+/* 侧边底栏 */
+.sidebar-footer {
+    background-color: var(--alto-main-color);
+}
+
+#sidebar-files-menu {
+    border-radius: 7px;
+    border-color: var(--alto-content-color) !important;
+    margin-bottom: 0.29rem;
+    margin-left: 0.12rem;
+    background-color: var(--alto-content-color);
+    box-shadow: none;
+    color: var(--alto-text-color);
+    scale: 0.99;
+    transform-origin: bottom left;
+    transition: scale 0.2s ease, box-shadow 0.3s ease;
+}
+
+#sidebar-files-menu:hover {
+    scale: 1;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+
+#sidebar-files-menu.dropdown-menu>li>a {
+    border-radius: 7px;
+}
+
+.ty-three-cells:before {
+    position: relative;
+    top: 0.15rem;
+}
+
+.sidebar-footer-item.footer-item-right.footer-btn.file-action-item.not-empty-menu-group.show {
+    padding-top: 0px;
+}
+
+/* 侧边栏最近任务展开图标 */
+.ty-side-sort-btn.active {
+    color: var(--alto-accent-color);
+}
+
+.selected-folder-menu-item a:after {
+    color: var(--alto-accent-color);
+}
+
+.sidebar-footer-item:hover {
+    background: none;
+}
+
+#ty-tooltip {
+    border-radius: 5px;
+    background-color: var(--alto-content-color);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.03);
+    color: var(--alto-text-color);
+}
+
+footer.ty-footer {
+    padding-left: 4px;
+    padding-right: 0px;
+}
+
+.sidebar-menu .dropdown-menu>li>a,
+.sidebar-menu .dropdown-menu>li>a:focus,
+.sidebar-menu .dropdown-menu>li>a:hover {
+    color: var(--alto-text-color);
+}
+
+#sidebar-files-menu.dropdown-menu>li>a {
+    border-radius: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+}
+
+#sidebar-files-menu.dropdown-menu>li>a:hover {
+    background: var(--alto-main-color);
+}
+
+/* 侧边栏 大纲 */
+/* 大纲 参考了 Phycat 主题样式 */
+
+#outline-content .outline-h1>.outline-item {
+    font-size: larger;
+    font-weight: bold;
+    color: var(--alto-accent-color);
+}
+
+#outline-content .outline-h1:not(:first-of-type)>.outline-item {
+    margin-top: 10px;
+}
+
+#outline-content .outline-h2>.outline-item::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    color: var(--alto-accent-color);
+    border-color: var(--alto-accent-color) !important;
+    vertical-align: middle;
+    float: left;
+    margin-top: -2px;
+    margin-right: 11px;
+    margin-left: -24px;
+    border-radius: 100%;
+    border: 3px solid var(--alto-content-color);
+    z-index: 100;
+    position: relative;
+    top: 8px;
+    left: 8px;
+}
+
+#outline-content .outline-h2::after {
+    content: "";
+    height: calc(100% - 24px);
+    width: 1px;
+    color: var(--alto-accent-color);
+    position: absolute;
+    left: 3px;
+    top: 21px;
+}
+
+#outline-content .outline-h2>.outline-item:last-child:after {
+    display: none;
+}
+
+#outline-content .outline-h2>.outline-item>.outline-label {
+    line-height: 1.65rem;
+    margin: 0;
+}
+
+#outline-content .outline-h2>.outline-item {
+    margin-bottom: -3px;
+}
+
+#outline-content .outline-h3>.outline-item>.outline-label {
+    border-left: 2px solid var(--alto-accent-color);
+    padding-left: 8px;
+}
+
+.outline-item-active:not(.outline-item-wrapper)::after {
+    content: "●";
+    position: relative;
+    float: right;
+    top: -1.6rem;
+    z-index: 100;
+    color: var(--alto-accent-color);
+}
+
+.context-menu .state-on:before {
+    content: "\2713";
+}
+
+.outline-item:hover {
+    background-color: var(--alto-content-color);
+}
+
+/*
+ * 一体化菜单
+ * Menu - Unibody
+ */
+
+.dropdown-menu.megamenu-menu-list.dropdown-menu>li>a:hover {
+    background: #f9fffd;
+    border-radius: 0px;
+}
+
+.megamenu-menu {
+    box-shadow: none;
+    border-right: none !important;
+}
+
+.megamenu-menu,
+.ion-android-arrow-back:before,
+.megamenu-menu-header-title-menu,
+.megamenu-menu-header-title-back {
+    background-color: transparent;
+    color: var(--alto-text-color);
+}
+
+.megamenu-menu-header {
+    border-bottom: 0px;
+}
+
+.megamenu-menu-panel h1,
+.megamenu-menu-panel h2 {
+    font-family: 'SourceHanSerifCN';
+    font-size: 2rem;
+    font-weight: normal;
+    margin-bottom: 10px;
+    color: var(--alto-accent-color);
+}
+
+#recent-file-panel tbody tr {
+    border-radius: 6px;
+    font-family: 'SourceHanSerifCN';
+}
+
+#recent-file-panel tbody tr:hover {
+    background-color: var(--alto-main-color);
+}
+
+.megamenu-menu-panel {
+    margin-top: 0px !important;
+    border-bottom: 1px solid var(--alto-accent-color);
+    padding-bottom: 30px;
+    padding-top: 30px;
+    margin-right: 20px;
+    width: auto;
+}
+
+.megamenu-menu-panel:has([data-localize="Recent Documents"]),
+.megamenu-menu-panel:has([data-localize="Image"]),
+.megamenu-menu-panel:has([data-localize="Open Theme Folder"]),
+.megamenu-menu-panel:has([data-localize="Contact"]) {
+    border-bottom: 0px;
+}
+
+.menu-style-btn {
+    border: 0px;
+}
+
+.megamenu-section {
+    background-color: var(--alto-content-color);
+    border-radius: 10px !important;
+    margin: 13px 0px 5px 0px;
+    width: 100%;
+}
+
+.megamenu-menu-panel.megamenu-menu-content-section {
+    margin-bottom: 0px;
+}
+
+.megamenu-menu-list li a,
+.megamenu-menu-list:not(.saved) li a {
+    border-left: transparent solid 3px;
+    margin-left: 5px;
+}
+
+.megamenu-menu-list li a.active,
+.megamenu-menu-list:not(.saved) li a:hover {
+    background-color: transparent;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    color: var(--alto-accent-color);
+    font-weight: bold;
+}
+
+.megamenu-menu-list li a.active {
+    border-left: var(--alto-accent-color) solid 3px;
+}
+
+.megamenu-menu-list:not(.saved) li a:hover {
+    border-left: #aeaeae solid 3px;
+}
+
+.theme-preview-div.active .fa {
+    display: none;
+}
+
+#megamenu-menu-sidebar #megamenu-menu-list li a {
+    color: var(--alto-text-color) !important;
+}
+
+#megamenu-menu-list {
+    background-color: inherit !important;
+}
+
+#megamenu-menu-sidebar #megamenu-menu-list li a.active,
+#megamenu-menu-sidebar #megamenu-menu-list li a:hover {
+    background-color: inherit !important;
+}
+
+/* 返回箭头 */
+.ion-android-arrow-back:before {
+    content: "\1f860";
+    /* 🡠 */
+}
+
+/* 打开、导出、主题界面的按钮 */
+.long-btn {
+    border-radius: 10px;
+    border: 1px solid #888;
+    transform: scale(0.98);
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    background-color: var(--alto-content-color);
+}
+
+.long-btn:hover {
+    transform: scale(0.99);
+    box-shadow: 0 0 0 1.5px var(--alto-accent-color);
+    background-color: var(--alto-main-color);
+    filter: brightness(1.08);
+}
+
+.theme-preview-div:hover {
+    transform: scale(1);
+}
+
+#recent-file-panel-search-input,
+#recent-file-panel-action-btn {
+    margin: 12px 0px 0px;
+    border: 1px solid #9292928f;
+    border-radius: 6px;
+    background-color: var(--alto-content-color);
+    transition: all 0.2s ease;
+}
+
+#recent-file-panel-search-input:focus {
+    border-color: var(--alto-accent-color);
+}
+
+#recent-document-table {
+    border-collapse: collapse;
+}
+
+.theme-preview-content,
+.theme-preview-div {
+    width: 10rem;
+    margin-right: 2rem;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform: scale(0.98);
+}
+
+.theme-preview-div:hover,
+.theme-preview-div.active,
+.theme-preview-div.active:hover {
+    border-color: var(--alto-accent-color);
+    transition: border-color 0.1s ease;
+}
+
+.theme-preview-div:hover {
+    transform: scale(1);
+    box-shadow: 0 9px 18px rgba(0, 0, 0, 0.15);
+}
+
+.theme-preview-div.active>.theme-preview-content,
+.theme-preview-div.active {
+    width: 22rem;
+    transition: width 0.2s ease;
+}
+
+header,
+/* 这里的 header 同时也控制偏好设置中的整个顶栏 */
+#megamenu-content {
+    background-image: none !important;
+    background-color: var(--alto-main-color) !important;
+}
+
+#recent-document-table {
+    border-radius: 7px;
+}
+
+/* 部分主题的提示 Pandoc 下载没有高亮 */
+.open-pandoc-guide {
+    color: var(--alto-accent-color) !important;
+}
+
+/* 不再限制主题页的宽度 */
+#theme-preview-grid {
+    max-width: none;
+}
+
+/* 
+ * 通知
+ * Notification
+ */
+
+/* 部分样式参考了主题 Cement */
+
+/* 弹窗出来后的模糊效果 */
+.modal-open .modal.fade.in {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+}
+
+/* 当弹窗悬停部分按钮时，预览关闭模糊 */
+#table-insert-dialog:has(.btn:last-child:hover),
+#common-dialog.ty-three-way-buttons:has(.btn:last-child:hover) {
+    backdrop-filter: none;
+}
+
+.modal-content {
+    border-radius: 7px;
+    border-color: var(--alto-content-color) !important;
+    margin-bottom: 0.29rem;
+    margin-left: 0.12rem;
+    background-color: var(--alto-content-color);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
+    color: var(--alto-text-color);
+}
+
+/* 弹窗选项 */
+.btn-primary,
+.btn-default {
+    border-radius: 7px;
+    color: var(--alto-text-color);
+}
+
+#common-dialog .btn-primary {
+    background-color: var(--alto-main-color) !important;
+    color: var(--alto-text-color);
+}
+
+#common-dialog .btn-default {
+    background-color: transparent;
+}
+
+#table-insert-dialog .btn-primary:hover,
+#table-insert-dialog .btn-primary {
+    background-color: var(--alto-main-color) !important;
+    color: var(--alto-text-color);
+}
+
+#table-insert-dialog .btn-default {
+    background-color: transparent;
+}
+
+#common-dialog .btn-default:hover,
+#table-insert-dialog .btn-default:hover {
+    background-color: var(--item-hover-bg-color);
+}
+
+.on-search-panel-open content,
+.on-search-panel-open content #typora-source,
+.no-collapse-outline.ty-show-notification.unibody-window content,
+.no-collapse-outline.ty-show-notification.unibody-window content #typora-source,
+.no-collapse-outline.ty-show-notification content,
+.no-collapse-outline.ty-show-notification content #typora-source {
+    top: 28px !important;
+}
+
+.native-window.ty-show-notification.unibody-window content,
+.native-window.ty-show-notification.unibody-window content #typora-source,
+.native-window.ty-show-notification content,
+.native-window.ty-show-notification content #typora-source {
+    top: 0 !important;
+}
+
+#md-notification {
+    background-color: transparent;
+}
+
+#md-notification:before {
+    top: 11px;
+}
+
+/* 查找、替换 */
+#md-searchpanel {
+    position: fixed;
+    top: 4%;
+    left: 59% !important;
+    width: 40%;
+    padding: 0 !important;
+    background-color: inherit;
+    flex-direction: row;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+    border-radius: 7px;
+    border: var(--alto-accent-color) 1px solid;
+}
+
+.md-notification-container {
+    display: flex;
+    position: fixed;
+    top: 3.3rem;
+    left: 89rem !important;
+    width: 25%;
+    padding: 0 !important;
+    background-color: var(--alto-main-color);
+    flex-direction: row;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+    border-radius: 7px;
+    border: var(--alto-accent-color) 1px solid;
+}
+
+button.btn.btn-primary.btn-sm.dropdown-toggle.dropdown-toggle-split {
+    background-color: white;
+    color: var(--alto-accent-color);
+}
+
+.md-notification-container .md-notification-content {
+    display: block;
+}
+
+.md-notification-container .btn-default {
+    background: none;
+    color: var(--link-color);
+    margin-right: 30px;
+}
+
+#search-panel-replace-input,
+#search-panel-input {
+    height: 28px;
+    border-radius: 6px !important;
+    border: 1.5px solid var(--alto-accent-color);
+}
+
+.ty-search-panel-row,
+#searchpanel-case-option-btn,
+#searchpanel-regexp-option-btn,
+#searchpanel-word-option-btn,
+.input-group-addon btn close-btn {
+    padding-top: 5px;
+}
+
+.ty-search-panel-row {
+    margin-right: 5px !important;
+}
+
+#searchpanel-case-option-btn,
+#searchpanel-regexp-option-btn,
+#searchpanel-word-option-btn {
+    margin-top: 2.5px;
+    height: auto;
+}
+
+#md-searchpanel .btn {
+    padding-top: 2px;
+}
+
+#md-search-type-label {
+    padding-top: 0px;
+}
+
+.searchpanel-search-option-btn {
+    border: none !important;
+}
+
+#md-searchpanel .btn:not(.close-btn):hover {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+/* 
+ * 偏好设置
+ * Preferences
+ */
+
+
+input[type=search]:focus {
+    box-shadow: none !important;
+}
+
+.nav-group-item {
+    background: none !important;
+}
+
+.nav-group-item.active {
+    background-color: var(--alto-main-color) !important;
+    border-radius: 7px;
+    color: var(--alto-text-color) !important;
+}
+
+select {
+    border-radius: 4px !important;
+    border: 1px solid #8A8A8A !important;
+}
+
+select:focus {
+    border-color: transparent !important;
+    outline: 2px solid var(--alto-accent-color) !important;
+}
+
+[data-localize="OK"],
+button.btn-default:not([data-localize="Cancel"]) {
+    border-radius: 7px;
+    border: none;
+    background-color: var(--alto-main-color);
+}
+
+.input-group-content {
+    border-radius: 7px;
+}
+
+.export-detail,
+.export-item.active {
+    background: rgba(143, 143, 143, 0.1) !important;
+}
+
+.window-header {
+    background: none !important;
+    box-shadow: none !important;
+}/* 
+ *   Typora Theme - Alto - Dark Version / Author - Seeridia
+ *   https://github.com/Seeridia/typora-theme-alto
+ */
+
+@import "";
+@import "";
+
+:root {
+    --alto-accent-color: #487dac;
+    --alto-main-color: #181c24;
+    --alto-content-color: rgb(30, 34, 42);
+    --alto-text-color: #fff;
+}
+
+content {
+    background-color: rgba(30, 34, 42, 0.75);
+}
+
+content:hover {
+    background-color: rgba(30, 34, 42, 1);
+}
+
+/* 侧边底栏 */
+#sidebar-files-menu.dropdown-menu>li>a:hover {
+    background-color: #2b2e37;
+}
+
+/* 右键菜单 */
+.context-menu.dropdown-menu>.active>a,
+.context-menu.dropdown-menu>li>a:hover,
+.menu-style-btn.active {
+    background-color: #2b2e37;
+}
+
+/* 最近文件 */
+.megamenu-menu-panel tbody tr:hover {
+    background-color: #2b2e37 !important;
+}
+
+#recent-file-panel tbody tr:nth-child(2n-1) {
+    background-color: transparent;
+}
+
+#spell-check-panel,
+#footer-word-count-info,
+[role="menu"] {
+    border-color: #4a4a4a;
+}
+
+/* 弹窗选项 */
+.modal-open .modal.fade.in {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* 偏好设置 */
+.nav-group-item.active,
+[data-localize="OK"] {
+    background-color: rgba(143, 143, 143, 0.1) !important;
+}
+
+.window {
+    background: var(--alto-main-color) !important;
+}</style>
+<style type='text/css'  id="style-lp">ol, ul {padding-left: 40px}</style>
+
+<title>沟通的“知识诅咒”：为何我们在向下兼容时总是失去耐心</title>
+</head>
+<body class='typora-export os-windows typora-export-show-outline typora-export-no-collapse-outline'><div class='typora-export-content'>
+<div class="typora-export-sidebar"><div class="outline-content"><li class="outline-item-wrapper outline-h1"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#沟通的知识诅咒为何我们在向下兼容时总是失去耐心">沟通的“知识诅咒”：为何我们在向下兼容时总是失去耐心</a></div><ul class="outline-children"><li class="outline-item-wrapper outline-h3"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#其一术语的套娃效应与精力陷阱"><strong>其一，术语的“套娃”效应与精力陷阱。</strong></a></div><ul class="outline-children"></ul></li><li class="outline-item-wrapper outline-h3"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#其二认知偏差与知识的诅咒"><strong>其二，认知偏差与“知识的诅咒”。</strong></a></div><ul class="outline-children"></ul></li><li class="outline-item-wrapper outline-h3"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#其三内驱力对耐心的决定性作用"><strong>其三，内驱力对耐心的决定性作用。</strong></a></div><ul class="outline-children"></ul></li><li class="outline-item-wrapper outline-h3"><div class="outline-item"><span class="outline-expander"></span><a class="outline-label" href="#高质量的沟通本质上是一场双向的翻译我们需要将自己的专业认知翻译成对方能够理解的语言克服知识的诅咒不在于降低标准而在于转换视角当我们能真正看到对方所处的认知阶段时耐心与效能便会自然而然地从深度的理解中生长出来"><strong><u>高质量的沟通，本质上是一场双向的翻译。我们需要将自己的专业认知，翻译成对方能够理解的语言。克服“知识的诅咒”，不在于降低标准，而在于转换视角。当我们能真正看到对方所处的认知阶段时，耐心与效能，便会自然而然地从深度的理解中生长出来。</u></strong></a></div><ul class="outline-children"></ul></li></ul></li></div></div><div id='write'  class=''><h1 id='沟通的知识诅咒为何我们在向下兼容时总是失去耐心'><span>沟通的“知识诅咒”：为何我们在向下兼容时总是失去耐心</span></h1><p><span>日期：2026/6/20 </span><span class='md-tab'>	</span><span>作者：htryone</span></p><p><span>在日常工作与生活中，我们常常会遇到这样的困境：试图将某项技能或知识传授给他人，自认为表述得已足够清晰直白，却换来对方茫然的眼神，而自己也在反复的拉扯中耗尽耐心。这种挫败感，往往并非源于一方的愚钝，而是源自一种深刻的认知错位——即我们常说的“知识的诅咒”。</span></p><p><span>对于这一现象的底层逻辑，有一段论述可谓鞭辟入里：</span></p><blockquote><p><span>向下兼容很大一部分没耐心的原因就是：你没法用他所知道的知识给他讲明白。讲人话就是我可能说十句，里面只要有一个他不理解的词汇或者定义他就很难完全明白，我就要再展开去给他讲这个定义的意思，如果解释的话很多，或者解释定义时又有新的定义，那我还要依次解释下去，才能完全将这件事讲明白，那消耗的精力就是成倍提升了，自然就没有耐心了。相反，如果我知道他知道哪些知识，就可以从他能理解的地方开始讲，利用比喻或者类比让他快速明白。可就像大命题说的一样，我不知道他知道哪些知识，这就又陷入了知识的诅咒里，我认为是常识或者基础的东西，在他那可能就完全不知道，沟通起来就浪费精力，除非这件事是我主动想给他讲明白，否则很难有耐心。</span></p></blockquote><p><span>这段话精准地揭示了沟通障碍的</span><strong><span>三个核心层次</span></strong><span>。</span></p><h3 id='其一术语的套娃效应与精力陷阱'><strong><span>其一，术语的“套娃”效应与精力陷阱。</span></strong></h3><p><span>我们常以为，表述的清晰度只取决于语气的耐心。然而，上述论述指出，沟通的断裂往往起源于一个突兀的“术语”。当一段话中出现对方认知图谱之外的词汇时，他的理解即刻中断。为了弥补这个断裂，我们必须重新解释该词汇；而解释时又可能引出新的概念，于是便陷入了逐层拆解的“死循环”。这种成倍递增的精力消耗，便是耐心流失的直接原因。</span></p><p><strong><span>以指导同事操作“云盘同步”为例。</span></strong><span> 我们告知对方“请将文件拖入同步文件夹”。此时对方若不解“同步”之意，我们便需解释“自动上传”；若其又不解“上传”，我们又需解释“将文件传送至网络”。以此类推，层层递进，原本三言两语便可说明的操作，因一个基础概念的空缺，迅速演变为一场浩大的科普工程，精力耗损不言而喻。</span></p><h3 id='其二认知偏差与知识的诅咒'><strong><span>其二，认知偏差与“知识的诅咒”。</span></strong></h3><p><span>我们之所以容易在交流中预设“高起点”，是因为认知的熟练度扭曲了我们的判断。当某一知识已被我们内化为本能时，我们便很难再以“初学者”的视角去看待它。原文中“我认为是常识或者基础的东西，在他那可能就完全不知道”这句话，清醒地指出了这种认知偏差。因为我们无法预知对方的认知边界，所以常常起跑线就设置在了对方的盲区里。</span></p><h3 id='其三内驱力对耐心的决定性作用'><strong><span>其三，内驱力对耐心的决定性作用。</span></strong></h3><p><span>除了认知障碍，情绪动机同样关键。当教导他人成为一种“被迫”的任务时，我们潜意识里并未将其视为助人的过程，而是视为一种“额外负担”。在这种心态下，我们不仅难以积极搜寻对方听得懂的语言，还会对任何不解都产生天然的烦躁。反之，只有当我们拥有“主动想将其讲明白”的内驱力时，才能真正放下自我的傲慢，去寻求最高效的沟通路径。</span></p><p><strong><span>那么，我们应如何打破这种沟通僵局？</span></strong></p><p><span>基于上述分析，我们可以通过两项核心策略来提升“向下兼容”的成功率。</span></p><p><strong><span>第一，建立“认知摸底”的习惯。</span></strong>
+<span>在展开复杂说明之前，先通过简单的提问明确对方的认知基础。了解对方已有知识地图的构建情况，我们才能精准定位对方理解的“锚点”，从而避免从地基开始盖楼的窘境，直接从能衔接的地方开启对话。</span></p><p><strong><span>第二，善用“生活化类比”代替“术语解释”。</span></strong>
+<span>绝不要用高深的概念去解释另一个高深的概念。尝试将抽象的知识转化为对方生活经验中具象化的场景。</span><strong><span>例如，讲解“网速”概念时，不谈带宽与字节，直接借用人人皆知的“管道粗细与水流速度”作为直观类比，对方便能迅速在脑海中抓取核心概念，有效绕开繁琐的技术定义。</span></strong><span> 通过具象化的类比，能大幅降低对方对新知识的理解门槛。</span></p><h3 id='高质量的沟通本质上是一场双向的翻译我们需要将自己的专业认知翻译成对方能够理解的语言克服知识的诅咒不在于降低标准而在于转换视角当我们能真正看到对方所处的认知阶段时耐心与效能便会自然而然地从深度的理解中生长出来'><strong><u><span>高质量的沟通，本质上是一场双向的翻译。我们需要将自己的专业认知，翻译成对方能够理解的语言。克服“知识的诅咒”，不在于降低标准，而在于转换视角。当我们能真正看到对方所处的认知阶段时，耐心与效能，便会自然而然地从深度的理解中生长出来。</span></u></strong></h3></div></div>
+
+<script>(function(){function e(e,n,i){document.addEventListener(e,function(e){if(!e.defaultPrevented)for(var t=e.target;t&&t!=this;t=t.parentNode)if(t.matches(n)){!1===i.call(t,e)&&(e.preventDefault(),e.stopPropagation());break}},!1)}var t=document.body.parentElement,i=[],r=null,o=document.body.classList.contains("typora-export-collapse-outline");function a(){return t.scrollTop}e("click",".outline-expander",function(e){var t=this.closest(".outline-item-wrapper").classList;return t.contains("outline-item-open")?t.remove("outline-item-open"):t.add("outline-item-open"),u(),!1}),e("click",".outline-item",function(e){var t=this.querySelector(".outline-label");location.hash=t.getAttribute("href"),o&&((t=this.closest(".outline-item-wrapper").classList).contains("outline-item-open")||t.add("outline-item-open"),d(),t.add("outline-item-active"))});function s(){var e=a();r=null;for(var t=0;t<i.length&&i[t][1]-e<60;t++)r=i[t]}function n(){c=setTimeout(function(){var n;i=[],n=a(),document.querySelector("#write").querySelectorAll("h1, h2, h3, h4, h5, h6").forEach(e=>{var t=e.getAttribute("id");i.push([t,n+e.getBoundingClientRect().y])}),s(),u()},300)}var l,c,d=function(){document.querySelectorAll(".outline-item-active").forEach(e=>e.classList.remove("outline-item-active")),document.querySelectorAll(".outline-item-single.outline-item-open").forEach(e=>e.classList.remove("outline-item-open"))},u=function(){if(r&&(d(),t=document.querySelector('.outline-label[href="#'+(CSS.escape?CSS.escape(r[0]):r[0])+'"]')))if(o){var e=t.closest(".outline-item-open>ul>.outline-item-wrapper");if(e)e.classList.add("outline-item-active");else{for(var t,n=(t=t.closest(".outline-item-wrapper")).parentElement.closest(".outline-item-wrapper");n;)n=(t=n).parentElement.closest(".outline-item-wrapper");t.classList.add("outline-item-active")}}else t.closest(".outline-item-wrapper").classList.add("outline-item-active")};window.addEventListener("scroll",function(e){l&&clearTimeout(l),l=setTimeout(function(){s(),u()},300)});window.addEventListener("resize",function(e){c&&clearTimeout(c),n()}),n()})();</script>
+<!-- __DARK_MODE_INJECTED__ -->
+<script src="../scripts/dark-mode-toggle.js"></script>
+
+<!-- __IMAGE_ZOOM_INJECTED__ -->
+<script src="../scripts/image-zoom.js"></script>
+</body>
+</html>

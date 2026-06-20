@@ -1,8 +1,8 @@
 """
 网页索引 HTML 生成器（博客风格）
-功能：扫描目录的 HTML/PDF 文件，输出 JSON 数据到模板，生成 index.html
+功能：扫描目录的 HTML/PDF 文件，生成 site_data.js 数据文件，并将模板复制为 index.html
      同时为 PORTAL_FOLDERS 指定的子文件夹生成独立入口页面
-模板：home_template.html（负责所有样式和渲染逻辑）
+模板：home_template.html（负责所有样式和渲染逻辑，运行时读取 site_data.js）
 
 用法：python generate_index_html.py
 """
@@ -17,7 +17,7 @@ from pathlib import Path
 NOTES_DIR = "."              # 笔记根目录（在目标目录执行即可）
 OUTPUT_FILE = "index.html"    # 生成的索引文件名
 TEMPLATE_FILE = "home_template.html"  # 模板文件名
-DATA_DIR = "scripts/data"     # JSON 数据输出目录
+DATA_DIR = "scripts/data"     # site_data.js 输出目录
 
 # 不想被索引的文件夹名称（按名称匹配，任意层级）
 IGNORE_DIRS = {".git", ".workbuddy", ".obsidian", "assets", "images", "附件",
@@ -32,7 +32,7 @@ EXCLUDE_ROOT_FILES = True
 SCAN_EXTENSIONS = {".html", ".htm", ".pdf"}
 # 门户子文件夹：主区域展示 📁 卡片，点击跳转独立页面
 # 格式：相对于根目录的路径，如 "科技数码相关/华为"
-PORTAL_FOLDERS = {"科技数码相关/小米"}
+PORTAL_FOLDERS = {"科技数码相关/小米", "personal/utils"}
 # =====================================================================
 
 
@@ -66,7 +66,7 @@ def collect_files(base_path, extra_ignore_paths=None):
 
 def build_file_data(files, base_path):
     """
-    扫描文件列表，构建 JSON 数据。
+    扫描文件列表，构建数据字典，供 site_data.js 使用。
     PORTAL_FOLDERS 指定的子文件夹内的文件归入 portal，不在主文件列表中展示。
     返回 dict: { "folders": [ { "name", "count", "files": [...], "portals": [...] } ], "total": N, "updateTime": "..." }
     """
@@ -199,9 +199,11 @@ def generate_portal_pages(data, base_path):
             files_html = ""
             for f in portal["files"]:
                 icon = {"html": "🌐", "htm": "🌐", "pdf": "📕"}.get(f["ext"].lstrip("."), "📄")
-                filename = f["path"].rsplit("/", 1)[-1]
+                # 计算相对于门户文件夹的路径（保留子目录层级，避免丢文件夹）
+                prefix = "./" + portal["path"] + "/"
+                file_href = f["path"][len(prefix):] if f["path"].startswith(prefix) else f["path"].rsplit("/", 1)[-1]
                 files_html += (
-                    f'<a class="file-card" href="./{filename}" target="_blank">'
+                    f'<a class="file-card" href="./{file_href}" target="_blank">'
                     f'<span class="file-icon">{icon}</span>'
                     f'<div class="file-info">'
                     f'<div class="file-name">{f["name"]}</div>'
@@ -247,10 +249,10 @@ def generate_portal_pages(data, base_path):
 </body>
 </html>'''
 
-    output_path = base_path / portal["path"] / "page2.html"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(html, encoding="utf-8")
-    print(f"[OK] 门户页面：{output_path}")
+            output_path = base_path / portal["path"] / "page2.html"
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(html, encoding="utf-8")
+            print(f"[OK] 门户页面：{output_path}")
 
 
 def generate_html(base_dir):
@@ -277,7 +279,7 @@ def generate_html(base_dir):
         return
     template = template_path.read_text(encoding="utf-8")
 
-    # 构建 JSON 数据
+    # 扫描文件，构建数据字典
     data = build_file_data(files, base_path)
 
     # 写入 JS 数据文件（供 <script> 加载）
@@ -288,7 +290,7 @@ def generate_html(base_dir):
     js_path.write_text(js_content, encoding="utf-8")
     print(f"[OK] JS 数据：{js_path}")
 
-    # 生成主页 HTML（模板不再内嵌 SITE_DATA，改为运行时 fetch JSON）
+    # 将模板直接写出为 index.html（渲染逻辑在模板内，运行时读取 site_data.js）
     html = template
     output_path = base_path / OUTPUT_FILE
     output_path.write_text(html, encoding="utf-8")

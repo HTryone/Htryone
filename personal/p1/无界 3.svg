@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1020 380 1144 1240" width="100%" height="100%">
+  <defs>
+    <!-- 主图形渐变：谷歌蓝绿黄红 -->
+    <linearGradient id="googleBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4285F4"/>
+      <stop offset="100%" stop-color="#1A73E8"/>
+    </linearGradient>
+    <linearGradient id="googleGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34A853"/>
+      <stop offset="100%" stop-color="#188038"/>
+    </linearGradient>
+    <linearGradient id="googleYellow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBC04"/>
+      <stop offset="100%" stop-color="#F9AB00"/>
+    </linearGradient>
+    <linearGradient id="googleRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EA4335"/>
+      <stop offset="100%" stop-color="#D93025"/>
+    </linearGradient>
+    
+    <!-- 悬浮阴影 -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="64" stdDeviation="96" flood-color="#185ABC" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- 纯白背景 -->
+  <rect x="1020" y="380" width="1144" height="1240" fill="#ffffff"/>
+
+  <!-- 图案主体：连续重叠的实体模块，构成一朵向右上方流动的"云" -->
+  <g filter="url(#shadow)">
+    <!-- 左侧：谷歌蓝 -->
+    <rect x="1040" y="600" width="384" height="576" rx="192" fill="url(#googleBlue)"/>
+    <!-- 中间：谷歌绿 -->
+    <rect x="1344" y="400" width="448" height="736" rx="224" fill="url(#googleGreen)"/>
+    <!-- 右侧下：谷歌黄 -->
+    <rect x="1680" y="520" width="352" height="624" rx="176" fill="url(#googleYellow)"/>
+    <!-- 右侧上：谷歌红 -->
+    <rect x="1856" y="600" width="288" height="496" rx="144" fill="url(#googleRed)"/>
+
+    <!-- 负空间断点：呼应"无界"，制造开放感 -->
+    <!-- 蓝绿之间 -->
+    <rect x="1376" y="680" width="80" height="64" rx="24" fill="#ffffff" transform="rotate(-20 1416 712)"/>
+    <!-- 红黄之间 -->
+    <rect x="1824" y="680" width="80" height="64" rx="24" fill="#ffffff" transform="rotate(-20 1864 712)"/>
+  </g>
+
+  <!-- 标准字："無界雲" 繁体行书，优先使用標楷體，兼顾商用安全与书写美感 -->
+  <text x="1620" y="1520" 
+        font-family="'DFKai-SB', 'AR PL UKai TW', 'LXGW WenKai', 'KaiTi', 'Noto Serif TC', serif" 
+        font-size="304" 
+        font-weight="normal" 
+        fill="#202124" 
+        letter-spacing="96" 
+        text-anchor="middle">無界雲</text>
+        
+  <!-- 辅助线：对齐标记，提升精致感 -->
+  <line x1="1192" y1="1600" x2="1992" y2="1600" stroke="#e8eaed" stroke-width="8" stroke-dasharray="32 32"/>
+</svg>

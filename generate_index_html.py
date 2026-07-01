@@ -20,7 +20,7 @@ TEMPLATE_FILE = "home_template.html"  # 模板文件名
 DATA_DIR = "scripts/data"     # site_data.js 输出目录
 
 # 不想被索引的文件夹名称（按名称匹配，任意层级）
-IGNORE_DIRS = {".git", ".workbuddy", ".obsidian", "assets", "images", "附件",
+IGNORE_DIRS = {".git", ".workbuddy","vpwork", ".obsidian", "assets", "images", "附件",
                 "__pycache__", "templates", "build", "node_modules"}
 # 不想被索引的子目录路径（相对于根目录，精确匹配）
 IGNORE_PATHS = set()

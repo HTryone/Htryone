@@ -18,6 +18,7 @@
 ├── index.md                 # Markdown 索引（旧方案，update_index.py 生成）
 ├── generate_index_html.py   # 索引生成脚本（主页 + 门户页 + 数据文件）
 ├── update_index.py          # Markdown 目录索引生成脚本
+├── c013e8906ad8b04ce7aef6997ae2d092.txt  # 网站验证文件
 ├── scripts/                 # 前端脚本与样式
 │   ├── dark-mode-toggle.js  # 深色模式三档切换（light / fixed / smart）
 │   ├── dark-mode.js         # 固定深色模式加载器
@@ -35,6 +36,10 @@
 │   ├── demo/                # 深色模式演示页
 │   └── scriptsmd/           # 技术实现文档（深色模式自动注入方案）
 ├── personal/                # 个人笔记
+│   ├── p1/                  # 文章配图（Excalidraw / SVG / PNG）
+│   └── utils/               # 工具类内容（md 目录生成器等）
+├── share/                   # 分享类文章
+├── vpwork/                  # 图床与教程图片
 └── 科技数码相关/             # 科技数码类内容
 ```
 

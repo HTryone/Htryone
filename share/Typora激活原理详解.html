@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Typora 1.13.7 激活原理深度解析</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --bg-card: #161b22;
+  --bg-card-hover: #1c2333;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --text-secondary: #8b949e;
+  --accent: #58a6ff;
+  --accent2: #d2a8ff;
+  --green: #3fb950;
+  --orange: #d2991d;
+  --red: #f85149;
+  --purple: #a371f7;
+  --teal: #39d353;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height: 1.7;
+  padding: 40px 20px;
+}
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 60px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 50px;
+}
+.header h1 {
+  font-size: 2.4em;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+.header .subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1em;
+}
+.header .meta {
+  margin-top: 16px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.header .meta .tag {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  color: var(--text-secondary);
+}
+
+/* Section */
+.section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 36px;
+  margin-bottom: 32px;
+}
+.section h2 {
+  font-size: 1.5em;
+  color: var(--accent);
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section h3 {
+  font-size: 1.15em;
+  color: var(--accent2);
+  margin: 24px 0 10px;
+}
+.section p { color: var(--text); margin-bottom: 12px; }
+.section ul, .section ol {
+  margin: 8px 0 16px 24px;
+  color: var(--text);
+}
+.section li { margin-bottom: 6px; }
+.section code {
+  background: #21262d;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: var(--orange);
+}
+.section pre {
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  font-size: 0.85em;
+  line-height: 1.6;
+  color: var(--text);
+}
+.section pre code { background: none; padding: 0; color: var(--text); }
+
+/* Diagram wrapper */
+.diagram {
+  margin: 28px 0;
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  overflow-x: auto;
+}
+.diagram svg { max-width: 100%; height: auto; }
+.diagram .caption {
+  color: var(--text-secondary);
+  font-size: 0.82em;
+  margin-top: 10px;
+}
+
+/* Steps */
+.steps { counter-reset: step; list-style: none; margin: 16px 0; padding: 0; }
+.steps li {
+  counter-increment: step;
+  padding: 12px 16px 12px 52px;
+  position: relative;
+  margin-bottom: 8px;
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85em;
+}
+.steps li strong { color: var(--accent); }
+
+/* Callout */
+.callout {
+  border-left: 4px solid var(--orange);
+  background: rgba(210,153,29,0.08);
+  padding: 14px 18px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  font-size: 0.95em;
+}
+.callout.info { border-left-color: var(--accent); background: rgba(88,166,255,0.08); }
+.callout.success { border-left-color: var(--green); background: rgba(63,185,80,0.08); }
+.callout.danger { border-left-color: var(--red); background: rgba(248,81,73,0.08); }
+
+/* Hook table */
+.hook-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.9em;
+}
+.hook-table th {
+  background: #21262d;
+  color: var(--accent);
+  padding: 10px 14px;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+.hook-table td {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.hook-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+/* Timeline */
+.timeline { position: relative; margin: 20px 0; padding-left: 30px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.timeline .item {
+  position: relative;
+  margin-bottom: 24px;
+  padding-left: 24px;
+}
+.timeline .item::before {
+  content: '';
+  position: absolute;
+  left: -26px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+}
+.timeline .item .date {
+  color: var(--text-secondary);
+  font-size: 0.82em;
+}
+.timeline .item .title {
+  color: var(--accent2);
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.footer {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- HEADER -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="header">
+  <h1>Typora 1.13.7 激活原理深度解析</h1>
+  <p class="subtitle">全方位理解 Hook 注入、网络拦截与许可证欺骗的技术细节</p>
+  <div class="meta">
+    <span class="tag">Electron 35.6.0</span>
+    <span class="tag">Node.js</span>
+    <span class="tag">6 层 Hook</span>
+    <span class="tag">2026-07-13</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 一、概述 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section">
+  <h2>一、概述</h2>
+  <p>
+    Typora 是一款基于 <strong>Electron</strong> 框架构建的 Markdown 编辑器。Electron 应用的核心代码打包在
+    <code>resources/app.asar</code> 文件中。激活脚本通过<strong>解包 → 注入 Hook → 重打包</strong>的方式，
+    在 Typora 的 JavaScript 运行时中植入拦截代码，<strong>从源头欺骗</strong>许可证验证的每一个环节。
+  </p>
+
+  <div class="callout info">
+    <strong>核心思想：</strong>不要尝试"算出"一个合法的序列号。而是<strong>劫持验证逻辑</strong>，
+    让 Typora 不管发送什么验证请求，都会收到一个"已验证通过"的假响应。
+  </div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrB" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#58a6ff"/></marker>
+        <marker id="arrG" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#3fb950"/></marker>
+        <marker id="arrR" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#f85149"/></marker>
+        <linearGradient id="gradH" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#58a6ff" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#d2a8ff" stop-opacity="0.15"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Background -->
+      <rect width="880" height="360" rx="10" fill="#0d1117"/>
+
+      <!-- Original Typora -->
+      <rect x="20" y="30" width="200" height="310" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+      <text x="120" y="60" text-anchor="middle" fill="#8b949e" font-size="13">🖥️ 原始 Typora</text>
+
+      <rect x="40" y="80" width="160" height="36" rx="6" fill="#21262d" stroke="#30363d"/>
+      <text x="120" y="103" text-anchor="middle" fill="#c9d1d9" font-size="12">app.asar (加密打包)</text>
+
+      <rect x="40" y="126" width="160" height="36" rx="6" fill="#21262d" stroke="#30363d"/>
+      <text x="120" y="149" text-anchor="middle" fill="#c9d1d9" font-size="12">OnlyLoadAppFromAsar=✅</text>
+
+      <rect x="40" y="172" width="160" height="55" rx="6" fill="#21262d" stroke="#30363d"/>
+      <text x="120" y="194" text-anchor="middle" fill="#c9d1d9" font-size="11">许可证校验</text>
+      <text x="120" y="212" text-anchor="middle" fill="#8b949e" font-size="10">→ 服务器验证失败 ❌</text>
+
+      <!-- Arrow 1 -->
+      <line x1="220" y1="140" x2="280" y2="140" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrB)"/>
+      <text x="250" y="128" text-anchor="middle" fill="#58a6ff" font-size="10">解包+注入</text>
+
+      <!-- After Crack -->
+      <rect x="280" y="30" width="280" height="310" rx="10" fill="url(#gradH)" stroke="#58a6ff" stroke-width="1"/>
+      <text x="420" y="60" text-anchor="middle" fill="#d2a8ff" font-size="13">🔧 激活后 Typora</text>
+
+      <rect x="300" y="80" width="240" height="36" rx="6" fill="#1c2333" stroke="#30363d"/>
+      <text x="420" y="103" text-anchor="middle" fill="#c9d1d9" font-size="12">app/ (解包目录 + 注入代码)</text>
+
+      <rect x="300" y="126" width="240" height="36" rx="6" fill="#1c2333" stroke="#30363d"/>
+      <text x="420" y="149" text-anchor="middle" fill="#c9d1d9" font-size="12">OnlyLoadAppFromAsar=❌</text>
+
+      <rect x="300" y="172" width="240" height="36" rx="6" fill="#1c2333" stroke="#30363d"/>
+      <text x="420" y="195" text-anchor="middle" fill="#c9d1d9" font-size="12">launch.dist.js → Hook 注入</text>
+
+      <rect x="300" y="218" width="240" height="36" rx="6" fill="#1c2333" stroke="#3fb950"/>
+      <text x="420" y="241" text-anchor="middle" fill="#3fb950" font-size="12">app.bak/ (原始备份)</text>
+
+      <rect x="300" y="264" width="240" height="55" rx="6" fill="#1c2333" stroke="#30363d"/>
+      <text x="420" y="286" text-anchor="middle" fill="#c9d1d9" font-size="11">许可证校验</text>
+      <text x="420" y="304" text-anchor="middle" fill="#3fb950" font-size="10">→ Hook 拦截 → 返回成功 ✅</text>
+
+      <!-- Arrow 2 -->
+      <line x1="560" y1="140" x2="620" y2="140" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrB)"/>
+      <text x="590" y="128" text-anchor="middle" fill="#58a6ff" font-size="10">运行时</text>
+
+      <!-- Result -->
+      <rect x="620" y="30" width="240" height="310" rx="10" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+      <text x="740" y="60" text-anchor="middle" fill="#3fb950" font-size="13">✅ 激活成功</text>
+
+      <rect x="640" y="80" width="200" height="36" rx="6" fill="#21262d" stroke="#30363d"/>
+      <text x="740" y="103" text-anchor="middle" fill="#c9d1d9" font-size="12">📂 文件系统：重定向到 bak</text>
+
+      <rect x="640" y="126" width="200" height="55" rx="6" fill="#21262d" stroke="#30363d"/>
+      <text x="740" y="148" text-anchor="middle" fill="#c9d1d9" font-size="11">🔐 crypto：拦截解密</text>
+      <text x="740" y="166" text-anchor="middle" fill="#8b949e" font-size="10">返回含当天日期的伪造license</text>
+
+      <rect x="640" y="191" width="200" height="55" rx="6" fill="#21262d" stroke="#30363d"/>
+      <text x="740" y="213" text-anchor="middle" fill="#c9d1d9" font-size="11">🌐 网络：3层拦截</text>
+      <text x="740" y="231" text-anchor="middle" fill="#8b949e" font-size="10">protocol.handle + net.fetch</text>
+
+      <rect x="640" y="256" width="200" height="36" rx="6" fill="#21262d" stroke="#30363d"/>
+      <text x="740" y="279" text-anchor="middle" fill="#c9d1d9" font-size="11">📋 注册表：SLicense / IDate</text>
+
+      <rect x="640" y="302" width="200" height="24" rx="6" fill="#21262d" stroke="#30363d"/>
+      <text x="740" y="319" text-anchor="middle" fill="#c9d1d9" font-size="11">🧹 试用数据清理</text>
+    </svg>
+    <div class="caption">图1：整体架构 — 从原始 Typora 到激活成功，6 层 Hook 协同工作</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 二、文件系统变化 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section">
+  <h2>二、文件系统变化详解</h2>
+
+  <p>激活脚本对 Typora 安装目录做了以下文件操作：</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 880 620" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="ff1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#58a6ff"/></marker>
+        <marker id="ff2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#d2a8ff"/></marker>
+      </defs>
+      <rect width="880" height="620" rx="10" fill="#0d1117"/>
+
+      <!-- LEFT: Before -->
+      <rect x="20" y="20" width="400" height="580" rx="10" fill="#161b22" stroke="#30363d"/>
+      <text x="220" y="52" text-anchor="middle" fill="#f85149" font-size="16" font-weight="700">激活前</text>
+
+      <!-- Folder tree left -->
+      <text x="40" y="85" fill="#8b949e" font-size="12">Typora\</text>
+      <text x="55" y="108" fill="#8b949e" font-size="12">├─ Typora.exe</text>
+      <text x="55" y="131" fill="#8b949e" font-size="12">└─ resources\</text>
+      <text x="70" y="154" fill="#8b949e" font-size="12">   ├─ app.asar  ← 打包的所有代码</text>
+      <text x="70" y="177" fill="#8b949e" font-size="12">   ├─ electron.asar</text>
+      <text x="70" y="200" fill="#8b949e" font-size="12">   └─ node_modules.asar</text>
+
+      <rect x="70" y="218" width="330" height="44" rx="6" fill="#21262d" stroke="#30363d"/>
+      <text x="235" y="237" text-anchor="middle" fill="#c9d1d9" font-size="11">app.asar = 归档文件（类似 tar）</text>
+      <text x="235" y="254" text-anchor="middle" fill="#8b949e" font-size="10">包含所有 JS/HTML/CSS，Electron 直接读取</text>
+
+      <rect x="70" y="276" width="330" height="44" rx="6" fill="#21262d" stroke="#30363d"/>
+      <text x="235" y="295" text-anchor="middle" fill="#c9d1d9" font-size="11">OnlyLoadAppFromAsar = true</text>
+      <text x="235" y="312" text-anchor="middle" fill="#8b949e" font-size="10">Electron Fuse：只能从 .asar 加载代码</text>
+
+      <!-- CENTER: Arrow with steps -->
+      <line x1="420" y1="90" x2="460" y2="90" stroke="#58a6ff" stroke-width="3" marker-end="url(#ff1)"/>
+      <text x="440" y="78" text-anchor="middle" fill="#58a6ff" font-size="11" font-weight="bold">6步操作</text>
+
+      <rect x="395" y="108" width="90" height="24" rx="4" fill="#1f2a3a" stroke="#58a6ff" stroke-width="0.5"/>
+      <text x="440" y="125" text-anchor="middle" fill="#58a6ff" font-size="10">① 解包 asar</text>
+      <line x1="440" y1="132" x2="440" y2="145" stroke="#58a6ff" stroke-width="0.5"/>
+
+      <rect x="395" y="145" width="90" height="24" rx="4" fill="#1f2a3a" stroke="#58a6ff" stroke-width="0.5"/>
+      <text x="440" y="162" text-anchor="middle" fill="#58a6ff" font-size="10">② 备份 app</text>
+      <line x1="440" y1="169" x2="440" y2="182" stroke="#58a6ff" stroke-width="0.5"/>
+
+      <rect x="395" y="182" width="90" height="24" rx="4" fill="#1f2a3a" stroke="#58a6ff" stroke-width="0.5"/>
+      <text x="440" y="199" text-anchor="middle" fill="#58a6ff" font-size="10">③ 备份 asar</text>
+      <line x1="440" y1="206" x2="440" y2="219" stroke="#58a6ff" stroke-width="0.5"/>
+
+      <rect x="395" y="219" width="90" height="24" rx="4" fill="#1f2a3a" stroke="#58a6ff" stroke-width="0.5"/>
+      <text x="440" y="236" text-anchor="middle" fill="#58a6ff" font-size="10">④ 改 Fuses</text>
+      <line x1="440" y1="243" x2="440" y2="256" stroke="#58a6ff" stroke-width="0.5"/>
+
+      <rect x="395" y="256" width="90" height="24" rx="4" fill="#1f2a3a" stroke="#58a6ff" stroke-width="0.5"/>
+      <text x="440" y="273" text-anchor="middle" fill="#58a6ff" font-size="10">⑤ 注入 Hook</text>
+      <line x1="440" y1="280" x2="440" y2="293" stroke="#58a6ff" stroke-width="0.5"/>
+
+      <rect x="395" y="293" width="90" height="24" rx="4" fill="#1f2a3a" stroke="#58a6ff" stroke-width="0.5"/>
+      <text x="440" y="310" text-anchor="middle" fill="#58a6ff" font-size="10">⑥ 写注册表</text>
+
+      <!-- RIGHT: After -->
+      <rect x="460" y="20" width="400" height="580" rx="10" fill="#161b22" stroke="#58a6ff"/>
+      <text x="660" y="52" text-anchor="middle" fill="#3fb950" font-size="16" font-weight="700">激活后</text>
+
+      <text x="480" y="85" fill="#3fb950" font-size="12">Typora\</text>
+      <text x="495" y="108" fill="#8b949e" font-size="12">├─ Typora.exe (Fuses 已改)</text>
+      <text x="495" y="131" fill="#f85149" font-size="12">├─ Typora.exe.bak  (原始备份)</text>
+      <text x="495" y="154" fill="#8b949e" font-size="12">└─ resources\</text>
+      <text x="510" y="177" fill="#d2a8ff" font-size="12">   ├─ app\  ← 解包 + Hook注入</text>
+      <text x="525" y="200" fill="#8b949e" font-size="11">   │  └─ launch.dist.js (已修改)</text>
+      <text x="510" y="223" fill="#3fb950" font-size="12">   ├─ app.bak\  ← 原始解包备份</text>
+      <text x="510" y="246" fill="#f85149" font-size="12">   ├─ app.asar.bak  (原始备份)</text>
+      <text x="510" y="269" fill="#8b949e" font-size="12">   ├─ electron.asar</text>
+      <text x="510" y="292" fill="#8b949e" font-size="12">   └─ node_modules.asar</text>
+
+      <rect x="510" y="312" width="330" height="44" rx="6" fill="#1c2333" stroke="#30363d"/>
+      <text x="675" y="331" text-anchor="middle" fill="#c9d1d9" font-size="11">app.asar 已删除 → Electron 从 app/ 加载</text>
+      <text x="675" y="348" text-anchor="middle" fill="#8b949e" font-size="10">OnlyLoadAppFromAsar = false 允许此行为</text>
+
+      <rect x="510" y="368" width="330" height="44" rx="6" fill="#1c2333" stroke="#30363d"/>
+      <text x="675" y="387" text-anchor="middle" fill="#c9d1d9" font-size="11">fs Hook → 读取 app/ 时自动重定向到 app.bak/</text>
+      <text x="675" y="404" text-anchor="middle" fill="#8b949e" font-size="10">保证 Typora 读取的是原始代码（除了 Hook 部分）</text>
+
+      <rect x="510" y="424" width="330" height="70" rx="6" fill="#1c2333" stroke="#3fb950"/>
+      <text x="675" y="443" text-anchor="middle" fill="#c9d1d9" font-size="11">📋 注册表 HKCU\Software\Typora\</text>
+      <text x="675" y="462" text-anchor="middle" fill="#3fb950" font-size="10">SLicense = "RHJlYW1OeWE=#0#1/1/2059"</text>
+      <text x="675" y="481" text-anchor="middle" fill="#3fb950" font-size="10">IDate    = "07/13/2026" (激活日期)</text>
+
+      <rect x="510" y="506" width="330" height="44" rx="6" fill="#1c2333" stroke="#d2991d"/>
+      <text x="675" y="525" text-anchor="middle" fill="#d2991d" font-size="11">🧹 试用数据已清理</text>
+      <text x="675" y="542" text-anchor="middle" fill="#8b949e" font-size="10">Local Storage / DIPS / Session Storage / 注册表试用键</text>
+    </svg>
+    <div class="caption">图2：文件系统变化 — 激活前后 Typora 安装目录的完整对比</div>
+  </div>
+
+  <h3>关键操作详解</h3>
+
+  <ol class="steps">
+    <li>
+      <strong>解包 app.asar</strong><br>
+      使用 <code>asar.extractAll(asarPath, appDir)</code> 将压缩归档解包为普通文件夹。
+      Typora 的所有 JS 代码现在以明文形式存在于 <code>resources/app/</code> 目录下。
+    </li>
+    <li>
+      <strong>备份原始代码</strong><br>
+      将 <code>resources/app/</code> 整体复制到 <code>resources/app.bak/</code>。
+      后续 fs Hook 会让 Typora <strong>读取 app.bak/ 中的原始文件</strong>，确保除注入代码外，一切逻辑不变。
+    </li>
+    <li>
+      <strong>备份原始 asar</strong><br>
+      <code>app.asar</code> 重命名为 <code>app.asar.bak</code>，用于回滚还原。
+    </li>
+    <li>
+      <strong>修改 Electron Fuses</strong><br>
+      使用 <code>@electron/fuses</code> 的 <code>flipFuses</code> 将 Typora.exe 中的
+      <code>OnlyLoadAppFromAsar</code> 从 <code>true</code> 改为 <code>false</code>，
+      使 Electron 允许从解包的 <code>app/</code> 目录加载代码。
+    </li>
+    <li>
+      <strong>注入 Hook 代码</strong><br>
+      在 <code>app/launch.dist.js</code> 的第一个 <code>require(...);</code> 语句之后插入 Hook 代码。
+      launch.dist.js 是 Typora 的入口文件，在此注入可确保 Hook 在所有业务代码之前运行。
+    </li>
+    <li>
+      <strong>写入注册表</strong><br>
+      向 <code>HKCU\Software\Typora</code> 写入 <code>SLicense</code> 和 <code>IDate</code>，
+      作为静态授权凭证。Typora 启动时检测到这些键值会认为"已经激活过"。
+    </li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 三、6层Hook架构 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section">
+  <h2>三、6 层 Hook 架构详解</h2>
+
+  <p>注入到 <code>launch.dist.js</code> 的 Hook 代码共分 <strong>6 层</strong>，每一层负责拦截一个特定的验证环节：</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 880 780" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="harr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#58a6ff"/></marker>
+      </defs>
+      <rect width="880" height="780" rx="10" fill="#0d1117"/>
+
+      <!-- Title -->
+      <text x="440" y="35" text-anchor="middle" fill="#d2a8ff" font-size="16" font-weight="700">Typora 启动 → 6层拦截链</text>
+
+      <!-- Layer 1: App starting -->
+      <rect x="30" y="55" width="820" height="50" rx="8" fill="#161b22" stroke="#30363d"/>
+      <text x="440" y="85" text-anchor="middle" fill="#8b949e" font-size="13">⚡ Typora 进程启动 → 加载 app/launch.dist.js → 执行 Hook 初始化代码</text>
+
+      <line x1="200" y1="105" x2="200" y2="125" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#harr)"/>
+      <text x="140" y="120" fill="#58a6ff" font-size="10">Hook 链路</text>
+
+      <!-- Hook 1 -->
+      <rect x="30" y="128" width="820" height="68" rx="8" fill="#1a2332" stroke="#58a6ff" stroke-width="1"/>
+      <rect x="30" y="128" width="42" height="68" rx="8" fill="#58a6ff"/>
+      <text x="51" y="168" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">1</text>
+      <text x="90" y="150" fill="#58a6ff" font-size="14" font-weight="700">fs 路径重定向</text>
+      <text x="90" y="174" fill="#8b949e" font-size="11">拦截 readFileSync / readFile / stat / statSync / open / promises 系列</text>
+      <text x="640" y="150" fill="#c9d1d9" font-size="11" text-anchor="end">路径含 resources\app\ → 替换为 resources\app.bak\</text>
+      <text x="640" y="174" fill="#3fb950" font-size="11" text-anchor="end">✅ 确保 Typora 读取原始代码（除 Hook 注入文件）</text>
+
+      <line x1="200" y1="196" x2="200" y2="216" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#harr)"/>
+
+      <!-- Hook 2 -->
+      <rect x="30" y="219" width="820" height="68" rx="8" fill="#1a2332" stroke="#58a6ff" stroke-width="1"/>
+      <rect x="30" y="219" width="42" height="68" rx="8" fill="#58a6ff"/>
+      <text x="51" y="259" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">2</text>
+      <text x="90" y="241" fill="#58a6ff" font-size="14" font-weight="700">crypto.publicDecrypt 拦截</text>
+      <text x="90" y="265" fill="#8b949e" font-size="11">主进程 License 解密验证</text>
+      <text x="640" y="241" fill="#c9d1d9" font-size="11" text-anchor="end">拦截 RSA 公钥解密 → 返回伪造的 license entity</text>
+      <text x="640" y="265" fill="#3fb950" font-size="11" text-anchor="end">✅ entity.date 动态生成为当天日期，永不过期</text>
+
+      <line x1="200" y1="287" x2="200" y2="307" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#harr)"/>
+
+      <!-- Hook 3 -->
+      <rect x="30" y="310" width="820" height="68" rx="8" fill="#1a2332" stroke="#58a6ff" stroke-width="1"/>
+      <rect x="30" y="310" width="42" height="68" rx="8" fill="#58a6ff"/>
+      <text x="51" y="350" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">3</text>
+      <text x="90" y="332" fill="#58a6ff" font-size="14" font-weight="700">crypto.privateDecrypt 拦截</text>
+      <text x="90" y="356" fill="#8b949e" font-size="11">部分版本的备用版 License 解密</text>
+      <text x="640" y="332" fill="#c9d1d9" font-size="11" text-anchor="end">拦截 RSA 私钥解密 → 同样返回伪造 entity</text>
+      <text x="640" y="356" fill="#3fb950" font-size="11" text-anchor="end">✅ 兼容可能使用私钥解密的版本</text>
+
+      <line x1="200" y1="378" x2="200" y2="398" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#harr)"/>
+
+      <!-- Hook 4 -->
+      <rect x="30" y="401" width="820" height="68" rx="8" fill="#1a2332" stroke="#58a6ff" stroke-width="1"/>
+      <rect x="30" y="401" width="42" height="68" rx="8" fill="#58a6ff"/>
+      <text x="51" y="441" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">4</text>
+      <text x="90" y="423" fill="#58a6ff" font-size="14" font-weight="700">protocol.handle("https") 拦截</text>
+      <text x="90" y="447" fill="#8b949e" font-size="11">渲染进程（窗口）发起的 HTTPS 请求</text>
+      <text x="640" y="423" fill="#c9d1d9" font-size="11" text-anchor="end">拦截 url 包含 "api/client/" 的请求</text>
+      <text x="640" y="447" fill="#3fb950" font-size="11" text-anchor="end">✅ 返回 { success: true, msg: 动态生成 }</text>
+
+      <line x1="200" y1="469" x2="200" y2="489" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#harr)"/>
+
+      <!-- Hook 5 -->
+      <rect x="30" y="492" width="820" height="80" rx="8" fill="#1a2332" stroke="#f85149" stroke-width="2"/>
+      <rect x="30" y="492" width="42" height="80" rx="8" fill="#f85149"/>
+      <text x="51" y="538" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">5</text>
+      <text x="90" y="514" fill="#f85149" font-size="14" font-weight="700">⭐ electron.net.request 拦截（最关键！）</text>
+      <text x="90" y="538" fill="#8b949e" font-size="11">主进程中 electron-fetch 模块发起的请求（同步注入，在 app.whenReady 之前）</text>
+      <text x="640" y="514" fill="#c9d1d9" font-size="11" text-anchor="end">electron-fetch useElectronNet=true → 调用 net.request</text>
+      <text x="640" y="538" fill="#c9d1d9" font-size="11" text-anchor="end">构造 fake ClientRequest + IncomingMessage 事件流</text>
+      <text x="640" y="558" fill="#3fb950" font-size="11" text-anchor="end">✅ 拦截 license 续订请求，每 12h 续订不失败</text>
+
+      <line x1="200" y1="572" x2="200" y2="592" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#harr)"/>
+
+      <!-- Hook 6 -->
+      <rect x="30" y="595" width="820" height="80" rx="8" fill="#1a2332" stroke="#58a6ff" stroke-width="1"/>
+      <rect x="30" y="595" width="42" height="80" rx="8" fill="#58a6ff"/>
+      <text x="51" y="641" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">6</text>
+      <text x="90" y="617" fill="#58a6ff" font-size="14" font-weight="700">electron.net.fetch 拦截（后备）</text>
+      <text x="90" y="641" fill="#8b949e" font-size="11">主进程其他可能使用 net.fetch 的请求</text>
+      <text x="640" y="617" fill="#c9d1d9" font-size="11" text-anchor="end">拦截 url 包含 "api/client/" → 返回伪造 Response</text>
+      <text x="640" y="641" fill="#8b949e" font-size="11" text-anchor="end">在 app.whenReady 回调内设置</text>
+      <text x="640" y="661" fill="#3fb950" font-size="11" text-anchor="end">✅ 双重保险，确保不漏网</text>
+
+      <!-- Summary -->
+      <rect x="30" y="695" width="820" height="65" rx="8" fill="#0d2b1a" stroke="#3fb950" stroke-width="1.5"/>
+      <text x="440" y="720" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="700">🎯 6 层 Hook = 全覆盖拦截</text>
+      <text x="440" y="744" text-anchor="middle" fill="#8b949e" font-size="11">文件读取 + RSA 解密 + 渲染进程请求 + 主进程请求（request/fetch）= 无懈可击</text>
+    </svg>
+    <div class="caption">图3：6层Hook架构 — Typora 启动到激活完成的完整拦截链路</div>
+  </div>
+
+  <h3>各层 Hook 详细说明</h3>
+
+  <table class="hook-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Hook 层</th>
+        <th>拦截目标</th>
+        <th>运行时机</th>
+        <th>优先级</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>fs 路径重定向</strong></td>
+        <td><code>fs.readFileSync</code>、<code>fs.readFile</code>、<code>fs.stat</code>、<code>fs.open</code> 等 8 个同步方法 + <code>fs.promises</code> 的 3 个异步方法</td>
+        <td>脚本加载时立即执行</td>
+        <td>极高</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>crypto.publicDecrypt</strong></td>
+        <td>Typora 用 RSA 公钥解密 license 的过程</td>
+        <td>脚本加载时立即执行</td>
+        <td>高</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>crypto.privateDecrypt</strong></td>
+        <td>部分版本可能使用的私钥解密备用路径</td>
+        <td>脚本加载时立即执行</td>
+        <td>中</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>protocol.handle("https")</strong></td>
+        <td>渲染进程（UI 窗口）发起的 API 请求</td>
+        <td>app.whenReady() 回调</td>
+        <td>中</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>electron.net.request</strong> ⭐</td>
+        <td>主进程通过 <strong>electron-fetch</strong> 模块发起的请求 — 这是 license 续订的核心通道</td>
+        <td>脚本加载时<strong>同步</strong>执行（早于 whenReady）</td>
+        <td>最高</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>electron.net.fetch</strong></td>
+        <td>主进程其他 net.fetch 调用，作为第5层的后备补充</td>
+        <td>app.whenReady() 回调</td>
+        <td>低</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 四、网络请求拦截核心 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section">
+  <h2>四、网络请求拦截 — 最复杂也最关键的部分</h2>
+
+  <div class="callout danger">
+    <strong>⚠️ 为什么需要 3 层网络拦截？</strong><br>
+    Typora 的许可证验证涉及 <strong>两个进程 + 两个网络库</strong>，单一 Hook 无法覆盖所有请求路径。
+    这是经历多次"激活几天后又失效"的教训后得出的结论。
+  </div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 880 640" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="na1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#58a6ff"/></marker>
+        <marker id="na2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#f85149"/></marker>
+        <marker id="na3" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#d2991d"/></marker>
+      </defs>
+      <rect width="880" height="640" rx="10" fill="#0d1117"/>
+
+      <!-- Two processes -->
+      <rect x="20" y="15" width="400" height="610" rx="10" fill="#161b22" stroke="#30363d"/>
+      <text x="220" y="45" text-anchor="middle" fill="#d2a8ff" font-size="16" font-weight="700">🖥️ 主进程 (Main Process)</text>
+
+      <rect x="460" y="15" width="400" height="610" rx="10" fill="#161b22" stroke="#30363d"/>
+      <text x="660" y="45" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="700">🪟 渲染进程 (Renderer Process)</text>
+
+      <!-- Main Process: election-fetch path -->
+      <text x="40" y="85" fill="#8b949e" font-size="12">Licence 续订流程（每12小时）：</text>
+      <rect x="40" y="100" width="360" height="50" rx="6" fill="#21262d" stroke="#f85149"/>
+      <text x="220" y="120" text-anchor="middle" fill="#c9d1d9" font-size="11">jsc 代码: [renewLicense] → 发起续订请求</text>
+      <text x="220" y="138" text-anchor="middle" fill="#f85149" font-size="10">使用 electron-fetch 模块</text>
+
+      <line x1="220" y1="150" x2="220" y2="175" stroke="#f85149" stroke-width="1.5" marker-end="url(#na2)"/>
+
+      <rect x="40" y="178" width="360" height="65" rx="6" fill="#21262d" stroke="#f85149"/>
+      <text x="220" y="198" text-anchor="middle" fill="#c9d1d9" font-size="11">electron-fetch 模块内部逻辑:</text>
+      <text x="220" y="218" text-anchor="middle" fill="#f85149" font-size="10">useElectronNet = Boolean(process.versions.electron)</text>
+      <text x="220" y="236" text-anchor="middle" fill="#f85149" font-size="10">→ true → 调用 electron.net.request() !!!</text>
+
+      <line x1="220" y1="243" x2="220" y2="270" stroke="#f85149" stroke-width="2" marker-end="url(#na2)"/>
+
+      <!-- Hook 5 interception -->
+      <rect x="40" y="273" width="360" height="80" rx="8" fill="#0d2b1a" stroke="#3fb950" stroke-width="2"/>
+      <text x="220" y="295" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="700">🎯 Hook 5: net.request 拦截</text>
+      <text x="220" y="315" text-anchor="middle" fill="#8b949e" font-size="10">同步设置(在任何异步代码之前)</text>
+      <text x="220" y="333" text-anchor="middle" fill="#c9d1d9" font-size="10">伪造 ClientRequest → response → data/end 事件</text>
+      <text x="220" y="348" text-anchor="middle" fill="#3fb950" font-size="10">返回 {success:true, msg:"动态entity"}</text>
+
+      <line x1="400" y1="313" x2="435" y2="313" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#na1)"/>
+
+      <!-- Renderer side -->
+      <rect x="480" y="110" width="360" height="50" rx="6" fill="#21262d" stroke="#30363d"/>
+      <text x="660" y="130" text-anchor="middle" fill="#c9d1d9" font-size="11">用户打开 Typora 窗口 → UI 发起激活请求</text>
+      <text x="660" y="148" text-anchor="middle" fill="#8b949e" font-size="10">fetch / XMLHttpRequest → api/client/activate</text>
+
+      <line x1="660" y1="160" x2="660" y2="185" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#na1)"/>
+
+      <rect x="480" y="188" width="360" height="80" rx="8" fill="#1a2332" stroke="#58a6ff" stroke-width="2"/>
+      <text x="660" y="210" text-anchor="middle" fill="#58a6ff" font-size="14" font-weight="700">🎯 Hook 4: protocol.handle("https")</text>
+      <text x="660" y="230" text-anchor="middle" fill="#8b949e" font-size="10">仅拦截渲染进程的请求</text>
+      <text x="660" y="248" text-anchor="middle" fill="#c9d1d9" font-size="10">url.includes("api/client/") → 返回伪造响应</text>
+      <text x="660" y="263" text-anchor="middle" fill="#3fb950" font-size="10">{success:true, code:0, msg:"动态entity"}</text>
+
+      <line x1="660" y1="280" x2="660" y2="305" marker-end="url(#na1)" stroke="#58a6ff" stroke-width="1"/>
+
+      <!-- Result summary -->
+      <rect x="480" y="308" width="360" height="50" rx="6" fill="#0d2b1a" stroke="#3fb950"/>
+      <text x="660" y="328" text-anchor="middle" fill="#3fb950" font-size="12">✅ 渲染进程 → Hook 4 拦截成功</text>
+      <text x="660" y="346" text-anchor="middle" fill="#8b949e" font-size="10">无需联网，本地返回</text>
+
+      <!-- Key insight box -->
+      <rect x="30" y="378" width="830" height="105" rx="8" fill="#1a1f2e" stroke="#d2991d" stroke-width="1"/>
+      <text x="445" y="402" text-anchor="middle" fill="#d2991d" font-size="15" font-weight="700">⭐ 关键发现：electron-fetch 的陷阱</text>
+      <text x="55" y="428" fill="#c9d1d9" font-size="12">• electron-fetch 在 Electron 环境中默认 useElectronNet = true（检测 process.versions.electron 是否存在）</text>
+      <text x="55" y="450" fill="#c9d1d9" font-size="12">• useElectronNet=true 时调用的是 electron.net.request() — 注意是 request 不是 fetch！</text>
+      <text x="55" y="472" fill="#c9d1d9" font-size="12">• 如果只 Hook net.fetch 和 protocol.handle，续订请求会直接穿透到真实服务器</text>
+
+      <!-- net.fetch backup -->
+      <rect x="40" y="500" width="360" height="55" rx="6" fill="#1c2333" stroke="#d2991d"/>
+      <text x="220" y="520" text-anchor="middle" fill="#d2991d" font-size="11">🎯 Hook 6: net.fetch (后备保险)</text>
+      <text x="220" y="538" text-anchor="middle" fill="#8b949e" font-size="10">拦截可能存在的 net.fetch 路径，不漏网</text>
+      <text x="220" y="550" text-anchor="middle" fill="#8b949e" font-size="9">在 whenReady() 回调中设置</text>
+
+      <rect x="480" y="500" width="360" height="55" rx="6" fill="#0d2b1a" stroke="#3fb950"/>
+      <text x="660" y="520" text-anchor="middle" fill="#3fb950" font-size="11">✅ 最终结果：3层网络拦截全覆盖</text>
+      <text x="660" y="540" text-anchor="middle" fill="#8b949e" font-size="10">续订永远成功，永不降级到试用模式</text>
+
+      <rect x="30" y="570" width="830" height="55" rx="6" fill="#0d1117" stroke="#30363d" stroke-dasharray="4,4"/>
+      <text x="445" y="592" text-anchor="middle" fill="#8b949e" font-size="11">📁 electron-fetch 源码位置:  resources/node_modules.asar/electron-fetch/lib/index.js</text>
+      <text x="445" y="612" text-anchor="middle" fill="#8b949e" font-size="10">核心代码: const send = request.useElectronNet ? electron.net.request : (...) .request</text>
+    </svg>
+    <div class="caption">图4：网络请求拦截体系 — 主进程 + 渲染进程 + electron-fetch 的3层拦截架构</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 五、许可证验证完整链路 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section">
+  <h2>五、许可证验证完整链路（攻击面分析）</h2>
+
+  <p>Typora 从启动到完成激活验证，经历了以下完整链路。每一条可能失败的路径都有对应的 Hook 保护：</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 880 520" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="lc1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#58a6ff"/></marker>
+      </defs>
+      <rect width="880" height="560" rx="10" fill="#0d1117"/>
+
+      <!-- Step 1 -->
+      <rect x="250" y="20" width="380" height="40" rx="8" fill="#161b22" stroke="#30363d"/>
+      <text x="440" y="45" text-anchor="middle" fill="#c9d1d9" font-size="13">🚀 Typora 进程启动</text>
+      <line x1="440" y1="60" x2="440" y2="82" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#lc1)"/>
+
+      <!-- Step 2 -->
+      <rect x="200" y="85" width="480" height="40" rx="8" fill="#161b22" stroke="#30363d"/>
+      <text x="440" y="110" text-anchor="middle" fill="#c9d1d9" font-size="13">📂 读取注册表 HKCU\Software\Typora\SLicense</text>
+      <line x1="440" y1="125" x2="440" y2="147" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#lc1)"/>
+
+      <!-- Step 3: Has license -->
+      <rect x="200" y="150" width="480" height="40" rx="8" fill="#0d2b1a" stroke="#3fb950"/>
+      <text x="440" y="175" text-anchor="middle" fill="#c9d1d9" font-size="13">✅ 检测到 SLicense → 进入"已验证"模式</text>
+      <line x1="440" y1="190" x2="440" y2="212" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#lc1)"/>
+
+      <!-- Step 4: Decrypt license -->
+      <rect x="200" y="215" width="480" height="40" rx="8" fill="#1a2332" stroke="#58a6ff"/>
+      <text x="440" y="240" text-anchor="middle" fill="#c9d1d9" font-size="13">🔐 crypto.publicDecrypt → RSA解密license → Hook 2/3 拦截</text>
+      <line x1="440" y1="255" x2="440" y2="277" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#lc1)"/>
+
+      <!-- Step 5: Verify with server -->
+      <rect x="200" y="280" width="480" height="40" rx="8" fill="#1a2332" stroke="#d2991d"/>
+      <text x="440" y="305" text-anchor="middle" fill="#c9d1d9" font-size="13">🌐 向 api/client/ 发起在线验证 → Hook 4/5/6 拦截</text>
+      <line x1="440" y1="320" x2="440" y2="342" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#lc1)"/>
+
+      <!-- Split: Renew or Normal -->
+      <!-- Branch: Renew -->
+      <line x1="440" y1="345" x2="440" y2="355" stroke="#58a6ff" stroke-width="1.5"/>
+      <line x1="440" y1="355" x2="200" y2="355" stroke="#58a6ff" stroke-width="1"/>
+      <line x1="200" y1="355" x2="200" y2="375" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#lc1)"/>
+
+      <rect x="40" y="378" width="320" height="40" rx="8" fill="#1c2333" stroke="#f85149"/>
+      <text x="200" y="403" text-anchor="middle" fill="#c9d1d9" font-size="12">🔄 每12h续订: [renewLicense]</text>
+      <line x1="200" y1="418" x2="200" y2="440" stroke="#f85149" stroke-width="1.5" marker-end="url(#lc1)"/>
+
+      <rect x="40" y="443" width="320" height="40" rx="8" fill="#0d2b1a" stroke="#3fb950"/>
+      <text x="200" y="468" text-anchor="middle" fill="#c9d1d9" font-size="12">✅ Hook 5 拦截 → 返回 {success:true}</text>
+
+      <!-- Branch: Normal check -->
+      <line x1="440" y1="355" x2="680" y2="355" stroke="#58a6ff" stroke-width="1"/>
+      <line x1="680" y1="355" x2="680" y2="375" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#lc1)"/>
+
+      <rect x="520" y="378" width="320" height="40" rx="8" fill="#1c2333" stroke="#d2991d"/>
+      <text x="680" y="403" text-anchor="middle" fill="#c9d1d9" font-size="12">✅ 正常验证: api/client/ → Hook 4 拦截</text>
+      <line x1="680" y1="418" x2="680" y2="440" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#lc1)"/>
+
+      <rect x="520" y="443" width="320" height="40" rx="8" fill="#0d2b1a" stroke="#3fb950"/>
+      <text x="680" y="468" text-anchor="middle" fill="#c9d1d9" font-size="12">✅ 返回 {success:true, msg:动态entity}</text>
+
+      <!-- Final -->
+      <line x1="200" y1="483" x2="200" y2="500" stroke="#58a6ff" stroke-width="1.5"/>
+      <line x1="680" y1="483" x2="680" y2="500" stroke="#58a6ff" stroke-width="1.5"/>
+      <line x1="200" y1="500" x2="680" y2="500" stroke="#58a6ff" stroke-width="1"/>
+      <line x1="440" y1="500" x2="440" y2="520" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#lc1)"/>
+
+      <rect x="250" y="523" width="380" height="34" rx="8" fill="#0d2b1a" stroke="#3fb950" stroke-width="2"/>
+      <text x="440" y="545" text-anchor="middle" fill="#3fb950" font-size="15" font-weight="700">🎉 激活成功 — 所有验证路径均已拦截</text>
+    </svg>
+    <div class="caption">图5：许可证验证完整链路 — 从启动到激活成功的每一步及对应Hook</div>
+  </div>
+
+  <h3>以防万一：date 动态生成机制</h3>
+  <p>
+    所有 Hook 返回的 <code>entity.date</code> 不是硬编码值，而是在每次调用时<strong>实时计算</strong>：
+  </p>
+  <pre><code>entity.date = (() => {
+  const d = new Date();
+  return String(d.getMonth()+1).padStart(2,'0') + '/' +
+         String(d.getDate()).padStart(2,'0') + '/' +
+         d.getFullYear();
+})();</code></pre>
+  <div class="callout success">
+    <strong>为什么必须动态？</strong><br>
+    2026-06-01 曾出现"激活后第二天就失效"的问题。原因是 <code>msg</code> 中的 <code>date</code>
+    在激活时静态生成为 base64，第二天 Typora 检测日期不一致就认为过期。<br>
+    修复方案：所有 Hook 回调中 <strong>不存静态值，运行时动态生成</strong> ——每次请求都用当天日期。
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 六、试用数据清理 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section">
+  <h2>六、试用数据清理</h2>
+
+  <p>
+    Typora 在未激活时会进入试用模式（15天），试用数据持久化在本地多处。如果不清理，
+    即使 Hook 成功也会显示"还有 X 天到期"。
+  </p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg">
+      <rect width="880" height="360" rx="10" fill="#0d1117"/>
+
+      <!-- File-based cleanup -->
+      <rect x="20" y="15" width="500" height="330" rx="10" fill="#161b22" stroke="#30363d"/>
+      <text x="270" y="45" text-anchor="middle" fill="#f85149" font-size="15" font-weight="700">📁 文件系统清理</text>
+      <text x="270" y="65" text-anchor="middle" fill="#8b949e" font-size="11">%AppData%\Typora\ 下的 Chrome 数据</text>
+
+      <rect x="40" y="80" width="460" height="24" rx="4" fill="#21262d"/>
+      <text x="270" y="97" text-anchor="middle" fill="#c9d1d9" font-size="11">Local Storage\     → localStorage 试用起始日期</text>
+
+      <rect x="40" y="112" width="460" height="24" rx="4" fill="#21262d"/>
+      <text x="270" y="129" text-anchor="middle" fill="#c9d1d9" font-size="11">Session Storage\   → sessionStorage 试用状态</text>
+
+      <rect x="40" y="144" width="460" height="24" rx="4" fill="#21262d"/>
+      <text x="270" y="161" text-anchor="middle" fill="#c9d1d9" font-size="11">DIPS\              → DIPS 数据库 (重要!)</text>
+
+      <rect x="40" y="176" width="460" height="24" rx="4" fill="#21262d"/>
+      <text x="270" y="193" text-anchor="middle" fill="#c9d1d9" font-size="11">SharedStorage\     → 共享存储</text>
+
+      <rect x="40" y="208" width="460" height="24" rx="4" fill="#21262d"/>
+      <text x="270" y="225" text-anchor="middle" fill="#c9d1d9" font-size="11">Code Cache\ Cache\ GPUCache\ → 缓存数据</text>
+
+      <rect x="40" y="240" width="460" height="24" rx="4" fill="#21262d"/>
+      <text x="270" y="257" text-anchor="middle" fill="#c9d1d9" font-size="11">Network\           → 网络缓存</text>
+
+      <rect x="40" y="280" width="460" height="45" rx="6" fill="#0d2b1a" stroke="#3fb950"/>
+      <text x="270" y="298" text-anchor="middle" fill="#3fb950" font-size="12">rmSync(recursive:true, force:true)</text>
+      <text x="270" y="316" text-anchor="middle" fill="#8b949e" font-size="10">清空所有 Chrome 持久化数据</text>
+
+      <!-- Registry cleanup -->
+      <rect x="540" y="15" width="320" height="330" rx="10" fill="#161b22" stroke="#30363d"/>
+      <text x="700" y="45" text-anchor="middle" fill="#f85149" font-size="15" font-weight="700">📋 注册表清理</text>
+      <text x="700" y="65" text-anchor="middle" fill="#8b949e" font-size="11">HKCU\Software\Typora\</text>
+
+      <rect x="560" y="80" width="280" height="22" rx="4" fill="#21262d"/>
+      <text x="700" y="96" text-anchor="middle" fill="#c9d1d9" font-size="11">SLicense    → 旧 license</text>
+
+      <rect x="560" y="108" width="280" height="22" rx="4" fill="#21262d"/>
+      <text x="700" y="124" text-anchor="middle" fill="#c9d1d9" font-size="11">IDate       → 旧激活日期</text>
+
+      <rect x="560" y="136" width="280" height="22" rx="4" fill="#21262d"/>
+      <text x="700" y="152" text-anchor="middle" fill="#c9d1d9" font-size="11">TrialStart  → 试用起始日期</text>
+
+      <rect x="560" y="164" width="280" height="22" rx="4" fill="#21262d"/>
+      <text x="700" y="180" text-anchor="middle" fill="#c9d1d9" font-size="11">TDate       → 试用日期</text>
+
+      <rect x="560" y="192" width="280" height="22" rx="4" fill="#21262d"/>
+      <text x="700" y="208" text-anchor="middle" fill="#c9d1d9" font-size="11">FirstLaunch → 首次启动标记</text>
+
+      <rect x="560" y="220" width="280" height="22" rx="4" fill="#21262d"/>
+      <text x="700" y="236" text-anchor="middle" fill="#c9d1d9" font-size="11">LaunchCount → 启动计数</text>
+
+      <rect x="560" y="260" width="280" height="45" rx="6" fill="#0d2b1a" stroke="#3fb950"/>
+      <text x="700" y="278" text-anchor="middle" fill="#3fb950" font-size="12">reg delete /v name /f</text>
+      <text x="700" y="296" text-anchor="middle" fill="#8b949e" font-size="10">逐项删除所有试用键值</text>
+
+      <!-- session.clearStorageData -->
+      <rect x="20" y="348" width="840" height="40" rx="6" fill="#1a2332" stroke="#58a6ff"/>
+      <text x="440" y="373" text-anchor="middle" fill="#58a6ff" font-size="12">额外保险: defaultSession.clearStorageData({ storages: ['localstorage','websql','indexdb'] })</text>
+    </svg>
+    <div class="caption">图6：试用数据清理 — 文件系统 + 注册表 + Electron Session 三重清理</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 七、历史修复 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section">
+  <h2>七、关键修复历史</h2>
+
+  <p>激活脚本不是一次就完美的，以下是经过 3 次重大修复才达到当前稳定状态的过程：</p>
+
+  <div class="timeline">
+    <div class="item">
+      <div class="date">2026-06-01</div>
+      <div class="title">🐛 永久激活第二天就失效</div>
+      <div class="desc">
+        <strong>现象：</strong>激活当天正常，次日 Typora 又回到未激活状态。<br>
+        <strong>根因：</strong><code>msg</code> 中的 <code>date</code> 使用激活时静态生成的 base64，<br>
+        第二天日期不匹配导致验证失败。<br>
+        <strong>修复：</strong><code>protocol.handle</code> 回调改为<strong>运行时动态生成</strong> entity + msg。
+      </div>
+    </div>
+    <div class="item">
+      <div class="date">2026-07-01</div>
+      <div class="title">🐛 激活后显示"还有12天体验期"</div>
+      <div class="desc">
+        <strong>现象：</strong>虽然部分 Hook 生效，但 Typora 仍显示试用倒计时。<br>
+        <strong>根因：</strong>① <code>protocol.handle</code> 只能拦截渲染进程，主进程 <code>net.fetch</code> 不受控；
+        ② 试用数据持久化在 Local Storage/DIPS 中独立运行倒计时；
+        ③ URL 匹配范围太窄，只拦截 activate/renew。<br>
+        <strong>修复：</strong>新增 <code>net.fetch</code> Hook + 扩展 URL 匹配到全部 <code>api/client/</code> + 新增试用数据清理函数。
+      </div>
+    </div>
+    <div class="item">
+      <div class="date">2026-07-13</div>
+      <div class="title">🐛 试用期又提示"3天到期" ⭐ 最终根因</div>
+      <div class="desc">
+        <strong>现象：</strong>7月1日修复后，13天后又提示试用到期。<br>
+        <strong>根因：</strong>Typora 使用 <strong>electron-fetch</strong> 模块（存放在 <code>node_modules.asar</code>），
+        该模块在 Electron 环境默认 <code>useElectronNet=true</code>，
+        调用的是 <strong><code>electron.net.request</code></strong>（不是 <code>fetch</code>！）。
+        net.fetch Hook 完全无法拦截。每12小时续订请求穿透到真实服务器 →
+        服务器返回失败 → Typora 撤销 license → 进入试用模式。<br>
+        <strong>修复：</strong>新增同步 <code>electron.net.request</code> Hook，
+        构造完整的 fake <code>ClientRequest</code> + <code>response</code> → <code>data</code> → <code>end</code> 事件流。
+        这是<strong>最关键的一次修复</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>经验教训：</strong>Electron 环境中的网络请求存在多种实现路径。
+    仅拦截 <code>fetch</code> 和 <code>protocol</code> 是不够的，
+    必须深入分析应用实际使用的网络库（如 electron-fetch）并拦截其底层调用。
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 八、注入代码结构 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section">
+  <h2>八、注入代码的执行顺序</h2>
+
+  <p>注入到 <code>launch.dist.js</code> 的代码按以下顺序执行，这个顺序是精心设计的：</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 880 500" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="seq1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#58a6ff"/></marker>
+      </defs>
+      <rect width="880" height="500" rx="10" fill="#0d1117"/>
+
+      <!-- Title -->
+      <text x="30" y="30" fill="#8b949e" font-size="11">时间轴 →</text>
+      <line x1="30" y1="35" x2="850" y2="35" stroke="#30363d" stroke-width="1"/>
+
+      <!-- Block 1: require electron -->
+      <rect x="30" y="50" width="820" height="38" rx="6" fill="#1c2333" stroke="#58a6ff"/>
+      <text x="440" y="74" text-anchor="middle" fill="#c9d1d9" font-size="12">① const electron = require("electron") — 同步加载，在所有其他模块之前</text>
+      <line x1="440" y1="88" x2="440" y2="105" stroke="#58a6ff" stroke-width="1" marker-end="url(#seq1)"/>
+
+      <!-- Block 2: fs hook -->
+      <rect x="30" y="108" width="820" height="38" rx="6" fill="#1c2333" stroke="#58a6ff"/>
+      <text x="440" y="132" text-anchor="middle" fill="#c9d1d9" font-size="12">② fs Hook — 拦截 readFileSync / readFile / stat / open 等（同步方法 + promises）</text>
+      <line x1="440" y1="146" x2="440" y2="163" stroke="#58a6ff" stroke-width="1" marker-end="url(#seq1)"/>
+
+      <!-- Block 3: crypto hook -->
+      <rect x="30" y="166" width="820" height="38" rx="6" fill="#1c2333" stroke="#58a6ff"/>
+      <text x="440" y="190" text-anchor="middle" fill="#c9d1d9" font-size="12">③ crypto.publicDecrypt + crypto.privateDecrypt Hook — 覆盖所有 RSA 解密路径</text>
+      <line x1="440" y1="204" x2="440" y2="221" stroke="#58a6ff" stroke-width="1" marker-end="url(#seq1)"/>
+
+      <!-- Block 4: net.request hook (critical) -->
+      <rect x="30" y="224" width="820" height="44" rx="8" fill="#0d2b1a" stroke="#f85149" stroke-width="2"/>
+      <text x="440" y="246" text-anchor="middle" fill="#f85149" font-size="13" font-weight="700">④ ⭐ electron.net.request Hook — 同步设置！早于模块加载，防止 electron-fetch 缓存原始引用</text>
+      <text x="440" y="262" text-anchor="middle" fill="#8b949e" font-size="10">这是最关键的一步：只有同步 Hook 才能确保 electron-fetch 在 require 时拿到被篡改的 net.request</text>
+      <line x1="440" y1="268" x2="440" y2="285" stroke="#58a6ff" stroke-width="1" marker-end="url(#seq1)"/>
+
+      <!-- Block 5: app.whenReady -->
+      <rect x="30" y="288" width="820" height="38" rx="6" fill="#1c2333" stroke="#58a6ff"/>
+      <text x="440" y="312" text-anchor="middle" fill="#c9d1d9" font-size="12">⑤ electron.app.whenReady().then() — 异步回调，App 就绪后执行</text>
+      <line x1="440" y1="326" x2="440" y2="343" stroke="#58a6ff" stroke-width="1" marker-end="url(#seq1)"/>
+
+      <!-- Sub items -->
+      <rect x="30" y="346" width="820" height="70" rx="6" fill="#161b22" stroke="#30363d"/>
+      <text x="60" y="368" fill="#c9d1d9" font-size="11">⑤-a protocol.handle("https")   — 拦截渲染进程请求</text>
+      <text x="60" y="388" fill="#c9d1d9" font-size="11">⑤-b electron.net.fetch 拦截      — 后备拦截主进程 fetch</text>
+      <text x="60" y="406" fill="#c9d1d9" font-size="11">⑤-c session.clearStorageData()   — 清理试用数据</text>
+      <line x1="440" y1="416" x2="440" y2="433" stroke="#58a6ff" stroke-width="1" marker-end="url(#seq1)"/>
+
+      <!-- Final -->
+      <rect x="30" y="436" width="820" height="50" rx="8" fill="#0d2b1a" stroke="#3fb950" stroke-width="2"/>
+      <text x="440" y="458" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="700">✅ 注入完成 — Typora 剩余代码正常加载，所有 Hook 已就位</text>
+      <text x="440" y="478" text-anchor="middle" fill="#8b949e" font-size="11">后续启动的 app/ 业务代码通过 fs Hook 自动从 app.bak/ 读取原始文件</text>
+    </svg>
+    <div class="caption">图7：注入代码执行顺序 — 同步 Hook 必须早于异步 Hook，net.request 必须最早</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="footer">
+  <p>Typora 激活脚本 · 技术文档 · 2026-07-13</p>
+  <p style="margin-top:6px">脚本位置：<code>typora_crack.js</code> · 适用版本：Typora 1.13.7 (Electron 35.6.0)</p>
+</div>
+
+</div>
+
+<!-- __DARK_MODE_INJECTED__ -->
+<script src="../scripts/dark-mode-toggle.js"></script>
+
+<!-- __IMAGE_ZOOM_INJECTED__ -->
+<script src="../scripts/image-zoom.js"></script>
+</body>
+</html>
